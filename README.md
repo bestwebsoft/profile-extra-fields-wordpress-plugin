@@ -1,4 +1,4 @@
-<a href="hhttp://bestwebsoft.com/products/profile-extra-fields/" target=_blank>Profile Extra Fields Wordpress Plugin</a> 
+<a href="http://bestwebsoft.com/products/profile-extra-fields/" target=_blank>Profile Extra Fields Wordpress Plugin</a> 
 ==============================
 
 The plugin adds additional fields on the standard user’s profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish. 
