@@ -7,32 +7,26 @@
 	padding: 0 4px;
 	margin: 0 4px;
 }
-
 .prflxtrflds-delete-filter a {
 	color: #ff3c44;
 	text-decoration: none;
 	margin: 0 4px 0 2px;
 }
-
 .prflxtrflds-delete-filter a:hover {
 	color: #8b0c0b;
 }
-
 .prflxtrflds-wplisttable-container {
 	width: 100%;
 }
-
 .prflxtrflds-wplisttable-fullwidth-container,
 .prflxtrflds-wplisttable-fullwidth-sort-container {
 	width: 100%;
     padding: 10px;
 }
-
 .prflxtrflds-sortable-form {
 	float: left;
 	margin: 60px 0 0 30px;
 }
-
 .prflxtrflds-options-table td {
 	border-bottom: 1px solid #DFDFDF;
 	border-right: 1px solid #DFDFDF;
@@ -40,62 +34,45 @@
 	padding: 2px 10px;
 	text-align: left;
 }
-
 .prflxtrflds-options-table th {
 	padding: 0 20px;
 }
-
 .prflxtrflds-options-table th:first-of-type {
 	width: 220px;
 }
-
 .prflxtrflds-description {
 	min-width: 220px;
 }
-
-.prflxtrflds-values-info {
-	color: #888888;
-	font-size: 10px;
-}
-
 .prflxtrflds-value-name {
     float: left;
     padding-left: 30px;
     width: 177px;
 }
-
 .prflxtrflds-delete {
     padding-left: 10px;
     float: left;
 }
-
 #prflxtrflds-add-field {
 	margin: 3px 25px;
 }
-
 #prflxtrflds-div-select-all {
 	display: none;
 }
-
 .prflxtrflds-cursor-move {
 	cursor: move;
 }
-
 input.prflxtrflds-value-delete-check {
 	display: none;
 }
-
 .prflxtrflds-value-delete input {
     margin: 4px;
 }
-
 input.prflxtrflds-value-delete-check + label,
 input.prflxtrflds-value-delete-check + label {
 	font: 18px bold;
 	color: #444;
 	cursor: pointer;
 }
-
 input.prflxtrflds-value-delete-check + label::before,
 input.prflxtrflds-value-delete-check + label::before {
 	content: "";
@@ -105,80 +82,78 @@ input.prflxtrflds-value-delete-check + label::before {
 	margin: 2px 5px 0 0;
 	background: url("../images/del_icon.png") no-repeat scroll 0 0 transparent;
 }
-
 .prflxtrflds-wplisttable-form {
 	padding-bottom: 20px;
 }
-
-.prflxtrflds-shortcode {
-	font-size: 14px;
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
-}
-
 .prflxtrflds-wplisttable-searchform .search-box {
     margin-bottom: 5px;
 }
-
 .prflxtrflds-wplisttable-fullwidth-container .search-box {
     bottom: -15px;
 }
-
 .prflxtrflds-drag-values input {
     /* Must overwrite wp styles to input */
     max-width: 80% !important;
     float: left;
 }
-
+.prflxtrflds-date-format input.small-text,
+.prflxtrflds-time-format input.small-text {
+    width: 56px;
+}
 .prflxtrflds-drag-values {
     clear: both;
 }
-
 .prflxtrflds-drag-field {
     float: left;
     padding: 10px;
 }
-
 .prflxtrflds-add-button-container {
     clear: both;
 }
-
 /* Drag n drop styles */
-body.prflxtrflds-dragging, body.prflxtrflds-dragging * {
-	cursor: move !important;
+.prflxtrflds-wplisttable-fullwidth-sort-container tr.ui-sortable-helper * {
+	background-color: transparent;
 }
-
-.prflxtrflds-dragged {
-	position: absolute;
-	opacity: 0.5;
-	z-index: 2000;
+.prflxtrflds-wplisttable-fullwidth-sort-container .ui-sortable-helper {
+	background-color: #f5f5f5;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+	border: 1px solid #ccc;
 }
-
-table tr.prflxtrflds-placeholder:before {
-	position: absolute;
-	content: " ";
-	width: 98%;
-	border-bottom: 1px dotted #000000;
+.prflxtrflds-placeholder {
+	visibility: visible !important;
 }
-/* End drag n drop styles */
-
-@media screen and ( max-width: 1000px ) {
-
-    .prflxtrflds-wplist-select {
-		max-width: 100%;
+.prflxtrflds-wplist-select {
+	max-width: 100%;
+}
+.rtl .prflxtrflds-drag-values input,
+.rtl .prflxtrflds-sortable-form,
+.rtl .prflxtrflds-value-name,
+.rtl .prflxtrflds-delete,
+.rtl .prflxtrflds-drag-field {
+	float: right;
+}
+@media screen and (min-width: 800px) {
+	.prflxtrflds-placeholder th,
+	.prflxtrflds-placeholder td {
+		border-top: 1px dashed #bbb;
+		border-bottom: 1px dashed #bbb;
+		height: 10px;
 	}
 }
-
+@media screen and (max-width: 800px) {
+	.prflxtrflds-placeholder td {
+		display: none !important;
+	}
+}
+/* End drag n drop styles */
 @media screen and ( max-width: 780px ) {
-
     .prflxtrflds-delete {
         padding-right: 10%;
         float: right;
     }
-
 }
-
 @media screen and ( max-width: 620px ) {
-
     .prflxtrflds-wplisttable-searchform td,
     .prflxtrflds-wplisttable-searchform th,
     .prflxtrflds-wplisttable-form td,
@@ -188,15 +163,12 @@ table tr.prflxtrflds-placeholder:before {
         /* Overwrite default styles */
         word-wrap: break-word !important;
     }
-
     .prflxtrflds-delete {
         padding-right: 8%;
         float: right;
     }
 }
-
 @media screen and ( max-width: 450px ) {
-
     .prflxtrflds-drag-values input {
         /* Must overwrite wp styles to input */
         max-width: 70% !important;

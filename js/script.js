@@ -1,105 +1,135 @@
 (function( $ ) {
-	$( document ).ready(function(){
+	$( document ).ready( function() {
 		/* Show trash icon */
 		$( '.prflxtrflds-value-delete input' ).addClass( 'prflxtrflds-value-delete-check' );
-		$( '.prflxtrflds-value-delete label' ).click(function(){
+		$( '.prflxtrflds-value-delete label' ).click(function() {
 			/* clear value */
-			$( this ).parent().parent().children( 'input.prflxtrflds-add-options-input').val( '' );
+			$( this ).parent().parent().children( 'input.prflxtrflds-add-options-input' ).val( '' );
 			/* hide field */
 			$( this ).parent().parent().hide();
+
+			if ( typeof bws_show_settings_notice == 'function' ) {
+				bws_show_settings_notice();
+			}
 		});
 		/* Add additional fields for checkbox, radio, select */
-		$( '#prflxtrflds-add-field' ).click(function(){
+		$( '#prflxtrflds-add-field' ).click(function() {
 			/* Clone previous input */
-			var lastfield = $( '.prflxtrflds-drag-values').last().clone( true );
+			var lastfield = $( '.prflxtrflds-drag-values' ).last().clone( true );
 			/* remove hidden input */
 			lastfield.children( 'input.hidden' ).remove();
 			/* clear textfield */
 			lastfield.children( 'input.prflxtrflds-add-options-input' ).val( '' );
 			/* Insert field before button */
-			lastfield.clone( true ).insertBefore( $( this ).parent() );
+			lastfield.clone( true ).removeClass( 'hide-if-js' ).show().insertAfter( $( '.prflxtrflds-drag-values' ).last() );
 		});
 		/* Show fields if type field is not textfield */
-		if ( $( '#prflxtrflds-select-type' ).val() == '1' ) {
+		var type_value = $( '#prflxtrflds-select-type' ).val();
+		if ( type_value != '2' && type_value != '3' && type_value != '4'  ) {
 			$( '.prflxtrflds-fields-container' ).hide();
 		}
+		if ( '9' != type_value )
+			$( '.prflxtrflds-pattern' ).hide();
+
+		if ( '5' != type_value && '7' != type_value )
+			$( '.prflxtrflds-date-format' ).hide();
+
+		if ( '6' != type_value && '7' != type_value )
+			$( '.prflxtrflds-time-format' ).hide();		
+
 		/* Show or hide fields on change field type */
-		$( '#prflxtrflds-select-type' ).on( 'change', function(){
-			if ( $( this ).val() == '1' ) {
-				$( '.prflxtrflds-fields-container' ).hide();
-			} else {
+		$( '#prflxtrflds-select-type' ).on( 'change', function() {
+			type_value = $( this ).val();
+			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format' ).hide();
+
+			if ( type_value == '2' || type_value == '3' || type_value == '4'  ) {
 				$( '.prflxtrflds-fields-container' ).show();
-				if ( $( '.prflxtrflds-add-options-input' ).val() == "prflxtrflds_textfield" ) {
-					/* Clear value if is textfield */
-					$( '.prflxtrflds-add-options-input' ).val( '' );
-				}
+			} else if ( '9' == type_value ) {
+				$( '.prflxtrflds-pattern' ).show();		
+			} else {
+				if ( '5' == type_value || '7' == type_value )
+					$( '.prflxtrflds-date-format' ).show();
+
+				if ( '6' == type_value || '7' == type_value )
+					$( '.prflxtrflds-time-format' ).show();		
 			}
 		});
+
+		$("input[name='prflxtrflds_date_format']").click(function(){
+			if ( "prflxtrflds_date_format_custom_radio" != $( this ).attr( "id" ) )
+				$( "input[name='prflxtrflds_date_format_custom']" ).val( $( this ).val() ).siblings( '.example' ).text( $( this ).parent( 'label' ).text() );
+		});
+		$("input[name='prflxtrflds_date_format_custom']").focus(function(){
+			$( '#prflxtrflds_date_format_custom_radio' ).prop( 'checked', true );
+		});
+
+		$("input[name='prflxtrflds_time_format']").click(function(){
+			if ( "prflxtrflds_time_format_custom_radio" != $( this ).attr("id") )
+				$( "input[name='prflxtrflds_time_format_custom']" ).val( $( this ).val() ).siblings( '.example' ).text( $( this ).parent( 'label' ).text() );
+		});
+		$("input[name='prflxtrflds_time_format_custom']").focus(function(){
+			$( '#prflxtrflds_time_format_custom_radio' ).prop( 'checked', true );
+		});
+		$("input[name='prflxtrflds_date_format_custom'], input[name='prflxtrflds_time_format_custom']").change( function() {
+			var format = $( this );
+			format.siblings( '.spinner' ).addClass( 'is-active' );
+			$.post(ajaxurl, {
+					action: 'prflxtrflds_date_format_custom' == format.attr( 'name' ) ? 'date_format' : 'time_format',
+					date : format.val()
+				}, function(d) { format.siblings( '.spinner' ).removeClass( 'is-active' ); format.siblings('.example').text(d); } );
+		});
+
         /* Detect mobile device */
         var ismobile = false;
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             ismobile = true;
         }
 
         if ( ismobile == false ) {
             /* Sortable table settings */
-            if ( $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tbody tr' ).size() > 1 ){
+            if ( $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tbody tr' ).size() > 1 ) {
                 $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tr' ).addClass( 'prflxtrflds-cursor-move' );
-                $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table' ).sortable({
-                    containerSelector: 'table',
-                    itemPath: '> tbody',
-                    itemSelector: 'tr',
-                    cursor: 'move',
-                    draggedClass: 'prflxtrflds-dragged',
-                    bodyClass: 'prflxtrflds-dragging',
-                    placeholder: '<tr class="prflxtrflds-placeholder"/>',
-                    onDragStart: function ( $item, container, _super ) {
-                        oldIndex = $item.index();
-                        $item.appendTo( $item.parent() );
-                        _super( $item, container );
-                    },
-                    onDrop: function ( $item, container, _super ) {
-                        var order = [];
-                        $item.closest( 'tbody' ).find( 'tr th input' ).each( function( i, row ) {
-                            row = $( row );
-                            order[ i ] = row.attr( 'value' );
-                        });
-                        _super( $item, container );
-                        var fieldId = $( '#prflxtrflds-role-id option:selected' ).val();
-                        /* Save order with ajax */
-                        $.ajax({
-                            url: prflxtrflds_ajax.prflxtrflds_ajax_url,
-                            type: "POST",
-                            data: 'action=prflxtrflds_table_order&table_order=' + order.join( ', ' ) + '&prflxtrflds_ajax_nonce_field=' + prflxtrflds_ajax.prflxtrflds_nonce + '&field_id=' + fieldId,
-                            success: function( result ) {
-                            },
-                            error: function( request, status, error ) {
-                                console.log( error + request.status );
-                            }
-                        });
-                    }
-                });
+                if ( $.fn.sortable ) {
+	                $( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list' ).sortable({
+	                    cursor: 'move',
+	                    placeholder: 'prflxtrflds-placeholder',
+						stop: function( event, ui ) { 
+							var order = [];
+							$( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list tr th input' ).each( function( i, row ) {
+								row = $( row );
+								order[ i ] = row.attr( 'value' );
+							});
+							var fieldId = $( '#prflxtrflds-role-id option:selected' ).val();
+							/* Save order with ajax */
+							$.ajax({
+								url: prflxtrflds_ajax.prflxtrflds_ajax_url,
+								type: "POST",
+								data: 'action=prflxtrflds_table_order&table_order=' + order.join( ', ' ) + '&prflxtrflds_ajax_nonce_field=' + prflxtrflds_ajax.prflxtrflds_nonce + '&field_id=' + fieldId,
+								success: function( result ) {
+								},
+								error: function( request, status, error ) {
+									console.log( error + request.status );
+								}
+							});
+						}
+	                });
+				}
             }
 
-    	 /* Drag n drop values list */
-            $( '.prflxtrflds-drag-values-container' ).sortable({
-                itemSelector: 'div',
-                /* Without container selector script return error */
-                containerSelector: '.prflxtrflds-drag-values-container',
-                draggedClass: 'prflxtrflds-dragged',
-                bodyClass: 'prflxtrflds-dragging',
-                handle: '.prflxtrflds-drag-field',
-                onDragStart: function ( $item, container, _super ) {
-                    _super( $item, container );
-                },
-                onDrop: function ( $item, container, _super ) {
-                    var $noticeblock = $( '#prflxtrflds-settings-notice' );
-                    if ( $noticeblock.hasClass( 'hidden' ) ) {
-                        $noticeblock.removeClass( 'hidden' );
-                    }
-                    _super( $item, container );
-                }
-            });
+    		/* Drag n drop values list */
+    		if ( $.fn.sortable ) {
+	            $( '.prflxtrflds-drag-values-container' ).sortable({
+	                itemSelector: 'div',
+	                /* Without container selector script return error */
+	                containerSelector: '.prflxtrflds-drag-values-container',
+	                handle: '.prflxtrflds-drag-field',
+	                stop: function( event, ui ) { 
+						if ( typeof bws_show_settings_notice == 'function' ) {
+							bws_show_settings_notice();
+						}
+					}
+	            });
+	        }
         } else {
             /* Hide notice if is mobile */
             $( '.prflxtrflds-hide-if-is-mobile' ).hide();
@@ -145,19 +175,6 @@
 				} else {
 					$select_all.attr( 'checked', false );
 				}
-			}
-		});
-		/* Show notice if some changes */
-		$( '[name^="prflxtrflds"], #prflxtrflds-select-all').bind( "change click select", function(){
-			var $noticeblock = $( '#prflxtrflds-settings-notice' );
-			if ( $( this ).attr( 'type' ) != 'submit' ) {
-				if ( $noticeblock.hasClass( 'hidden' ) ) {
-					$noticeblock.removeClass( 'hidden' );
-				}
-                if ( $( '.prflxtrflds-settings-saved').length > 0 ) {
-                    /* Hide 'data saved notice' */
-                    $( '.prflxtrflds-settings-saved').hide();
-                }
 			}
 		});
 	});

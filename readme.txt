@@ -1,10 +1,10 @@
 === Profile Extra Fields by BestWebSoft ===
 Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
-Tags: plugin, wordpress, bestwebsoft, extra information, profile informations, shortcode, additional user data, extra user data, profile user data, about user, Extra Fields, additional field, add a field, how to add a field, fild wordpress, addind fields on my wp page, adding fields plugin, filds, add new field on my profile, add new custom field wp, extra fields, wp profile, custom profile, field to profile, wp add custom field, wp add custom field, wordpress add field to user profile, wordpress add profile fields tools
+Tags: about user, add fields, add extra fields, add additional fields, add custom field, add a field, add new custom field wp, add new field on my profile, addind fields on my wp page, adding fields plugin, additional field, additional user data, bestwebsoft, best, best plugin, best wp plugin, custom profile, extra fields, extra information, extra user data, free, free plugin, free extra fields, free additional fields, free profile extra fields, field to profile, fild wordpress, filds, how to add a field, plugin, profile informations, profile user data, shortcode, wordpress, wordpress add field to user profile, wordpress add profile fields tools, wp add custom field, wp profile, wordpress, wp, wp plugin, wp free plugin, wp profile extra fields, wp profile extra fields plugin, wp simple profile extra fields plugin, wp free profile extra fields, wp free profile extra fields plugin, wordpress plugin, wordpress free plugin, wordpress profile extra fields, wordpress profile extra fields plugin, wordpress simple profile extra fields plugin, wordpress free profile extra fields, wordpress free profile extra fields plugin
 Requires at least: 3.8
-Tested up to: 4.2.4
-Stable tag: 1.0.0
+Tested up to: 4.3.1
+Stable tag: 1.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,11 +12,13 @@ The plugin adds additional fields on the user's profile page.
 
 == Description ==
 
-The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish. 
+The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish.
 
-<a href="http://wordpress.org/plugins/profile-extra-fields/faq/" target="_blank">FAQ</a>
+http://www.youtube.com/watch?v=O424Kpnffmo
 
-<a href="http://support.bestwebsoft.com" target="_blank">Support</a>
+<a href="http://wordpress.org/plugins/profile-extra-fields/faq/" target="_blank">Profile Extra Fields by BestWebSoft FAQ</a>
+
+<a href="http://support.bestwebsoft.com" target="_blank">Profile Extra Fields by BestWebSoft Support</a>
 
 = Features = 
 
@@ -35,6 +37,7 @@ There is also a premium version of the plugin <a href="http://bestwebsoft.com/pr
 
 = Translation =
 
+* German (de_DE) (thanks to <a href="mailto:matthias.siebler@gmail.com">Matthias Siebler</a>)
 * Russian (ru_RU)
 * Ukrainian (uk)
 
@@ -54,6 +57,8 @@ We can fix some things for free for the users who provide a translation of our p
 2. Activate the plugin using the 'Plugins' menu in your WordPress admin panel.
 3. You can adjust the necessary settings using your WordPress admin panel in "BWS Plugins" > "Profile Extra Fields".
 4. Create a page or a post and insert the shortcode [prflxtrflds_user_data] into the text.
+
+<a href="https://docs.google.com/document/d/1YSxf-rycHXQ_Tl38dUguuWav03PI2z0ZdKMDbRA1UV0/edit" target="_blank">View a Step-by-step Instruction on Error Log Viewer Installation</a>.
 
 == Frequently Asked Questions ==
 
@@ -75,8 +80,8 @@ You can view the data filled by users on the plugin settings page ( "BWS Plugins
 
 To display the user data on the site, please use the shortcode [prflxtrflds_user_data].
 Also, it is possible to display data only for specific users. To do this, please enter the relevant user id to the shortcode. For example: [prflxtrflds_user_data user_id=3,1].
-Additional settings for the shortcode displaying you can find on the plugin settings page
-( "BWS Plugins" > "Profile Extra Fields" ), in the 'Shortcode settings' tab
+You can specify a user role, separated by commas without spaces. Example: [prflxtrflds_user_data user_role=administrator,contributor]
+You can specify a header position manually (top, left or right). Example: [prflxtrflds_user_data display=top]
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
@@ -89,20 +94,33 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 
 == Screenshots ==
 
-1. Field Edit Page 
-2. Plugin Homepage
-3. Viewing user information on the plugin page.
-4. Additional fields on the user's profile page.
-5. Shortcode settings page
-6. Viewing user data via shortcode.
+1. Field Edit Page.
+2. Format setting for the date, time or datetime type fields.
+3. Available values setting for the Radiobutton,  Drop down list or Checkbox type fields.
+4. Pattern setting for the phone type field.
+5. Plugin Homepage with the list of created Extra Fields.
+6. Viewing user information on the plugin page.
+7. Additional fields on the user's profile page.
+8. Datetimepicker displaying for the date, time or datetime type fields.
+9. Shortcode settings page.
+10. Adding Profile Extra Fields shortcode to your page or post.
+11. Viewing user data via shortcode.
 
 == Changelog ==
+
+= V1.0.1 - 03.11.2015 =
+* NEW : German language file is added to the plugin.
+* NEW : We added new field types ( Date, Time, Datetime, Phone number, Number ).
+* NEW : We added ability to restore settings to defaults.
+* Bugfix : A bug with the sorting was fixed.
 
 = V1.0.0 - 18.08.2015 = 
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
 
+= V1.0.1 = 
+German language file is added to the plugin. We added ability to restore settings to defaults. A bug with the sorting was fixed.
+
 = V1.0.0 =
 Screenshots are added
-
