@@ -79,60 +79,48 @@
 				}, function(d) { format.siblings( '.spinner' ).removeClass( 'is-active' ); format.siblings('.example').text(d); } );
 		});
 
-        /* Detect mobile device */
-        var ismobile = false;
-        if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            ismobile = true;
-        }
-
-        if ( ismobile == false ) {
-            /* Sortable table settings */
-            if ( $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tbody tr' ).size() > 1 ) {
-                $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tr' ).addClass( 'prflxtrflds-cursor-move' );
-                if ( $.fn.sortable ) {
-	                $( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list' ).sortable({
-	                    cursor: 'move',
-	                    placeholder: 'prflxtrflds-placeholder',
-						stop: function( event, ui ) { 
-							var order = [];
-							$( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list tr th input' ).each( function( i, row ) {
-								row = $( row );
-								order[ i ] = row.attr( 'value' );
-							});
-							var fieldId = $( '#prflxtrflds-role-id option:selected' ).val();
-							/* Save order with ajax */
-							$.ajax({
-								url: prflxtrflds_ajax.prflxtrflds_ajax_url,
-								type: "POST",
-								data: 'action=prflxtrflds_table_order&table_order=' + order.join( ', ' ) + '&prflxtrflds_ajax_nonce_field=' + prflxtrflds_ajax.prflxtrflds_nonce + '&field_id=' + fieldId,
-								success: function( result ) {
-								},
-								error: function( request, status, error ) {
-									console.log( error + request.status );
-								}
-							});
-						}
-	                });
-				}
-            }
-
-    		/* Drag n drop values list */
-    		if ( $.fn.sortable ) {
-	            $( '.prflxtrflds-drag-values-container' ).sortable({
-	                itemSelector: 'div',
-	                /* Without container selector script return error */
-	                containerSelector: '.prflxtrflds-drag-values-container',
-	                handle: '.prflxtrflds-drag-field',
-	                stop: function( event, ui ) { 
-						if ( typeof bws_show_settings_notice == 'function' ) {
-							bws_show_settings_notice();
-						}
+        /* Sortable table settings */
+        if ( $.fn.sortable ) {
+	        if ( $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tbody tr' ).size() > 1 ) {
+	            $( '.prflxtrflds-wplisttable-fullwidth-sort-container .wp-list-table tr' ).addClass( 'prflxtrflds-cursor-move' );
+	            $( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list' ).sortable({
+	                cursor: 'move',
+	                placeholder: 'prflxtrflds-placeholder',
+					stop: function( event, ui ) { 
+						var order = [];
+						$( '.prflxtrflds-wplisttable-fullwidth-sort-container #the-list tr th input' ).each( function( i, row ) {
+							row = $( row );
+							order[ i ] = row.attr( 'value' );
+						});
+						var fieldId = $( '#prflxtrflds-role-id option:selected' ).val();
+						/* Save order with ajax */
+						$.ajax({
+							url: prflxtrflds_ajax.prflxtrflds_ajax_url,
+							type: "POST",
+							data: 'action=prflxtrflds_table_order&table_order=' + order.join( ', ' ) + '&prflxtrflds_ajax_nonce_field=' + prflxtrflds_ajax.prflxtrflds_nonce + '&field_id=' + fieldId,
+							success: function( result ) {
+							},
+							error: function( request, status, error ) {
+								console.log( error + request.status );
+							}
+						});
 					}
 	            });
 	        }
-        } else {
-            /* Hide notice if is mobile */
-            $( '.prflxtrflds-hide-if-is-mobile' ).hide();
+
+			/* Drag n drop values list */		
+            $( '.prflxtrflds-drag-values-container' ).sortable({
+                itemSelector: 'div',
+                /* Without container selector script return error */
+                containerSelector: '.prflxtrflds-drag-values-container',
+                handle: '.prflxtrflds-drag-field',
+                placeholder: 'prflxtrflds-placeholder',
+                stop: function( event, ui ) { 
+					if ( typeof bws_show_settings_notice == 'function' ) {
+						bws_show_settings_notice();
+					}
+				}
+            });
         }
 
 		/* Disable select if field unchecked after render page */

@@ -6,7 +6,7 @@ Description: Plugin Profile Extra Fields add extra data to user profile page.
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -34,7 +34,7 @@ License: GPLv3 or later
 /*add settings page in bws menu*/
 if ( ! function_exists( 'prflxtrflds_admin_menu' ) ) {
 	function prflxtrflds_admin_menu() {
-		bws_add_general_menu( plugin_basename( __FILE__ ) );
+		bws_general_menu();
 		$hook = add_submenu_page( 'bws_plugins', __( 'Profile Extra Fields Settings', 'profile-extra-fields' ), 'Profile Extra Fields', 'manage_options', 'profile-extra-fields.php', 'prflxtrflds_settings_page' );
 		add_action( "load-$hook", 'prflxtrflds_screen_options' );
 	}
@@ -805,7 +805,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					<tr class="prflxtrflds-fields-container">
 						<th><?php _e( 'Available values', 'profile-extra-fields' ); ?></th>
 						<td>
-							<div class="bws_info">
+							<div class="bws_info hide-if-js">
 								<div class="prflxtrflds-value-name">
 									<?php _e( 'Name of value', 'profile-extra-fields' ); ?>
 								</div>
@@ -818,14 +818,14 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 									<div class="prflxtrflds-drag-values">
 										<input type="hidden" name="prflxtrflds_value_id[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" />
 										<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
-										<input class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="<?php echo $available_values[ $i ]['value_name']; ?>" />
+										<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="<?php echo $available_values[ $i ]['value_name']; ?>" />
 										<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" /><label></label></span>
 									</div><!--.prflxtrflds-drag-values-->
 								<?php } ?>
 								<div class="prflxtrflds-drag-values <?php if ( ! empty( $available_values ) ) echo 'hide-if-js'; ?>">
 									<input type="hidden" name="prflxtrflds_value_id[]" value="" />
 									<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
-									<input class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="" />
+									<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="" />
 									<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="" /><label></label></span>
 								</div><!--.prflxtrflds-drag-values-->
 							</div><!--.prflxtrflds-drag-values-container-->
@@ -843,7 +843,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					</tr>
 					<tr>
 						<th><?php _e( 'Available for roles', 'profile-extra-fields' ); ?></th>
-						<td>
+						<td><fieldset>
 							<div id="prflxtrflds-select-roles">
 								<?php if ( $all_roles ){ ?>
 									<div id="prflxtrflds-div-select-all">
@@ -859,7 +859,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 									<?php }
 								} ?>
 							</div><!--#prflxtrflds-select-roles-->
-						</td>
+						</fieldset></td>
 					</tr>
 					<tr>
 						<th><?php _e( 'Required', 'profile-extra-fields' ); ?></th>
@@ -1814,7 +1814,7 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 			}				
 		} ?>
 		<div class="wrap">
-			<h2>Profile Extra Fields</h2>
+			<h1>Profile Extra Fields</h1>
 			<h2 class="nav-tab-wrapper">
 				<a class="nav-tab<?php if ( ! isset( $_GET['tab-action'] ) ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php"><?php _e( 'Extra fields', 'profile-extra-fields' ); ?></a>
 				<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'userdata' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=userdata"><?php _e( 'User data', 'profile-extra-fields' ); ?></a>
@@ -2342,7 +2342,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 
 		if ( 0 < sizeof( $all_entry ) ) { /* Render user data */ ?>
 			<!-- Begin code from user role extra field -->
-			<h3><?php _e( "Extra profile information", "profile-extra-fields" ); ?></h3>
+			<h2><?php _e( "Extra profile information", "profile-extra-fields" ); ?></h2>
 			<table class="form-table">
 				<?php foreach ( $all_entry as $one_entry ) { ?>
 					<tr>
@@ -2771,6 +2771,9 @@ if ( ! function_exists('prflxtrflds_load_script') ) {
 		global $hook_suffix;
 		if ( isset( $_GET['page'] ) && 'profile-extra-fields.php' == $_GET['page'] ) {
 			wp_enqueue_style( 'prflxtrflds_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
+
+			if ( wp_is_mobile() )
+				wp_enqueue_script( 'jquery-touch-punch' );
 
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
