@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
 Tags: about user, add fields, add extra fields, add additional fields, add custom field, add a field, add new custom field wp, add new field on my profile, addind fields on my wp page, adding fields plugin, additional field, additional user data, bestwebsoft, best, best plugin, best wp plugin, custom profile, extra fields, extra information, extra user data, free, free plugin, free extra fields, free additional fields, free profile extra fields, field to profile, fild wordpress, filds, how to add a field, plugin, profile informations, profile user data, shortcode, wordpress, wordpress add field to user profile, wordpress add profile fields tools, wp add custom field, wp profile, wordpress, wp, wp plugin, wp free plugin, wp profile extra fields, wp profile extra fields plugin, wp simple profile extra fields plugin, wp free profile extra fields, wp free profile extra fields plugin, wordpress plugin, wordpress free plugin, wordpress profile extra fields, wordpress profile extra fields plugin, wordpress simple profile extra fields plugin, wordpress free profile extra fields, wordpress free profile extra fields plugin
 Requires at least: 3.8
-Tested up to: 4.4
-Stable tag: 1.0.2
+Tested up to: 4.5
+Stable tag: 1.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,8 @@ http://www.youtube.com/watch?v=O424Kpnffmo
 * Change the fields order by using the drag-n-drop option
 * Make the field available only for one specific user role
 * Display information via shortcode
+
+If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">Suggest a Feature</a>
 
 = Recommended Plugins = 
 
@@ -108,6 +110,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 
 == Changelog ==
 
+= V1.0.3 - 18.04.2016 =
+* NEW : Ability to add custom styles.
+
 = V1.0.2 - 09.12.2015 =
 * Bugfix : The bug with sorting on mobile devices was fixed.
 * Bugfix : The bug with plugin menu duplicating was fixed.
@@ -122,6 +127,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.3 =
+Ability to add custom styles.
 
 = V1.0.2 =
 The bug with sorting on mobile devices was fixed. The bug with plugin menu duplicating was fixed.

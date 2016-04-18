@@ -6,12 +6,12 @@ Description: Plugin Profile Extra Fields add extra data to user profile page.
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.0.2
+Version: 1.0.3
 Author URI: http://bestwebsoft.com/
 License: GPLv3 or later
 */
 
-/*  @ Copyright 2015  BestWebSoft  ( http://support.bestwebsoft.com )
+/*  @ Copyright 2016  BestWebSoft  ( http://support.bestwebsoft.com )
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -144,7 +144,8 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 			'not_available_message'		=> __( 'N/A', 'profile-extra-fields' ),
 			'plugin_db_version'			=> $prflxtrflds_db_version,
 			'plugin_option_version'		=> $prflxtrflds_plugin_info["Version"],
-			'display_settings_notice'	=>	1
+			'display_settings_notice'	=> 1,
+			'suggest_feature_banner'	=> 1
 		);
 		/* In prflxtrflds_settings_page add hidden field to save values after option update (!) */
 		if ( ! get_option( 'prflxtrflds_options' ) ) {
@@ -724,7 +725,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 		prflxtrflds_update_roles_id();
 		/* Get all avaliable roles */
 		$all_roles = $wpdb->get_results( "SELECT `role_id`, `role` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id`" ); ?>
-		<h2><?php echo $name_of_page; ?></h2>
+		<h2><?php echo $name_of_page; ?></h2>		
 		<?php if ( ! empty( $error ) ) { ?>
 			<div class="error below-h2"><?php echo $error; ?></div>
 		<?php } elseif ( ! empty( $message ) ) { ?>
@@ -1821,6 +1822,7 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 				<?php if ( 0 < sizeof( $available_fields ) ) { ?>
 					<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'shortcode' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=shortcode"><?php _e( 'Shortcode settings', 'profile-extra-fields' ); ?></a>
 				<?php } ?>
+				<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'custom_code' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=custom_code"><?php _e( 'Custom code', 'profile-extra-fields' ); ?></a>
 			</h2>
 			<?php /* add new/edit entry  */
 			if ( isset( $_POST['prflxtrflds_new_entry'] ) || isset( $_GET['edit'] ) ) {
@@ -1866,7 +1868,7 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 			<?php } else if ( isset( $_GET['tab-action'] ) && 'shortcode' == $_GET['tab-action'] && 0 < sizeof( $available_fields ) ) {
 				bws_show_settings_notice();
 				if ( ! empty( $message ) ) { ?>
-					<div class="updated fade"><p><?php echo $message; ?></p></div>
+					<div class="updated fade below-h2"><p><?php echo $message; ?></p></div>
 				<?php }
 				if ( isset( $_REQUEST['bws_restore_default'] ) && check_admin_referer( $plugin_basename, 'bws_settings_nonce_name' ) ) {
 					bws_form_restore_default_confirm( $plugin_basename );
@@ -1950,6 +1952,8 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 					</form>
 					<?php bws_form_restore_default_settings( $plugin_basename );
 				}
+			} else {
+				bws_custom_code_tab();
 			}
 			bws_plugin_reviews_block( $prflxtrflds_plugin_info['Name'], 'profile-extra-fields' ); ?>
 		</div><!--.wrap-->
@@ -2762,6 +2766,9 @@ if ( ! function_exists ( 'prflxtrflds_admin_notices' ) ) {
 		if ( 'plugins.php' == $hook_suffix && ! is_network_admin() ) {
 			bws_plugin_banner_to_settings( $prflxtrflds_plugin_info, 'prflxtrflds_options', 'profile-extra-fields', 'admin.php?page=profile-extra-fields.php' );
 		}
+		if ( isset( $_GET['page'] ) && 'profile-extra-fields.php' == $_GET['page'] ) {
+			bws_plugin_suggest_feature_banner( $prflxtrflds_plugin_info, 'prflxtrflds_options', 'profile-extra-fields' );
+		}
 	}
 }
 
@@ -2783,6 +2790,9 @@ if ( ! function_exists('prflxtrflds_load_script') ) {
 				'prflxtrflds_nonce' 	=> wp_create_nonce( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' )
 			);
 			wp_localize_script( 'prflxtrflds_script', 'prflxtrflds_ajax', $script_vars );
+
+			if ( isset( $_GET['tab-action'] ) && 'custom_code' == $_GET['tab-action'] )
+				bws_plugins_include_codemirror();
 		}
 		if ( 'user-edit.php' == $hook_suffix || 'profile.php' == $hook_suffix ) {
 			wp_enqueue_style( 'jquery.datetimepicker.css', plugins_url( 'css/jquery.datetimepicker.css', __FILE__ ) );
@@ -2828,6 +2838,10 @@ if ( ! function_exists( 'prflxtrflds_uninstall' ) ) {
 		} else {
 			delete_option( 'prflxtrflds_options' );
 		}
+
+		require_once( dirname( __FILE__ ) . '/bws_menu/bws_include.php' );
+		bws_include_init( plugin_basename( __FILE__ ) );
+		bws_delete_plugin( plugin_basename( __FILE__ ) );
 	}
 }
 
