@@ -25,5 +25,15 @@
 				}
 			});
 		}
+		
+		if ( $( '.prflxtrflds_phone' ).length > 0 && $.fn.inputmask ) {
+			$.each( $( '.prflxtrflds_phone' ), function() {
+				var pattern = $( this ).next( 'input[type="hidden"]' ).val();
+				if ( pattern ) {
+					pattern = pattern.replace( /\*/g, "9" );
+					$( this ).inputmask( { "mask": pattern } );
+				}
+			});
+		}
 	});
 })( jQuery );

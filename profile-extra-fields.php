@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: Profile Extra Fields by BestWebSoft
-Plugin URI: http://bestwebsoft.com/products/
-Description: Plugin Profile Extra Fields add extra data to user profile page.
+Plugin URI: http://bestwebsoft.com/products/profile-extra-fields/
+Description: Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.0.3
+Version: 1.0.4
 Author URI: http://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -28,14 +28,14 @@ License: GPLv3 or later
 */
 
 /**
-* Add Wordpress page 'bws_plugins' and sub-page of this plugin to admin-panel.
+* Add Wordpress page 'bws_panel' and sub-page of this plugin to admin-panel.
 * @return void
 */
 /*add settings page in bws menu*/
 if ( ! function_exists( 'prflxtrflds_admin_menu' ) ) {
 	function prflxtrflds_admin_menu() {
 		bws_general_menu();
-		$hook = add_submenu_page( 'bws_plugins', __( 'Profile Extra Fields Settings', 'profile-extra-fields' ), 'Profile Extra Fields', 'manage_options', 'profile-extra-fields.php', 'prflxtrflds_settings_page' );
+		$hook = add_submenu_page( 'bws_panel', __( 'Profile Extra Fields Settings', 'profile-extra-fields' ), 'Profile Extra Fields', 'manage_options', 'profile-extra-fields.php', 'prflxtrflds_settings_page' );
 		add_action( "load-$hook", 'prflxtrflds_screen_options' );
 	}
 }
@@ -65,7 +65,7 @@ if ( ! function_exists ( 'prflxtrflds_init' ) ) {
 			$prflxtrflds_plugin_info = get_plugin_data( __FILE__ );
 		}
 		/* Function check if plugin is compatible with current WP version */
-		bws_wp_min_version_check( plugin_basename( __FILE__ ), $prflxtrflds_plugin_info, '3.8', '3.8' );
+		bws_wp_min_version_check( plugin_basename( __FILE__ ), $prflxtrflds_plugin_info, '3.8' );
 
 		/* Call register settings function */
 		if ( ! is_admin() || ( isset( $_GET['page'] ) && 'profile-extra-fields.php' == $_GET['page'] ) )
@@ -78,7 +78,7 @@ if ( ! function_exists ( 'prflxtrflds_admin_init' ) ) {
 	function prflxtrflds_admin_init() {
 		global $bws_plugin_info, $prflxtrflds_plugin_info, $bws_shortcode_list;
 		/* Add variable for bws_menu */
-		if ( ! isset( $bws_plugin_info ) || empty( $bws_plugin_info ) )
+		if ( empty( $bws_plugin_info ) )
 			$bws_plugin_info = array( 'id' => '300', 'version' => $prflxtrflds_plugin_info["Version"] );
 
 		/* add gallery to global $bws_shortcode_list  */
@@ -131,9 +131,13 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 			);
 		}
 		/* Db version in plugin */
-		$prflxtrflds_db_version = '1.1';
+		$db_version = '1.2';
 		/* Create array with default options */
 		$prflxtrflds_option_defaults = array(
+			'plugin_option_version'		=> $prflxtrflds_plugin_info["Version"],
+			'plugin_db_version'			=> $db_version,
+			'display_settings_notice'	=> 1,
+			'suggest_feature_banner'	=> 1,
 			'sort_sequence'				=> 'ASC',
 			'available_fields'			=> array(),
 			'available_values'			=> array(),
@@ -141,11 +145,7 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 			'show_id'	            	=> 1,
 			'header_table'          	=> 'top',
 			'empty_value'				=> __( 'Field not filled', 'profile-extra-fields' ),
-			'not_available_message'		=> __( 'N/A', 'profile-extra-fields' ),
-			'plugin_db_version'			=> $prflxtrflds_db_version,
-			'plugin_option_version'		=> $prflxtrflds_plugin_info["Version"],
-			'display_settings_notice'	=> 1,
-			'suggest_feature_banner'	=> 1
+			'not_available_message'		=> __( 'N/A', 'profile-extra-fields' ),		
 		);
 		/* In prflxtrflds_settings_page add hidden field to save values after option update (!) */
 		if ( ! get_option( 'prflxtrflds_options' ) ) {
@@ -174,9 +174,9 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 			$update_option = true;
 		}
 		/* Update database */
-		if ( ! isset( $prflxtrflds_options['plugin_db_version'] ) || $prflxtrflds_options['plugin_db_version'] != $prflxtrflds_db_version ) {
+		if ( ! isset( $prflxtrflds_options['plugin_db_version'] ) || $prflxtrflds_options['plugin_db_version'] != $db_version ) {
 			prflxtrflds_update_table();
-			$prflxtrflds_options['plugin_db_version'] = $prflxtrflds_db_version;
+			$prflxtrflds_options['plugin_db_version'] = $db_version;
 			$update_option = true;
 		}
 		/* If option was updated */
@@ -192,33 +192,32 @@ if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
 		/* require db Delta */
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		/* create table for roles types */
-		$sql = "CREATE TABLE " . $wpdb->base_prefix . "prflxtrflds_roles_id (
-				role_id bigint(20) NOT NULL AUTO_INCREMENT,
-				role text NOT NULL COLLATE utf8_general_ci,
-				UNIQUE KEY  (role_id)
-				);";
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_roles_id` (
+			`role_id` bigint(20) NOT NULL AUTO_INCREMENT,
+			`role` VARCHAR(255) NOT NULL COLLATE utf8_general_ci,
+			`role_name` VARCHAR(255) NOT NULL COLLATE utf8_general_ci,
+			UNIQUE KEY (role_id)
+		);";
 		/* call dbDelta */
 		dbDelta( $sql );
 
 		/* Create roles id */
-		if ( function_exists( 'prflxtrflds_update_roles_id' ) ) {
+		if ( function_exists( 'prflxtrflds_update_roles_id' ) )
 			prflxtrflds_update_roles_id();
-		}
 
 		/* create table for conformity user_id and user role id */
-		$sql = "CREATE TABLE " . $wpdb->base_prefix . "prflxtrflds_user_roles (
-			user_id bigint(20) NOT NULL,
-			role_id bigint(20) NOT NULL,
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_user_roles` (
+			`user_id` bigint(20) NOT NULL,
+			`role_id` bigint(20) NOT NULL,
 			UNIQUE KEY (user_id)
-			);";
+		);";
 		/* call dbDelta */
 		dbDelta( $sql );
 		/* Create roles id */
-		if ( function_exists( 'prflxtrflds_update_user_roles' ) ) {
+		if ( function_exists( 'prflxtrflds_update_user_roles' ) )
 			prflxtrflds_update_user_roles();
-		}
 
-		$sql = "CREATE TABLE " . $wpdb->base_prefix . "prflxtrflds_fields_id (
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_fields_id` (
 			`field_id` bigint(20) NOT NULL AUTO_INCREMENT,
 			`field_name` text NOT NULL COLLATE utf8_general_ci,
 			`required` int(1) NOT NULL DEFAULT '0',
@@ -232,34 +231,34 @@ if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
 		dbDelta( $sql );
 
 		/* create table conformity roles id with fields id */
-		$sql = "CREATE TABLE `" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields` (
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields` (
 			`role_id` bigint(20) NOT NULL DEFAULT '0',
 			`field_id` bigint(20) NOT NULL DEFAULT '0',
 			`field_order` bigint(20) NOT NULL DEFAULT '0',
 			UNIQUE KEY (role_id, field_id)
-			);";
+		);";
 		/* call dbDelta */
 		dbDelta( $sql );
 
 		/* create table conformity field id with available value */
-		$sql = "CREATE TABLE `" . $wpdb->base_prefix . "prflxtrflds_field_values` (
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_field_values` (
 			`value_id` bigint(20) NOT NULL AUTO_INCREMENT,
 			`field_id` bigint(20) NOT NULL DEFAULT '0',
-			`value_name` text NOT NULL COLLATE utf8_general_ci,
+			`value_name` VARCHAR(255) NOT NULL COLLATE utf8_general_ci,
 			`order` bigint(20) NOT NULL DEFAULT '0',
 			UNIQUE KEY (value_id)
-			);";
+		);";
 		/* call dbDelta */
 		dbDelta( $sql );
 
 		/* create table conformity field id with available value */
-		$sql = "CREATE TABLE " . $wpdb->base_prefix . "prflxtrflds_user_field_data (
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->base_prefix . "prflxtrflds_user_field_data` (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			field_id bigint(20) NOT NULL,
 			user_id bigint(20) NOT NULL,
-			user_value text NOT NULL COLLATE utf8_general_ci,
+			user_value VARCHAR(255) NOT NULL COLLATE utf8_general_ci,
 			UNIQUE KEY (id)
-			);";
+		);";
 		/* call dbDelta */
 		dbDelta( $sql );	
 	}
@@ -267,50 +266,35 @@ if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
 
 if ( ! function_exists( 'prflxtrflds_update_table' ) ) {
 	function prflxtrflds_update_table() {
-		global $wpdb;
-		/* v1.0.1 - delete 'prflxtrflds_textfield' */		
-		$column_exists = $wpdb->query( "SHOW COLUMNS FROM `" . $wpdb->base_prefix . "prflxtrflds_fields_id` LIKE 'field_type_id'" );
+		global $wpdb, $wp_roles;
+		/**
+		 * 1.0.4
+		 * @todo remove after 01.03.2017
+		 */
+		$column_exists = $wpdb->query( "SHOW COLUMNS FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` LIKE 'role_name'" );
 		if ( 0 == $column_exists ) {
-			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_fields_id` ADD `field_type_id` bigint(20);" );
+			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_roles_id` ADD `role_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL;" );
 
-			$wpdb->query( "
-				UPDATE `" . $wpdb->base_prefix . "prflxtrflds_field_types`, `" . $wpdb->base_prefix . "prflxtrflds_fields_id`
-				SET    `" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`field_type_id` = `" . $wpdb->base_prefix . "prflxtrflds_field_types`.`field_type_id`
-				WHERE  `" . $wpdb->base_prefix . "prflxtrflds_fields_id`.field_id = `" . $wpdb->base_prefix . "prflxtrflds_field_types`.field_id" );
-
-			$wpdb->query( "DROP TABLE " . $wpdb->base_prefix . "prflxtrflds_field_types" );
+			$all_roles = $wp_roles->roles;
+			if ( ! empty( $all_roles ) ) {			
+				/* Get role name from array */
+				foreach ( $all_roles as $role_key => $role ) {
+					/* Check role for existing in plugin table */
+					if ( $role_id = $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` = %s LIMIT 1", $role['name'] ) ) ) {
+						/* Create field if not exist */
+						$wpdb->update(
+							$wpdb->base_prefix . "prflxtrflds_roles_id",
+							array(
+								'role' 		=> $role_key,
+								'role_name' => $role['name']
+							),
+							array( 'role' => $role['name'] )
+						);
+					}
+				}
+				prflxtrflds_update_user_roles();
+			}
 		}
-
-		$column_exists = $wpdb->query( "SHOW COLUMNS FROM `" . $wpdb->base_prefix . "prflxtrflds_user_field_data` LIKE 'field_id'" );
-		if ( 0 == $column_exists ) {
-			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_user_field_data` ADD `field_id` bigint(20);" );
-
-			$wpdb->query( "
-				UPDATE `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`, `" . $wpdb->base_prefix . "prflxtrflds_field_values` 
-				SET `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`.`field_id` = `" . $wpdb->base_prefix . "prflxtrflds_field_values`.`field_id`					
-				WHERE  `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`.`value_id` = `" . $wpdb->base_prefix . "prflxtrflds_field_values`.`value_id`" );
-
-			$wpdb->delete(
-				$wpdb->base_prefix . "prflxtrflds_field_values",
-				array(
-					'value_name'	=> 'prflxtrflds_textfield'
-				)
-			);
-
-			$wpdb->query( "
-				UPDATE `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`, `" . $wpdb->base_prefix . "prflxtrflds_field_values` 
-				SET `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`.`user_value` = `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`.`value_id`				
-				WHERE  `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`.`value_id` = `" . $wpdb->base_prefix . "prflxtrflds_field_values`.`value_id`" );			
-
-			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_user_field_data` DROP `value_id`;" );
-			
-		} 
-
-		$column_exists = $wpdb->query( "SHOW COLUMNS FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` LIKE 'order'" );
-		if ( 0 == $column_exists ) {
-			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_field_values` ADD `order` bigint(20) DEFAULT '0';" );
-		}
-		/* v1.0.1 - end */	
 	}
 }
 
@@ -322,14 +306,15 @@ if ( ! function_exists( 'prflxtrflds_update_roles_id' ) ) {
 		$all_roles = $wp_roles->roles;
 		if ( ! empty( $all_roles ) ) {			
 			/* Get role name from array */
-			foreach ( $all_roles as $role ) {
+			foreach ( $all_roles as $role_key => $role ) {
 				/* Check role for existing in plugin table */
-				if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` = %s LIMIT 1", $role['name'] ) ) ) {
+				if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` = %s LIMIT 1", $role_key ) ) ) {
 					/* Create field if not exist */
 					$wpdb->insert(
 						$wpdb->base_prefix . "prflxtrflds_roles_id",
 						array(
-							'role' => $role['name']
+							'role' 		=> $role_key,
+							'role_name' => $role['name']
 						)
 					);
 				}
@@ -343,49 +328,50 @@ if ( ! function_exists( 'prflxtrflds_update_user_roles' ) ) {
 	function prflxtrflds_update_user_roles( $user_id = NULL, $role = NULL ) {
 		global $wpdb;
 		/* First, update roles id */
-		if ( function_exists( 'prflxtrflds_update_roles_id' ) ) {
+		if ( function_exists( 'prflxtrflds_update_roles_id' ) )
 			prflxtrflds_update_roles_id();
-		}
-		$table_user_roles 	= $wpdb->base_prefix . "prflxtrflds_user_roles";
-		$table_role_id 		= $wpdb->base_prefix . "prflxtrflds_roles_id";
-		/* Get role id by name */
-		$get_role_id_sql = "SELECT `role_id` FROM " . $table_role_id . " WHERE `role`=%s LIMIT 1";
+
 		if ( NULL != $user_id && ( NULL == $role || ! is_string( $role ) ) ) {
 			/* Get role if not allowed */
 			require_once( ABSPATH . 'wp-includes/pluggable.php' );
 			$user_data = get_userdata( $user_id );
 			/* Get user role by id */
-			if ( isset( $user_data ) ) {
+			if ( isset( $user_data ) )
 				$role = implode( ', ', $user_data->roles ) ;
-			}
 		}
+
 		if ( ! isset( $role ) ) {
 			if ( $users = get_users() ) {
 				/* If no selected roles, update roles for all users */
 				foreach ( $users as $user ) {
-					/* Role stored in array, get */
-					$role = implode( ',', $user->roles );
-					$role_id = $wpdb->get_var( $wpdb->prepare( $get_role_id_sql, $role ) );
-					/* insert or update value  */
-					$wpdb->replace(
-						$table_user_roles,
-						array(
-							'user_id' => $user->ID,
-							'role_id' => $role_id,
-						)
-					);
+					foreach ( $user->roles as $role_key ) {
+						/* Role stored in array, get */
+						$role_id = $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role`= %s LIMIT 1", $role_key ) );
+						if ( $role_id ) {
+							/* insert value  */
+							$wpdb->replace(
+								$wpdb->base_prefix . "prflxtrflds_user_roles",
+								array(
+									'user_id' => $user->ID,
+									'role_id' => $role_id,
+								)
+							);
+						}					
+					}
 				}
 			}
 		} else {
 			/* If role select, update role only for this user */
-			$role_id = $wpdb->get_var( $wpdb->prepare( $get_role_id_sql, $role ) );
-			$wpdb->replace(
-				$table_user_roles,
-				array(
-					'user_id' => $user_id,
-					'role_id' => $role_id
-				)
-			);
+			$role_id = $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role`=%s LIMIT 1", $role ) );
+			if ( $role_id ) {
+				$wpdb->replace(
+					$wpdb->base_prefix . "prflxtrflds_user_roles",
+					array(
+						'user_id' => $user_id,
+						'role_id' => $role_id
+					)
+				);
+			}
 		}
 	}
 }
@@ -724,7 +710,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 		/* Update roles id */
 		prflxtrflds_update_roles_id();
 		/* Get all avaliable roles */
-		$all_roles = $wpdb->get_results( "SELECT `role_id`, `role` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id`" ); ?>
+		$all_roles = $wpdb->get_results( "SELECT * FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id`" ); ?>
 		<h2><?php echo $name_of_page; ?></h2>		
 		<?php if ( ! empty( $error ) ) { ?>
 			<div class="error below-h2"><?php echo $error; ?></div>
@@ -846,7 +832,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 						<th><?php _e( 'Available for roles', 'profile-extra-fields' ); ?></th>
 						<td><fieldset>
 							<div id="prflxtrflds-select-roles">
-								<?php if ( $all_roles ){ ?>
+								<?php if ( $all_roles ) { ?>
 									<div id="prflxtrflds-div-select-all">
 										<input type="checkbox" name="prflxtrflds-select-all" id="prflxtrflds-select-all" />
 										<label for="prflxtrflds-select-all"><b><?php _e( 'Select all', 'profile-extra-fields' ); ?></b></label>
@@ -855,7 +841,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 									<input type="hidden" name="prflxtrflds_roles[]" id="0" value="0" />
 									<?php foreach ( $all_roles as $role ) { ?>
 										<input type="checkbox" name="prflxtrflds_roles[]" id="<?php echo $role->role_id; ?>" value="<?php echo $role->role_id; ?>"<?php if ( isset( $checked_roles ) ) checked( in_array( $role->role_id, $checked_roles ), true ); ?> />
-										<label for="<?php echo $role->role_id; ?>"><?php echo translate_user_role( $role->role ); ?></label>
+										<label for="<?php echo $role->role_id; ?>"><?php echo translate_user_role( $role->role_name ); ?></label>
 										<br />
 									<?php }
 								} ?>
@@ -865,21 +851,21 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					<tr>
 						<th><?php _e( 'Required', 'profile-extra-fields' ); ?></th>
 						<td>
-							<input type="checkbox" id="prflxtrflds-required" name="prflxtrflds_required" value="1" <?php if ( isset( $field_required ) ) { checked( $field_required, "1" ); } ?> />
+							<input type="checkbox" id="prflxtrflds-required" name="prflxtrflds_required" value="1" <?php if ( isset( $field_required ) ) checked( $field_required, "1" ); ?> />
 							<label for="prflxtrflds-required"><?php _e( 'Mark this field as required', 'profile-extra-fields' ); ?></label>
 						</td>
 					</tr>
 					<tr>
 						<th><?php _e( 'Show by default in User data', 'profile-extra-fields' ); ?></th>
 						<td>
-							<input type="checkbox" id="prflxtrflds-show-default" name="prflxtrflds_show_default" value="1" <?php if ( isset( $field_show_default ) ) { checked( $field_show_default, "1" ); } ?> />
+							<input type="checkbox" id="prflxtrflds-show-default" name="prflxtrflds_show_default" value="1" <?php if ( isset( $field_show_default ) ) checked( $field_show_default, "1" ); ?> />
 							<label for="prflxtrflds-show-default"><?php _e( 'Show this field by default in User data. You can change it using screen options', 'profile-extra-fields' ); ?></label>
 						</td>
 					</tr>
 					<tr>
 						<th><?php _e( 'Show always in User data', 'profile-extra-fields' ); ?></th>
 						<td>
-							<input type="checkbox" id="prflxtrflds-show-always" name="prflxtrflds_show_always" value="1" <?php if ( isset( $field_show_always ) ) { checked( $field_show_always, "1" ); } ?> />
+							<input type="checkbox" id="prflxtrflds-show-always" name="prflxtrflds_show_always" value="1" <?php if ( isset( $field_show_always ) ) checked( $field_show_always, "1" ); ?> />
 							<label for="prflxtrflds-show-always"><?php _e( 'Show this field in User data on any display. You can change it using screen options', 'profile-extra-fields' ); ?></label>
 						</td>
 					</tr>
@@ -1029,17 +1015,13 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				$views['all'] = "<a href='" . $all_url . "' " . $class . " >" . __( 'All', 'profile-extra-fields' ) . "</a>";
 
 				/* Get actual users data */
-				$roles  = $wpdb->get_results( "SELECT * FROM " . $wpdb->base_prefix . "prflxtrflds_roles_id" );
+				$roles = $wpdb->get_results( "SELECT * FROM " . $wpdb->base_prefix . "prflxtrflds_roles_id" );
 				if ( $roles ) {
 					foreach ( $roles as $role ) {
 						/* Create link */
 						$role_url = htmlspecialchars( add_query_arg( 'role_id', $role->role_id ) );
-						if ( $role->role_id == $current ) {
-							$class = 'class="current"';
-						} else {
-							$class = '';
-						}
-						$views[ $role->role_id ] = "<a href='" . $role_url . "' " . $class . " >" . $role->role . "</a>";
+						$class = ( $role->role_id == $current ) ? ' class="current"' : '';
+						$views[ $role->role_id ] = "<a href='" . $role_url . "'" . $class . ">" . translate_user_role( $role->role_name ) . "</a>";
 					}
 				}
 				return $views;
@@ -1048,11 +1030,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			function extra_tablenav( $which ) {
 				if ( "top" == $which ) {
 					global $wpdb;
-					if ( ! empty( $_GET['prflxtrflds_role_id'] ) ) {
-						$current = $_GET['prflxtrflds_role_id'];
-					} else {
-						$current = 'all';
-					}
+					$current = ( ! empty( $_GET['prflxtrflds_role_id'] ) ) ? $_GET['prflxtrflds_role_id'] : 'all';
 					/* Get actual users data */
 					$roles = $wpdb->get_results( "SELECT * FROM " . $wpdb->base_prefix . "prflxtrflds_roles_id" ); ?>
 					<div class="alignleft prflxtrflds-filter actions bulkactions">
@@ -1062,7 +1040,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 								<?php if ( ! empty( $roles ) ) {
 									/* Create select with field types */
 									foreach ( $roles as $role ) { ?>
-										<option value="<?php echo $role->role_id; ?>"<?php selected( $current, $role->role_id ); ?>><?php echo translate_user_role( $role->role ); ?></option>
+										<option value="<?php echo $role->role_id; ?>"<?php selected( $current, $role->role_id ); ?>><?php echo translate_user_role( $role->role_name ); ?></option>
 									<?php }
 								} ?>
 							</select>
@@ -1158,7 +1136,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 						$table_fields_id . ".`required`, " .
 						$table_fields_id . ".`show_default`, " .
 						$table_fields_id . ".`show_always`, " .
-						$table_roles_id . ".`role`, " .
+						$table_roles_id . ".`role_name`, " .
 						$table_roles_and_fields . ".`role_id`, " .
 						$table_fields_id . ".`field_type_id` " .
 						" FROM " . $table_fields_id .
@@ -1185,15 +1163,15 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 						$fields_to_display[ $i ]['show_always']     = $one_field['show_always'];
 						$fields_to_display[ $i ]['description'] 	= $one_field['description'];
 						$fields_to_display[ $i ]['field_type_id'] 	= $one_field['field_type_id'];
-						$fields_to_display[ $i ]['roles'] 			= translate_user_role( $one_field['role'] );
+						$fields_to_display[ $i ]['roles'] 			= translate_user_role( $one_field['role_name'] );
 						$fields_to_display[ $i ]['field_order'] 	= $one_field['field_order'];
 						$prev_id = $id;
 					} else {
 						/* If is old id ( new role ), add new role */
 						if ( isset( $fields_to_display[ $i ]['roles'] ) ) {
-							$fields_to_display[ $i ]['roles'] .= ', ' . translate_user_role( $one_field['role'] );
+							$fields_to_display[ $i ]['roles'] .= ', ' . translate_user_role( $one_field['role_name'] );
 						} else {
-							$fields_to_display[ $i ]['roles'] = translate_user_role( $one_field['role'] );
+							$fields_to_display[ $i ]['roles'] = translate_user_role( $one_field['role_name'] );
 						}
 						$prev_id = $id;
 					}
@@ -1320,10 +1298,10 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				/* Add columns from database to default columns */
 				$columns = $columns + $db_columns;
 				/* Get hidden columns from option */
-				$hidden_columns = get_user_option( 'manage' . 'bws-plugins_page_profile-extra-fieldsuserdata' . 'columnshidden' );
+				$hidden_columns = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsuserdata' . 'columnshidden' );
 				if ( isset( $hidden_columns ) && is_array( $hidden_columns ) ) {
 					/* If hidden columns exist, user has setting for hidden column */
-					$all_columns = get_user_option( 'manage' . 'bws-plugins_page_profile-extra-fieldsuserdata' . 'allcolumns' );
+					$all_columns = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsuserdata' . 'allcolumns' );
 					/* Get all colums ( for last user visit ) */
 					if ( isset( $all_columns ) && is_array( $all_columns ) ) {
 						/* create list of new columns */
@@ -1407,7 +1385,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				$actions = array(
 					'edit_user'	=> '<span><a href="' . sprintf( 'user-edit.php?user_id=%s&amp;wp_http_referer=%s', $item['user_id'], urlencode( admin_url( 'admin.php?page=profile-extra-fields.php&tab-action=userdata' ) ) ) . '">' . __( 'Edit user', 'profile-extra-fields' ) . '</a></span>',
 				);
-				return sprintf( '%s %s', $item['name'] , $this->row_actions( $actions ) );
+				return sprintf( '%s %s', $item['name'] . '<div class="user_id">' . __( 'User ID', 'profile-extra-fields' ) . ': ' . $item['user_id'] . '</div>', $this->row_actions( $actions ) );
 			}
 
 			function get_sortable_columns() {
@@ -1423,20 +1401,31 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			}
 
 			function extra_tablenav( $which ) {
+				global $wp_version;
 				/* Extra tablenav. Create filter. */
-				$current_role = ( ! empty( $_GET['prflxtrflds_role'] ) ) ? $_GET['prflxtrflds_role'] : 'all';
 				if ( "top" == $which ) {
 					$roles = get_editable_roles(); ?>
 					<div class="alignleft prflxtrflds-filter actions bulkactions">
 						<label for="prflxtrflds-role">
-							<select id="prflxtrflds-role" name="prflxtrflds_role">
-								<option value="all" <?php selected( $current_role, "all" ); ?>><?php _e( 'All roles', 'profile-extra-fields' ); ?></option>
-								<?php if ( isset( $roles ) ) {
-									foreach ( $roles as $role ) { /* Create select with field types */ ?>
-										<option value="<?php echo $role['name']; ?>"<?php selected( $current_role, $role['name'] ); ?>><?php echo translate_user_role( $role['name'] ); ?></option>
-									<?php }
-								} ?>
-							</select>
+							<?php if ( $wp_version >= '4.4' ) { ?>
+								<select id="prflxtrflds-role" name="prflxtrflds_role[]" multiple="multiple">
+									<?php if ( isset( $roles ) ) {
+										foreach ( $roles as $key => $role ) { ?>
+											<option value="<?php echo $key; ?>" <?php if ( empty( $_GET['prflxtrflds_role'] ) || in_array( $key, $_GET['prflxtrflds_role'] ) ) echo 'selected'; ?>><?php echo translate_user_role( $role['name'] ); ?></option>
+										<?php }
+									} ?>
+								</select>
+							<?php } else { 
+								$current_role = ( ! empty( $_GET['prflxtrflds_role'] ) ) ? $_GET['prflxtrflds_role'] : 'all'; ?>
+								<select id="prflxtrflds-role" name="prflxtrflds_role">
+									<option value="all" <?php selected( $current_role, "all" ); ?>><?php _e( 'All roles', 'profile-extra-fields' ); ?></option>
+									<?php if ( isset( $roles ) ) {
+										foreach ( $roles as $key => $role ) { ?>
+											<option value="<?php echo $key; ?>"<?php selected( $current_role, $key ); ?>><?php echo translate_user_role( $role['name'] ); ?></option>
+										<?php }
+									} ?>
+								</select>
+							<?php } ?>
 						</label>
 						<input type="submit" class="button" name="prflxtrflds_apply_filter" value="<?php _e( 'Filter', 'profile-extra-fields' ); ?>" />
 					</div><!--.alignleft prflxtrflds-filter-->
@@ -1444,11 +1433,10 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			}
 
 			function prepare_items() {
-				global $wpdb, $role;
+				global $wpdb, $wp_version;
 				$userdata = array();
 				$i = 0;
 				$search = isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
-				$role = ( isset( $_REQUEST['prflxtrflds_role'] ) && '' != $_GET['prflxtrflds_role'] && 'all' != $_GET['prflxtrflds_role'] ) ? $_GET['prflxtrflds_role'] : '';
 
 				$users_per_page = $this->get_items_per_page( 'fields_per_page', 20 );
 				$paged = $this->get_pagenum();
@@ -1456,9 +1444,14 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				$args = array(
 					'number' => $users_per_page,
 					'offset' => ( $paged - 1 ) * $users_per_page,
-					'role'   => $role,
 					'fields' => 'all_with_meta'
 				);
+				if ( $wp_version >= '4.4' ) {
+					if ( isset( $_REQUEST['prflxtrflds_role'] ) )
+						$args['role__in'] = (array)$_REQUEST['prflxtrflds_role'];
+				} elseif ( ! empty( $_REQUEST['prflxtrflds_role'] ) && 'all' != $_GET['prflxtrflds_role'] ) {
+					$args['role'] = $_GET['prflxtrflds_role'];
+				}				
 
 				if ( isset( $_REQUEST['orderby'] ) )
 					$args['orderby'] = $_REQUEST['orderby'];
@@ -1524,7 +1517,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				if ( ! empty( $search ) && isset( $userdata ) ) {
 					$not_empty_keys = array();
 					/* Get all columns */
-					$hidden_columns = get_user_option( 'manage' . 'bws-plugins_page_profile-extra-fieldsuserdata' . 'columnshidden' );
+					$hidden_columns = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsuserdata' . 'columnshidden' );
 					if ( empty( $hidden_columns ) ) {
 						$hidden_columns = array();
 					}
@@ -1555,7 +1548,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				}
 				/* Order by firstname - lastname */
 				if ( isset( $_GET['orderby'] ) && 'name' == $_GET['orderby'] ) {
-					if (  'desc' == $_GET['order'] ) {
+					if ( 'desc' == $_GET['order'] ) {
 						function prflxtrflds_cmp( $first, $second ) {
 							/* Permitted names of sort check in switch */
 							return strcmp( $first['disp_name'], $second['disp_name'] ) * -1;	/* DESC */
@@ -1570,7 +1563,11 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				}
 
 				/* Get info from screen options */
-				$this->_column_headers = $this->get_column_info();
+				$columns = $this->get_columns();
+				$hidden = array();
+				$sortable = $this->get_sortable_columns();
+				$primary = 'name';
+				$this->_column_headers = array( $columns, $hidden, $sortable, $primary );
 				$this->items = $userdata;
 			}
 
@@ -1586,7 +1583,6 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 						return $item[ $column_name ];
 					default:
 						/* Show array */
-						/*return print_r( $item, true ); For debug */
 						if ( isset( $item[ $column_name ] ) ) {
 							return $item[ $column_name ];
 						} else {
@@ -1996,18 +1992,13 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 			$user_roles = explode( ",", $param['user_role'] );
 			if ( is_array( $user_roles ) ) {
 				foreach ( $user_roles as $role ) {
-					$role = str_replace( '_', ' ', stripslashes( $role ) );
 					/* Check for exist user role */
-					if ( $role_id = $wpdb->get_var( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` LIKE '%" . $role . "%'" ) ) { /* $wpdb->prepare with % not work */
+					if ( $role_id = $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` = %s", $role ) ) ) {
 						/* Get user ids by role */
 						$ids_for_role = $wpdb->get_col( $wpdb->prepare( "SELECT `user_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_user_roles` WHERE `role_id`=%d", $role_id ) );
 						if ( ! empty( $ids_for_role ) ) {
 							$user_ids = array_merge( $user_ids, $ids_for_role );
 						}
-					} else {
-						/* If role not exists, generate error */
-						$error_message .= sprintf( __( 'Role with entered name ( %s ) is not exist! If you entered the name correctly, try enter data without whitespaces in English.', 'profile-extra-fields' ), esc_html( $role ) );
-						break;
 					}
 				}
 				/* If not exist users for choisen role. User ids is empty and select all users */
@@ -2283,22 +2274,23 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 		$user_info = get_userdata( $userid ); /* get userinfo by id */
 		$current_role = implode( "', '", $user_info->roles );
 
-		/* All need tables */
-		$table_fields_id 		= $wpdb->base_prefix . 'prflxtrflds_fields_id';
-		$table_roles_id 		= $wpdb->base_prefix . 'prflxtrflds_roles_id';
-		$table_roles_and_fields = $wpdb->base_prefix . 'prflxtrflds_roles_and_fields';
-
-		$sql_all_entry = "SELECT " . $table_fields_id . ".`field_id`, " .
-			$table_fields_id . ".`field_name`, " .
-			$table_fields_id . ".`required`, " .
-			$table_fields_id . ".`description`, " .
-			$table_fields_id . ".`field_type_id`, " .
-			$table_roles_and_fields . ".`field_order`
-			FROM " . $table_fields_id . ", " . $table_roles_and_fields . ", " . $table_roles_id .
-			" WHERE " . $table_roles_and_fields . ".`role_id`=" . $table_roles_id . ".`role_id`" .
-					" AND " . $table_roles_and_fields . ".`field_id`=" . $table_fields_id . ".`field_id`" .
-					" AND " . $table_roles_id . ".`role` IN ( '" . $current_role . "' ) 
-						ORDER BY " . $table_roles_and_fields . ".`field_order` ASC, " . $table_roles_and_fields . ".`field_id` ASC";
+		$sql_all_entry = "SELECT 
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`field_id`,
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`field_name`,
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`required`,
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`description`,
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`field_type_id`,
+				`" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`.`field_order`
+			FROM 
+				`" . $wpdb->base_prefix . "prflxtrflds_fields_id`, 
+				`" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`,
+				`" . $wpdb->base_prefix . "prflxtrflds_roles_id`
+			WHERE 
+				`" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`.`role_id`= `" . $wpdb->base_prefix . "prflxtrflds_roles_id`.`role_id`" . " 
+				AND `" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`.`field_id`=`" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`field_id`" . " 
+				AND `" . $wpdb->base_prefix . "prflxtrflds_roles_id`.`role` IN ( '" . $current_role . "' ) 
+			ORDER BY `" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`.`field_order` ASC,
+					`" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields`.`field_id` ASC";
 
 		$all_entry = $wpdb->get_results( $sql_all_entry, ARRAY_A );
 		if ( ! $all_entry ) {
@@ -2413,7 +2405,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 										<input type="hidden" name="prflxtrflds_user_field_datetime[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $date_and_time['date'] . ' ' . $date_and_time['time']; ?>">
 									<?php break;
 								case '9': ?>
-										<input type="text" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>">
+										<input type="text" class="prflxtrflds_phone" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>">
 										<input type="hidden" name="prflxtrflds_user_field_pattern[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 									<?php break;
 							}
@@ -2592,10 +2584,10 @@ if ( ! function_exists( 'prflxtrflds_get_roles' ) ) {
 		global $wpdb;
 		/* Check ajax. Function fie if error */
 		check_ajax_referer( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' );
-		$roles = $wpdb->get_results( "SELECT `role` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id`", ARRAY_A );
+		$roles = $wpdb->get_results( "SELECT `role`, `role_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id`", ARRAY_A );
 		if ( ! empty( $roles ) ) {
 			foreach ( $roles as $role ) { ?>
-				<option value="<?php echo strtolower( $role['role'] ); ?>"><?php echo $role['role']; ?></option>
+				<option value="<?php echo $role['role']; ?>"><?php echo $role['role_name']; ?></option>
 			<?php }
 		}
 		wp_die();
@@ -2782,9 +2774,7 @@ if ( ! function_exists('prflxtrflds_load_script') ) {
 			if ( wp_is_mobile() )
 				wp_enqueue_script( 'jquery-touch-punch' );
 
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'prflxtrflds_script', plugins_url( '/js/script.js', __FILE__ ) );
+			wp_enqueue_script( 'prflxtrflds_script', plugins_url( '/js/script.js', __FILE__ ), array( 'jquery', 'jquery-ui-sortable' ) );
 			$script_vars = array(
 				'prflxtrflds_ajax_url'	=> admin_url( 'admin-ajax.php' ),
 				'prflxtrflds_nonce' 	=> wp_create_nonce( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' )
@@ -2794,18 +2784,21 @@ if ( ! function_exists('prflxtrflds_load_script') ) {
 			if ( isset( $_GET['tab-action'] ) && 'custom_code' == $_GET['tab-action'] )
 				bws_plugins_include_codemirror();
 		}
+
 		if ( 'user-edit.php' == $hook_suffix || 'profile.php' == $hook_suffix ) {
 			wp_enqueue_style( 'jquery.datetimepicker.css', plugins_url( 'css/jquery.datetimepicker.css', __FILE__ ) );
 
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery.datetimepicker.full.min.js', plugins_url( '/js/jquery.datetimepicker.full.min.js', __FILE__ ) );
+
+			wp_enqueue_script( 'inputmask.js', plugins_url( '/js/inputmask.js', __FILE__ ) );
+			wp_enqueue_script( 'jquery.inputmask.js', plugins_url( '/js/jquery.inputmask.js', __FILE__ ) );
 			
 			wp_enqueue_script( 'prflxtrflds_profile_script', plugins_url( '/js/profile_script.js', __FILE__ ) );
 			$script_vars = array(
 				'prflxtrflds_nonce' 	=> wp_create_nonce( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' )
 			);
-			wp_localize_script( 'prflxtrflds_profile_script', 'prflxtrflds_vars', $script_vars );
-			
+			wp_localize_script( 'prflxtrflds_profile_script', 'prflxtrflds_vars', $script_vars );			
 		}
 	}
 }

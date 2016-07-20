@@ -1,14 +1,14 @@
 === Profile Extra Fields by BestWebSoft ===
 Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
-Tags: about user, add fields, add extra fields, add additional fields, add custom field, add a field, add new custom field wp, add new field on my profile, addind fields on my wp page, adding fields plugin, additional field, additional user data, bestwebsoft, best, best plugin, best wp plugin, custom profile, extra fields, extra information, extra user data, free, free plugin, free extra fields, free additional fields, free profile extra fields, field to profile, fild wordpress, filds, how to add a field, plugin, profile informations, profile user data, shortcode, wordpress, wordpress add field to user profile, wordpress add profile fields tools, wp add custom field, wp profile, wordpress, wp, wp plugin, wp free plugin, wp profile extra fields, wp profile extra fields plugin, wp simple profile extra fields plugin, wp free profile extra fields, wp free profile extra fields plugin, wordpress plugin, wordpress free plugin, wordpress profile extra fields, wordpress profile extra fields plugin, wordpress simple profile extra fields plugin, wordpress free profile extra fields, wordpress free profile extra fields plugin
+Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.8
-Tested up to: 4.5
-Stable tag: 1.0.3
+Tested up to: 4.5.3
+Stable tag: 1.0.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The plugin adds additional fields on the user's profile page.
+Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
 
 == Description ==
 
@@ -43,11 +43,11 @@ There is also a premium version of the plugin <a href="http://bestwebsoft.com/pr
 * Russian (ru_RU)
 * Ukrainian (uk)
 
-If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> to <a href="http://support.bestwebsoft.com" target="_blank">BestWebSoft</a>, and we'll add it to the plugin. You can download the latest version of the program for working with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> to <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">BestWebSoft</a>, and we'll add it to the plugin. You can download the latest version of the program for working with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
 
 = Technical support =
 
-Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in another languages won't be accepted.
+Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in other languages won't be accepted.
 
 If you notice any bugs in the plugin's work, you can notify us about them and we'll investigate and fix the issue then. Your request should contain website URL, issues description and WordPress admin panel credentials.
 Moreover, we can customize the plugin according to your requirements. It's a paid service (as a rule it costs $40, but the price can vary depending on the amount of the necessary changes and their complexity). Please note that we could also include this or that feature (developed for you) in the next release and share with the other users then.
@@ -57,7 +57,7 @@ We can fix some things for free for the users who provide a translation of our p
 
 1. Upload the `profile-extra-fields` folder to `/wp-content/plugins/` directory.
 2. Activate the plugin using the 'Plugins' menu in your WordPress admin panel.
-3. You can adjust the necessary settings using your WordPress admin panel in "BWS Plugins" > "Profile Extra Fields".
+3. You can adjust the necessary settings using your WordPress admin panel in "BWS Panel" > "Profile Extra Fields".
 4. Create a page or a post and insert the shortcode [prflxtrflds_user_data] into the text.
 
 <a href="https://docs.google.com/document/d/1YSxf-rycHXQ_Tl38dUguuWav03PI2z0ZdKMDbRA1UV0/edit" target="_blank">View a Step-by-step Instruction on Error Log Viewer Installation</a>.
@@ -66,17 +66,17 @@ We can fix some things for free for the users who provide a translation of our p
 
 = How to add an additional field for the user? =
 
-Please go to the plugin settings page ( "BWS Plugins" > "Profile extra fields" ) and press the button 'Add a new field'
+Please go to the plugin settings page ( "BWS Panel" > "Profile extra fields" ) and press the button 'Add a new field'
 
 = Can I change the order of displaying fields? =
 
-Yes. If you have javascript enabled, you can simply drag the field on the settings page ( "BWS Plugins" > "Profile Extra Fields" ) - Extra Fields tab, as you need.
+Yes. If you have javascript enabled, you can simply drag the field on the settings page ( "BWS Panel" > "Profile Extra Fields" ) - Extra Fields tab, as you need.
 If you select some of the roles in the filter settings, the order will apply to a particular user role.
 You can also customize the order in the appropriate option while editing field.
 
 = How to view the data filled by users? =
 
-You can view the data filled by users on the plugin settings page ( "BWS Plugins" > "Profile Extra Fields" ), in the 'User data' tab
+You can view the data filled by users on the plugin settings page ( "BWS Panel" > "Profile Extra Fields" ), in the 'User data' tab
 
 = How to display the data which users submitted on my site? =
 
@@ -96,19 +96,23 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 
 == Screenshots ==
 
-1. Field Edit Page.
-2. Format setting for the date, time or datetime type fields.
-3. Available values setting for the Radiobutton,  Drop down list or Checkbox type fields.
-4. Pattern setting for the phone type field.
-5. Plugin Homepage with the list of created Extra Fields.
-6. Viewing user information on the plugin page.
-7. Additional fields on the user's profile page.
-8. Datetimepicker displaying for the date, time or datetime type fields.
-9. Shortcode settings page.
-10. Adding Profile Extra Fields shortcode to your page or post.
-11. Viewing user data via shortcode.
+1. Viewing user data via shortcode.
+2. Field Edit Page.
+3. Format setting for the date, time or datetime type fields.
+4. Available values setting for the Radiobutton, Drop down list or Checkbox type fields.
+5. Pattern setting for the phone type field.
+6. Plugin Homepage with the list of created Extra Fields.
+7. Viewing user information on the plugin page.
+8. Additional fields on the user's profile page.
+9. Datetimepicker displaying for the date, time or datetime type fields.
+10. Shortcode settings page.
+11. Adding Profile Extra Fields shortcode to your page or post.
 
 == Changelog ==
+
+= V1.0.4 - 20.07.2016 =
+* NEW : The mask for the phone number field has been added on the profile page.
+* Update : Select for role selection is made multiple on User data page (for WP since v. 4.4).
 
 = V1.0.3 - 18.04.2016 =
 * NEW : Ability to add custom styles.
@@ -127,6 +131,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.4 =
+Functionality has been expanded.
 
 = V1.0.3 =
 Ability to add custom styles.

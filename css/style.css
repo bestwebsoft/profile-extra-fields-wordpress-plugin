@@ -85,6 +85,9 @@ input.prflxtrflds-value-delete-check + label::before {
 .prflxtrflds-wplisttable-form {
 	padding-bottom: 20px;
 }
+.prflxtrflds-wplisttable-form .fixed .column-name .user_id {
+	display: none;
+}
 .prflxtrflds-wplisttable-searchform .search-box {
     margin-bottom: 5px;
 }
@@ -153,6 +156,15 @@ input.prflxtrflds-value-delete-check + label::before {
 @media screen and (max-width: 800px) {
 	.prflxtrflds-placeholder td {
 		display: none !important;
+	}
+}
+@media screen and (max-width: 782px) {
+	.prflxtrflds-wplisttable-form .wp-list-table .is-expanded .column-user_id,
+	.prflxtrflds-wplisttable-form .fixed .column-user_id {
+    	display: none !important;
+    }
+    .prflxtrflds-wplisttable-form .fixed .column-name .user_id {
+		display: block;
 	}
 }
 @media screen and ( max-width: 780px ) {
