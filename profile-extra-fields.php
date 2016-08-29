@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.0.4
+Version: 1.0.5
 Author URI: http://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -1974,15 +1974,19 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 	
 		/* Get user id param */
 		if ( ! empty( $param['user_id'] ) ) {
-			$user_ids = explode( ",", $param['user_id'] );
-			if ( is_array( $user_ids ) ) {
-				/* If lot user ids */
-				foreach ( $user_ids as $user_id ) {
-					/* Check for existing user */
-					if ( ! is_numeric( $user_id ) || ! get_user_by( 'id', intval( $user_id ) ) ) {
-						/* Show error if user id not exist, or data is uncorrect */
-						$error_message = sprintf( __( 'User with entered id ( id=%s ) is not exist!', 'profile-extra-fields' ), esc_html( $user_id ) );
-						break;
+			if ( 'get_current_user' == $param['user_id'] ) {
+				$user_ids = array( get_current_user_id() );
+			} else {
+				$user_ids = explode( ",", $param['user_id'] );
+				if ( is_array( $user_ids ) ) {
+					/* If lot user ids */
+					foreach ( $user_ids as $user_id ) {
+						/* Check for existing user */
+						if ( ! is_numeric( $user_id ) || ! get_user_by( 'id', intval( $user_id ) ) ) {
+							/* Show error if user id not exist, or data is uncorrect */
+							$error_message = sprintf( __( 'User with entered id ( id=%s ) is not exist!', 'profile-extra-fields' ), esc_html( $user_id ) );
+							break;
+						}
 					}
 				}
 			}
@@ -2610,13 +2614,21 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 					<span class="title"><?php _e( 'Position of the table header', 'profile-extra-fields' ); ?></span>
 				</label><br/>
 				<label>
-					<input id="prflxtrflds_specify_role" type="checkbox" value="prflxtrflds_specify_role" />
+					<input name="prflxtrflds_specify" checked type="radio" value="all" />
+					<span><?php _e( 'Display all users data', 'profile-extra-fields' ); ?></span>
+				</label><br/>
+				<label>
+					<input id="prflxtrflds_specify_current" name="prflxtrflds_specify" type="radio" value="get_current_user" />
+					<span><?php _e( 'Display logged in user data', 'profile-extra-fields' ); ?></span>
+				</label><br/>
+				<label>
+					<input id="prflxtrflds_specify_role" name="prflxtrflds_specify" type="radio" value="prflxtrflds_specify_role" />
 					<span><?php _e( 'Specify a user role', 'profile-extra-fields' ); ?></span><br/>
 					<img id='prflxtrflds_role_loader' class="hidden" src="<?php echo plugins_url( 'images/loader.gif', __FILE__ ); ?>" alt="Loading" />
 					<select id='prflxtrflds_user_role' name="prflxtrflds_user_role" multiple="multiple" style="max-height: 70px; width: 355px;" class="hidden"></select>
 				</label><br/>
 				<label>
-					<input id="prflxtrflds_specify_user" type="checkbox" value="prflxtrflds_specify_user" />
+					<input id="prflxtrflds_specify_user" name="prflxtrflds_specify" type="radio" value="prflxtrflds_specify_user" />
 					<span><?php _e( 'Specify a user', 'profile-extra-fields' ); ?></span><br/>
 					<img id='prflxtrflds_user_loader' class="hidden" src="<?php echo plugins_url( 'images/loader.gif', __FILE__ ); ?>" alt="Loading" />
 					<select id='prflxtrflds_user' name="prflxtrflds_user" multiple="multiple" style="max-height: 55px; width: 355px;" class="hidden"></select>
@@ -2629,9 +2641,10 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 						var header = $( current_object + ' #prflxtrflds_header_table option:selected' ).val();
 						if ( $( current_object + ' #prflxtrflds_specify_role' ).is( ':checked' ) ) {
 							var user_role = $( current_object + ' #prflxtrflds_user_role option:selected' ).map(function(){ return this.value.replace(/ /gi, '_'); }).get().join(",");
-						}
-						if ( $( current_object + ' #prflxtrflds_specify_user' ).is( ':checked' ) ) {
+						} else if ( $( current_object + ' #prflxtrflds_specify_user' ).is( ':checked' ) ) {
 							var user = $( current_object + ' #prflxtrflds_user option:selected' ).map(function(){ return this.value }).get().join(",");
+						} else if ( $( current_object + ' #prflxtrflds_specify_current' ).is( ':checked' ) ) {
+							var user = 'get_current_user';
 						}
 
 						var shortcode = '[prflxtrflds_user_data';
@@ -2657,9 +2670,11 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 							var current_object = '.mce-reset';
 						<?php } ?>	
 
-						$( current_object + ' #prflxtrflds_specify_user' ).on( 'change', function() {							
-							if ( $( this ).is( ':checked' ) ) {
-								$( current_object + ' #prflxtrflds_user_role' ).hide();
+						$( current_object + ' input[name="prflxtrflds_specify"]' ).on( 'change', function() {
+							$( current_object + ' #prflxtrflds_user_role' ).hide();
+							$( current_object + ' #prflxtrflds_user' ).hide();
+
+							if ( $( current_object + ' #prflxtrflds_specify_user' ).is( ':checked' ) ) {
 								if ( $( current_object + ' #prflxtrflds_user_loader' ).length > 0 ) {
 									$( current_object + ' #prflxtrflds_user_loader' ).show();
 									$.ajax({
@@ -2678,14 +2693,7 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 								} else {
 									$( current_object + ' #prflxtrflds_user' ).show();
 								}
-							} else {
-								$( current_object + ' #prflxtrflds_user' ).hide();
-								prflxtrflds_get_shortcode( current_object );	
-							}
-						});
-						$( current_object + ' #prflxtrflds_specify_role' ).on( 'change', function() {
-							if ( $( this ).is( ':checked' ) ) {
-								$( current_object + ' #prflxtrflds_user' ).hide();							
+							} else if ( $( current_object + ' #prflxtrflds_specify_role' ).is( ':checked' ) ) {
 								if ( $( current_object + ' #prflxtrflds_role_loader' ).length > 0 ) {
 									$( current_object + ' #prflxtrflds_role_loader' ).show();
 									$.ajax({
@@ -2704,10 +2712,9 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 								} else {
 									$( current_object + ' #prflxtrflds_user_role' ).show();
 								}
-							} else {
-								$( current_object + ' #prflxtrflds_user_role' ).hide();
-								prflxtrflds_get_shortcode( current_object );
 							}
+
+							prflxtrflds_get_shortcode( current_object );
 						});
 
 						$( current_object + ' #prflxtrflds_header_table, ' + current_object + ' #prflxtrflds_user_role, ' + current_object + ' #prflxtrflds_user' ).on( 'change', function() {

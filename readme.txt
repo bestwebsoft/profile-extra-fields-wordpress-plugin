@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.8
-Tested up to: 4.5.3
-Stable tag: 1.0.4
+Tested up to: 4.6
+Stable tag: 1.0.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,7 +92,7 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 1. the link to the page, on which the problem occurs
 2. the plugin's name and version. If you are using a pro version - your order number.
 3. the version of your WordPress installation
-4. copy and paste your system status report into the message . Please read more here: <a href="https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/edit" target="_blank">Instuction on System Status</a>
+4. copy and paste your system status report into the message. Please read more here: <a href="https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/edit" target="_blank">Instuction on System Status</a>
 
 == Screenshots ==
 
@@ -109,6 +109,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 11. Adding Profile Extra Fields shortcode to your page or post.
 
 == Changelog ==
+
+= V1.0.5 - 29.08.2016 =
+* NEW : Ability to display profile extra fields current logged in user by the shortcode.
 
 = V1.0.4 - 20.07.2016 =
 * NEW : The mask for the phone number field has been added on the profile page.
@@ -131,6 +134,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.5 =
+* Functionality expanded.
 
 = V1.0.4 =
 Functionality has been expanded.
