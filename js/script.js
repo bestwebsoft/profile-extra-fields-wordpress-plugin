@@ -23,24 +23,10 @@
 			/* Insert field before button */
 			lastfield.clone( true ).removeClass( 'hide-if-js' ).show().insertAfter( $( '.prflxtrflds-drag-values' ).last() );
 		});
-		/* Show fields if type field is not textfield */
-		var type_value = $( '#prflxtrflds-select-type' ).val();
-		if ( type_value != '2' && type_value != '3' && type_value != '4'  ) {
-			$( '.prflxtrflds-fields-container' ).hide();
-		}
-		if ( '9' != type_value )
-			$( '.prflxtrflds-pattern' ).hide();
-
-		if ( '5' != type_value && '7' != type_value )
-			$( '.prflxtrflds-date-format' ).hide();
-
-		if ( '6' != type_value && '7' != type_value )
-			$( '.prflxtrflds-time-format' ).hide();		
-
-		/* Show or hide fields on change field type */
+		/* Show fields for diffrent field type */
 		$( '#prflxtrflds-select-type' ).on( 'change', function() {
 			type_value = $( this ).val();
-			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format' ).hide();
+			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format, .prflxtrflds-maxlength' ).hide();
 
 			if ( type_value == '2' || type_value == '3' || type_value == '4'  ) {
 				$( '.prflxtrflds-fields-container' ).show();
@@ -51,9 +37,12 @@
 					$( '.prflxtrflds-date-format' ).show();
 
 				if ( '6' == type_value || '7' == type_value )
-					$( '.prflxtrflds-time-format' ).show();		
+					$( '.prflxtrflds-time-format' ).show();
+
+				if ( '1' == type_value || '8' == type_value )
+					$( '.prflxtrflds-maxlength' ).show();	
 			}
-		});
+		}).trigger( 'change' );
 
 		$("input[name='prflxtrflds_date_format']").click(function(){
 			if ( "prflxtrflds_date_format_custom_radio" != $( this ).attr( "id" ) )

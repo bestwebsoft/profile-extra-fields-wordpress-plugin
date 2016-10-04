@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.8
-Tested up to: 4.6
-Stable tag: 1.0.5
+Tested up to: 4.6.1
+Stable tag: 1.0.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,10 +15,6 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish.
 
 http://www.youtube.com/watch?v=O424Kpnffmo
-
-<a href="http://wordpress.org/plugins/profile-extra-fields/faq/" target="_blank">Profile Extra Fields by BestWebSoft FAQ</a>
-
-<a href="http://support.bestwebsoft.com" target="_blank">Profile Extra Fields by BestWebSoft Support</a>
 
 = Features = 
 
@@ -35,7 +31,7 @@ If you have a feature, suggestion or idea you'd like to see in the plugin, we'd 
 The author of the Profile Extra Fields also recommends the following plugins:
 
 * <a href="http://wordpress.org/plugins/updater/">Updater</a> - This plugin updates WordPress core and the plugins to the recent versions. You can also use the auto mode or manual mode for updating and set email notifications.
-There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.
+There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/wordpress/plugins/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.
 
 = Translation =
 
@@ -110,6 +106,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 
 == Changelog ==
 
+= V1.0.6 - 04.10.2016 =
+* NEW : Ability to specify field max length (for text field type) or max number (for number type).
+
 = V1.0.5 - 29.08.2016 =
 * NEW : Ability to display profile extra fields current logged in user by the shortcode.
 
@@ -134,6 +133,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.6 =
+* Functionality expanded.
 
 = V1.0.5 =
 * Functionality expanded.

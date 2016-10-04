@@ -11,10 +11,6 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 <div class='video'></div>
 
 
-<p><a href="http://wordpress.org/plugins/profile-extra-fields/faq/">Profile Extra Fields by BestWebSoft FAQ</a></p>
-
-<p><a href="http://support.bestwebsoft.com">Profile Extra Fields by BestWebSoft Support</a></p>
-
 <h4>Features</h4>
 
 <ul>
@@ -33,7 +29,7 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 
 <ul>
 <li><a href="http://wordpress.org/plugins/updater/">Updater</a> - This plugin updates WordPress core and the plugins to the recent versions. You can also use the auto mode or manual mode for updating and set email notifications.
-There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.</li>
+There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/wordpress/plugins/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.</li>
 </ul>
 
 <h4>Translation</h4>

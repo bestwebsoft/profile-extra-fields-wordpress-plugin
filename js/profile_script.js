@@ -35,5 +35,16 @@
 				}
 			});
 		}
+
+		if ( $( '.prflxtrflds_number' ).length > 0 ) {
+			$.each( $( '.prflxtrflds_number' ), function() {
+				$( this ).change( function() {
+					var max = parseInt( $( this ).attr( 'max' ) );
+					if ( $( this ).val() > max ) {
+						$( this ).val( max );
+					}
+				});
+			});
+		}
 	});
 })( jQuery );
