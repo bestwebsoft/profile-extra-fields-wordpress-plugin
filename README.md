@@ -1,9 +1,7 @@
-<a href="http://bestwebsoft.com/products/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
+<a href="http://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
 ========================
 
 Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
-
-<img src="http://bestwebsoft.com/wp-content/uploads/2015/08/profile-extra-fields-banner-website.jpg" />
 
 <p>The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish.</p>
 
