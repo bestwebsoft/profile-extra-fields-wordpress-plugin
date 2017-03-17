@@ -1,53 +1,98 @@
 === Profile Extra Fields by BestWebSoft ===
 Contributors: bestwebsoft
-Donate link: http://bestwebsoft.com/donate/
+Donate link: https://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.8
-Tested up to: 4.6.1
-Stable tag: 1.0.6
+Tested up to: 4.7.3
+Stable tag: 1.0.7
 License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
 
 == Description ==
 
-The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish.
+Simple plugin which helps to add additional fields to the WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.
+
+Easily add and display extra information about WordPress users!
 
 http://www.youtube.com/watch?v=O424Kpnffmo
 
-= Features = 
+= Features =
 
-* Add different fields on the user's profile page
-* Make the fields required or not
-* Change the fields order by using the drag-n-drop option
-* Make the field available only for one specific user role
-* Display information via shortcode
+* Add unlimited number of extra fields
+* Use shortcode to display user data on your page or post:
+	* All users data
+	* Logged in user data
+	* Certain user role data
+	* Certain user data
+	* Current user data
+* User data shortcode settings:
+	* Choose user data rotation on page or post
+		* Rows
+		* Columns
+	* Sort user data by user name in the table:
+		* ASC (ascending order from lowest to highest values)
+		* DESC (descending order from highest to lowest values)
+	* Show empty fields if user missed them
+	* Show user ID in the table
+	* Customize validation message for:
+		* Empty fields
+		* Unavailable fields
+* Choose extra field type:
+	* Text
+	* Checkbox
+	* Radiobutton
+	* Dropdown list
+	* Date
+	* Time
+	* Date and time
+	* Number
+	* Phone number
+* Customize extra fields:
+	* Name
+	* Description
+* Set the max length for text or number in the appropriate fields
+* Make any field required
+* Set the fields order
+* Choose date and time formats for the corresponding field types
+* Set the phone number format for the corresponding field type
+* Drag and drop fields to change their order in the list
+* Make extra fields available for certain user roles
+* Add custom code via plugin settings page
+* Compatible with latest WordPress version
+* Incredibly simple settings for fast setup without modifying code
+* Detailed step-by-step documentation and videos
+* Multilingual and RTL ready
 
-If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">Suggest a Feature</a>
+If you have a feature suggestion or idea you'd like to see in the plugin, we'd love to hear about it! [Suggest a Feature](https://support.bestwebsoft.com/hc/en-us/requests/new)
 
-= Recommended Plugins = 
+= Documentation & Videos =
 
-The author of the Profile Extra Fields also recommends the following plugins:
+* [[Doc] Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ)
 
-* <a href="http://wordpress.org/plugins/updater/">Updater</a> - This plugin updates WordPress core and the plugins to the recent versions. You can also use the auto mode or manual mode for updating and set email notifications.
-There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/wordpress/plugins/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.
+= Help & Support =
+
+Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <https://support.bestwebsoft.com/>
 
 = Translation =
 
-* German (de_DE) (thanks to <a href="mailto:matthias.siebler@gmail.com">Matthias Siebler</a>)
+* German (de_DE) (thanks to [Matthias Siebler](mailto:matthias.siebler@gmail.com))
 * Russian (ru_RU)
 * Ukrainian (uk)
 
-Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> to <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">BestWebSoft</a>, and we'll add it to the plugin. You can download the latest version of the program for working with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send [the text of PO and MO files](http://codex.wordpress.org/Translating_WordPress) to [BestWebSoft](https://support.bestwebsoft.com/hc/en-us/requests/new) and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO [files Poedit](http://www.poedit.net/download.php).
 
-= Technical support =
+= Recommended Plugins =
 
-Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in other languages won't be accepted.
+* [Updater](https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd) - Automatically check and update WordPress core with all installed plugins to the latest versions. Manual mode, email notifications and backups of all your files and database before updating.
+* [User Role](https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8) - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.
 
-If you notice any bugs in the plugin's work, you can notify us about them and we'll investigate and fix the issue then. Your request should contain website URL, issues description and WordPress admin panel credentials.
-Moreover, we can customize the plugin according to your requirements. It's a paid service (as a rule it costs $40, but the price can vary depending on the amount of the necessary changes and their complexity). Please note that we could also include this or that feature (developed for you) in the next release and share with the other users then.
-We can fix some things for free for the users who provide a translation of our plugin into their native language (this should be a new translation of a certain plugin, you can check available translations on the official plugin page).
+= Donate =
+
+Donations play an important role in supporting open-source projects. We greatly appreciate any donation you can make to help us continue further development of free products.
+
+[Donate Now](https://bestwebsoft.com/donate/)
 
 == Installation == 
 
@@ -56,13 +101,13 @@ We can fix some things for free for the users who provide a translation of our p
 3. You can adjust the necessary settings using your WordPress admin panel in "BWS Panel" > "Profile Extra Fields".
 4. Create a page or a post and insert the shortcode [prflxtrflds_user_data] into the text.
 
-<a href="https://docs.google.com/document/d/1YSxf-rycHXQ_Tl38dUguuWav03PI2z0ZdKMDbRA1UV0/edit" target="_blank">View a Step-by-step Instruction on Error Log Viewer Installation</a>.
+[View a Step-by-step Instruction on Profile Extra Fields Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ/)
 
 == Frequently Asked Questions ==
 
 = How to add an additional field for the user? =
 
-Please go to the plugin settings page ( "BWS Panel" > "Profile extra fields" ) and press the button 'Add a new field'
+Please go to the plugin settings page ( "BWS Panel" > "Profile Extra Fields" ) and press the button 'Add a new field'
 
 = Can I change the order of displaying fields? =
 
@@ -83,12 +128,12 @@ You can specify a header position manually (top, left or right). Example: [prflx
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
-Please make sure that the problem hasn't been discussed on our forum yet (<a href="http://support.bestwebsoft.com" target="_blank">http://support.bestwebsoft.com</a>). If not, please provide the following data along with your problem's description:
+Please make sure that the problem hasn't been discussed yet on our forum (<https://support.bestwebsoft.com>). If no, please provide the following data along with your problem's description:
 
-1. the link to the page, on which the problem occurs
-2. the plugin's name and version. If you are using a pro version - your order number.
+1. the link to the page where the problem occurs
+2. the name of the plugin and its version. If you are using a pro version - your order number.
 3. the version of your WordPress installation
-4. copy and paste your system status report into the message. Please read more here: <a href="https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/edit" target="_blank">Instuction on System Status</a>
+4. copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/edit)
 
 == Screenshots ==
 
@@ -105,6 +150,8 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 11. Adding Profile Extra Fields shortcode to your page or post.
 
 == Changelog ==
+= V1.0.7 - 16.03.2017 =
+* Update : BWS plugins section is updated.
 
 = V1.0.6 - 04.10.2016 =
 * NEW : Ability to specify field max length (for text field type) or max number (for number type).
@@ -133,6 +180,9 @@ Please make sure that the problem hasn't been discussed on our forum yet (<a hre
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.7 =
+* Functionality improved.
 
 = V1.0.6 =
 * Functionality expanded.

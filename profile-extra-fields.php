@@ -1,17 +1,17 @@
 <?php
 /*
 Plugin Name: Profile Extra Fields by BestWebSoft
-Plugin URI: http://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/
+Plugin URI: https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/
 Description: Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.0.6
-Author URI: http://bestwebsoft.com/
+Version: 1.0.7
+Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
 
-/*  @ Copyright 2016  BestWebSoft  ( http://support.bestwebsoft.com )
+/*  @ Copyright 2017  BestWebSoft  ( https://support.bestwebsoft.com )
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -143,7 +143,7 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 			'available_values'			=> array(),
 			'show_empty_columns'		=> 0,
 			'show_id'	            	=> 1,
-			'header_table'          	=> 'top',
+			'header_table'          	=> 'columns', /*rows */
 			'empty_value'				=> __( 'Field not filled', 'profile-extra-fields' ),
 			'not_available_message'		=> __( 'N/A', 'profile-extra-fields' ),		
 		);
@@ -156,13 +156,16 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 		$prflxtrflds_options = get_option( 'prflxtrflds_options' );
 		/* Update options if other option version */
 		if ( ! isset( $prflxtrflds_options['plugin_option_version'] ) || $prflxtrflds_options['plugin_option_version'] != $prflxtrflds_plugin_info["Version"] ) {
-			/* update to 1.0.1 */
-			if ( 'asc' == $prflxtrflds_options['sort_sequence'] )
-				$prflxtrflds_options['sort_sequence'] = 'ASC';
-			elseif ( 'desc' == $prflxtrflds_options['sort_sequence'] )
-				$prflxtrflds_options['sort_sequence'] = 'DESC';
-			if ( $prflxtrflds_options['header_table'] == 'left' || $prflxtrflds_options['header_table'] == 'right' )
-				$prflxtrflds_options['header_table'] = 'side';
+			/**
+			 * 1.0.7
+			 * @todo remove after 15.09.2017
+			 */
+			if ( $prflxtrflds_options['header_table'] == 'left' || $prflxtrflds_options['header_table'] == 'right' || $prflxtrflds_options['header_table'] == 'side' )
+				$prflxtrflds_options['header_table'] = 'rows';
+			elseif ( $prflxtrflds_options['header_table'] == 'top' )							
+				$prflxtrflds_options['header_table'] = 'columns';
+			/* end @todo */
+
 			foreach ( $prflxtrflds_options['available_values'] as $key => $value ) {
 			 	if ( '-1' == $value )
 			 		unset( $prflxtrflds_options['available_values'][ $key ] );
@@ -175,7 +178,6 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 		}
 		/* Update database */
 		if ( ! isset( $prflxtrflds_options['plugin_db_version'] ) || $prflxtrflds_options['plugin_db_version'] != $db_version ) {
-			prflxtrflds_update_table();
 			$prflxtrflds_options['plugin_db_version'] = $db_version;
 			$update_option = true;
 		}
@@ -261,40 +263,6 @@ if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
 		);";
 		/* call dbDelta */
 		dbDelta( $sql );	
-	}
-}
-
-if ( ! function_exists( 'prflxtrflds_update_table' ) ) {
-	function prflxtrflds_update_table() {
-		global $wpdb, $wp_roles;
-		/**
-		 * 1.0.4
-		 * @todo remove after 01.03.2017
-		 */
-		$column_exists = $wpdb->query( "SHOW COLUMNS FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` LIKE 'role_name'" );
-		if ( 0 == $column_exists ) {
-			$wpdb->query( "ALTER TABLE `" . $wpdb->base_prefix . "prflxtrflds_roles_id` ADD `role_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL;" );
-
-			$all_roles = $wp_roles->roles;
-			if ( ! empty( $all_roles ) ) {			
-				/* Get role name from array */
-				foreach ( $all_roles as $role_key => $role ) {
-					/* Check role for existing in plugin table */
-					if ( $role_id = $wpdb->get_var( $wpdb->prepare( "SELECT `role_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_id` WHERE `role` = %s LIMIT 1", $role['name'] ) ) ) {
-						/* Create field if not exist */
-						$wpdb->update(
-							$wpdb->base_prefix . "prflxtrflds_roles_id",
-							array(
-								'role' 		=> $role_key,
-								'role_name' => $role['name']
-							),
-							array( 'role' => $role['name'] )
-						);
-					}
-				}
-				prflxtrflds_update_user_roles();
-			}
-		}
 	}
 }
 
@@ -1017,7 +985,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			}
 
 			function get_views() {
-				/* Show links at the top of table */
+				/* Show links at the columns of table */
 				global $wpdb;
 				$views = array();
 				$current = ( ! empty( $_GET['role_id'] ) ) ? $_GET['role_id'] : 'all';
@@ -1041,7 +1009,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			}
 
 			function extra_tablenav( $which ) {
-				if ( "top" == $which ) {
+				if ( "columns" == $which ) {
 					global $wpdb;
 					$current = ( ! empty( $_GET['prflxtrflds_role_id'] ) ) ? $_GET['prflxtrflds_role_id'] : 'all';
 					/* Get actual users data */
@@ -1416,7 +1384,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 			function extra_tablenav( $which ) {
 				global $wp_version;
 				/* Extra tablenav. Create filter. */
-				if ( "top" == $which ) {
+				if ( "columns" == $which ) {
 					$roles = get_editable_roles(); ?>
 					<div class="alignleft prflxtrflds-filter actions bulkactions">
 						<label for="prflxtrflds-role">
@@ -1683,7 +1651,7 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 
 			/* Override this function to set nonce from options */
 			function display_tablenav( $which ) {
-				if ( 'top' == $which )
+				if ( 'columns' == $which )
 					wp_nonce_field( 'update-options' ); ?>
 				<div class="tablenav <?php echo esc_attr( $which ); ?>">
 					<div class="alignleft actions bulkactions"><?php $this->bulk_actions( $which ); ?></div>
@@ -1885,12 +1853,12 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 					<br/>
 					<div><?php printf( 
 						__( "If you would like to add user data to your page or post, please use %s button", 'profile-extra-fields' ), 
-						'<span class="bws_code"><img style="vertical-align: sub;" src="' . plugins_url( 'bws_menu/images/shortcode-icon.png', __FILE__ ) . '" alt=""/></span>' ); ?> 
+						'<span class="bwsicons bwsicons-shortcode"></span>' ); ?>
 						<div class="bws_help_box bws_help_box_right dashicons dashicons-editor-help">
 							<div class="bws_hidden_help_text" style="min-width: 180px;">
 								<?php printf( 
-									__( "You can add user data to your page or post by clicking on %s button in the content edit block using the Visual mode. If the button isn't displayed, please use the shortcode %s, where you can specify a header position (top, left or right), a user role and a user ID", 'profile-extra-fields' ), 
-									'<code><img style="vertical-align: sub;" src="' . plugins_url( 'bws_menu/images/shortcode-icon.png', __FILE__ ) . '" alt="" /></code>',
+									__( "You can add user data to your page or post by clicking on %s button in the content edit block using the Visual mode. If the button isn't displayed, please use the shortcode %s, where you can specify the data position (columns or rows), a user role and a user ID", 'profile-extra-fields' ), 
+									'<code><span class="bwsicons bwsicons-shortcode"></span></code>',
 									'<code>[prflxtrflds_user_data display=* user_role=* user_id=*]</code>'
 								); ?>
 							</div>
@@ -1936,11 +1904,11 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 									</td>
 								</tr>
 								<tr>
-									<th><?php _e( 'Position of the table header', 'profile-extra-fields' ); ?></th>
+									<th><?php _e( 'Users data rotation', 'profile-extra-fields' ); ?></th>
 									<td>
 										<select name="prflxtrflds_header_table" >
-											<option value="top"<?php selected( $prflxtrflds_options['header_table'], 'top' ); ?>><?php _e( 'Top', 'profile-extra-fields' ); ?></option>
-											<option value="side"<?php selected( $prflxtrflds_options['header_table'], 'side' ); ?>><?php _e( 'Side', 'profile-extra-fields' ); ?></option>
+											<option value="columns"<?php selected( $prflxtrflds_options['header_table'], 'columns' ); ?>><?php _e( 'Columns', 'profile-extra-fields' ); ?></option>
+											<option value="rows"<?php selected( $prflxtrflds_options['header_table'], 'rows' ); ?>><?php _e( 'Rows', 'profile-extra-fields' ); ?></option>
 										</select>
 									</td>
 								</tr>
@@ -1974,7 +1942,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 	function prflxtrflds_show_data( $param ) {
 		global $wpdb, $prflxtrflds_options;
 		$error_message = "";
-		$user_ids = array();		
+		$user_ids = array();
 
 		if ( ! isset( $prflxtrflds_options ) )
 			$prflxtrflds_options = get_option( 'prflxtrflds_options' );
@@ -2026,15 +1994,14 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 		/* Get display options */
 		if ( ! empty( $param['display'] ) ) {
 			/* If this values is not supported */
-			if ( ! in_array( $param['display'], array( 'left', 'top', 'right', 'side' ) ) )
+			if ( ! in_array( $param['display'], array( 'left', 'top', 'right', 'side', 'columns', 'rows' ) ) )
 				$error_message .= sprintf( __( 'Unsupported shortcode option ( display=%s )', 'profile-extra-fields' ), esc_html( $param['display'] ) );
 			else
 				$display = $param['display'];
 		} else {
 			/* If value not in shortcode, get from options. Top by default */
-			$display = isset( $prflxtrflds_options['header_table'] ) ? $prflxtrflds_options['header_table'] : 'top';
+			$display = isset( $prflxtrflds_options['header_table'] ) ? $prflxtrflds_options['header_table'] : 'columns';
 		}
-		
 		if ( ! empty( $error_message ) ) {
 			return sprintf( '<p>%s. %s</p>', __( 'Shortcode output error', 'profile-extra-fields' ), $error_message );
 		} else {
@@ -2155,7 +2122,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 					}
 				}
 
-				if ( 'top' == $display ) { ?>
+				if ( 'columns' == $display ) { ?>
 					<table class="prflxtrflds-userdata-tbl">
 						<thead>
 							<tr>
@@ -2634,10 +2601,10 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 			<fieldset>
 				<label>	
 					<select id='prflxtrflds_header_table' name="prflxtrflds_header_table">
-						<option value="top"<?php selected( $prflxtrflds_options['header_table'], 'top' ); ?>><?php _e( 'Top', 'profile-extra-fields' ); ?></option>
-						<option value="side"<?php selected( $prflxtrflds_options['header_table'], 'side' ); ?>><?php _e( 'Side', 'profile-extra-fields' ); ?></option>
+						<option value="columns"<?php selected( $prflxtrflds_options['header_table'], 'columns' ); ?>><?php _e( 'Columns', 'profile-extra-fields' ); ?></option>
+						<option value="rows"<?php selected( $prflxtrflds_options['header_table'], 'rows' ); ?>><?php _e( 'Rows', 'profile-extra-fields' ); ?></option>
 					</select>
-					<span class="title"><?php _e( 'Position of the table header', 'profile-extra-fields' ); ?></span>
+					<span class="title"><?php _e( 'Users data rotation', 'profile-extra-fields' ); ?></span>
 				</label><br/>
 				<label>
 					<input name="prflxtrflds_specify" checked type="radio" value="all" />
@@ -2777,8 +2744,8 @@ if ( ! function_exists ( 'prflxtrflds_register_plugin_links' ) ) {
 		if ( $file == $base ) {
 			if ( ! is_network_admin() )
 				$links[] = '<a href="admin.php?page=profile-extra-fields.php">' . __( 'Settings', 'profile-extra-fields' ) . '</a>';
-			$links[] = '<a href="http://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/">' . __( 'FAQ', 'profile-extra-fields' ) . '</a>';
-			$links[] = '<a href="http://support.bestwebsoft.com">' . __( 'Support', 'profile-extra-fields' ) . '</a>';
+			$links[] = '<a href="https://support.bestwebsoft.com/hc/en-us/sections/201146449/">' . __( 'FAQ', 'profile-extra-fields' ) . '</a>';
+			$links[] = '<a href="https://support.bestwebsoft.com">' . __( 'Support', 'profile-extra-fields' ) . '</a>';
 		}
 		return $links;
 	}

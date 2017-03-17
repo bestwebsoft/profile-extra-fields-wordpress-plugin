@@ -137,6 +137,9 @@ input.prflxtrflds-value-delete-check + label::before {
 	min-height: 20px;
 	clear: both;
 }
+#prflxtrflds-role {
+    margin-bottom: 3px;
+}
 /* End drag n drop styles */
 .rtl .prflxtrflds-drag-values input,
 .rtl .prflxtrflds-sortable-form,

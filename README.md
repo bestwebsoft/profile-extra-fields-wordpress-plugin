@@ -1,9 +1,11 @@
-<a href="http://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
+<a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
 ========================
 
 Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
 
-<p>The plugin adds additional fields on the standard user's profile page. That can be checkboxes, radio buttons, text fields. The information entered by user can be viewed at the plugin settings page. Also, the information can be displayed using the shortcode. Plugin has flexible settings which allow to display information as you wish.</p>
+<p>Simple plugin which helps to add additional fields to the WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
+
+<p>Easily add and display extra information about WordPress users!</p>
 
 
 <div class='video'></div>
@@ -12,23 +14,84 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 <h4>Features</h4>
 
 <ul>
-<li>Add different fields on the user's profile page</li>
-<li>Make the fields required or not</li>
-<li>Change the fields order by using the drag-n-drop option</li>
-<li>Make the field available only for one specific user role</li>
-<li>Display information via shortcode</li>
-</ul>
-
-<p>If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="http://support.bestwebsoft.com/hc/en-us/requests/new">Suggest a Feature</a></p>
-
-<h4>Recommended Plugins</h4>
-
-<p>The author of the Profile Extra Fields also recommends the following plugins:</p>
+<li>Add unlimited number of extra fields</li>
+<li>Use shortcode to display user data on your page or post:
 
 <ul>
-<li><a href="http://wordpress.org/plugins/updater/">Updater</a> - This plugin updates WordPress core and the plugins to the recent versions. You can also use the auto mode or manual mode for updating and set email notifications.
-There is also a premium version of the plugin <a href="http://bestwebsoft.com/products/wordpress/plugins/updater/">Updater Pro</a> with more useful features available. It can make backup of all your files and database before updating. Also it can forbid some plugins or WordPress Core update.</li>
+<li>All users data</li>
+<li>Logged in user data</li>
+<li>Certain user role data</li>
+<li>Certain user data</li>
+<li>Current user data</li>
+</ul></li>
+<li>User data shortcode settings:
+
+<ul>
+<li>Choose user data rotation on page or post
+
+<ul>
+<li>Rows</li>
+<li>Columns</li>
+</ul></li>
+<li>Sort user data by user name in the table:
+
+<ul>
+<li>ASC (ascending order from lowest to highest values)</li>
+<li>DESC (descending order from highest to lowest values)</li>
+</ul></li>
+<li>Show empty fields if user missed them</li>
+<li>Show user ID in the table</li>
+<li>Customize validation message for:
+
+<ul>
+<li>Empty fields</li>
+<li>Unavailable fields</li>
+</ul></li>
+</ul></li>
+<li>Choose extra field type:
+
+<ul>
+<li>Text</li>
+<li>Checkbox</li>
+<li>Radiobutton</li>
+<li>Dropdown list</li>
+<li>Date</li>
+<li>Time</li>
+<li>Date and time</li>
+<li>Number</li>
+<li>Phone number</li>
+</ul></li>
+<li>Customize extra fields:
+
+<ul>
+<li>Name</li>
+<li>Description</li>
+</ul></li>
+<li>Set the max length for text or number in the appropriate fields</li>
+<li>Make any field required</li>
+<li>Set the fields order</li>
+<li>Choose date and time formats for the corresponding field types</li>
+<li>Set the phone number format for the corresponding field type</li>
+<li>Drag and drop fields to change their order in the list</li>
+<li>Make extra fields available for certain user roles</li>
+<li>Add custom code via plugin settings page</li>
+<li>Compatible with latest WordPress version</li>
+<li>Incredibly simple settings for fast setup without modifying code</li>
+<li>Detailed step-by-step documentation and videos</li>
+<li>Multilingual and RTL ready</li>
 </ul>
+
+<p>If you have a feature suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new">Suggest a Feature</a></p>
+
+<h4>Documentation &#38; Videos</h4>
+
+<ul>
+<li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ">[Doc] Installation</a></li>
+</ul>
+
+<h4>Help &#38; Support</h4>
+
+<p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <a href="https://support.bestwebsoft.com/">https://support.bestwebsoft.com/</a></p>
 
 <h4>Translation</h4>
 
@@ -38,12 +101,17 @@ There is also a premium version of the plugin <a href="http://bestwebsoft.com/pr
 <li>Ukrainian (uk)</li>
 </ul>
 
-<p>Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress">the text of PO and MO files</a> to <a href="http://support.bestwebsoft.com/hc/en-us/requests/new">BestWebSoft</a>, and we'll add it to the plugin. You can download the latest version of the program for working with PO and MO files <a href="http://www.poedit.net/download.php">Poedit</a>.</p>
+<p>Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress">the text of PO and MO files</a> to <a href="https://support.bestwebsoft.com/hc/en-us/requests/new">BestWebSoft</a> and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO <a href="http://www.poedit.net/download.php">files Poedit</a>.</p>
 
-<h4>Technical support</h4>
+<h4>Recommended Plugins</h4>
 
-<p>Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in other languages won't be accepted.</p>
+<ul>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd">Updater</a> - Automatically check and update WordPress core with all installed plugins to the latest versions. Manual mode, email notifications and backups of all your files and database before updating.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8">User Role</a> - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.</li>
+</ul>
 
-<p>If you notice any bugs in the plugin's work, you can notify us about them and we'll investigate and fix the issue then. Your request should contain website URL, issues description and WordPress admin panel credentials.
-Moreover, we can customize the plugin according to your requirements. It's a paid service (as a rule it costs $40, but the price can vary depending on the amount of the necessary changes and their complexity). Please note that we could also include this or that feature (developed for you) in the next release and share with the other users then.
-We can fix some things for free for the users who provide a translation of our plugin into their native language (this should be a new translation of a certain plugin, you can check available translations on the official plugin page).</p>
+<h4>Donate</h4>
+
+<p>Donations play an important role in supporting open-source projects. We greatly appreciate any donation you can make to help us continue further development of free products.</p>
+
+<p><a href="https://bestwebsoft.com/donate/">Donate Now</a></p>
