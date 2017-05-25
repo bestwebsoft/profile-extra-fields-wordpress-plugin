@@ -1,55 +1,46 @@
 <a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
 ========================
 
-Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
-
 <p>Simple plugin which helps to add additional fields to the WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
-
 <p>Easily add and display extra information about WordPress users!</p>
-
-
-<div class='video'></div>
-
-
+<p><span class="embed-youtube" style="text-align:center; display: block;"></span></p>
 <h4>Features</h4>
-
 <ul>
 <li>Add unlimited number of extra fields</li>
 <li>Use shortcode to display user data on your page or post:
-
 <ul>
 <li>All users data</li>
 <li>Logged in user data</li>
 <li>Certain user role data</li>
 <li>Certain user data</li>
 <li>Current user data</li>
-</ul></li>
+</ul>
+</li>
 <li>User data shortcode settings:
-
 <ul>
 <li>Choose user data rotation on page or post
-
 <ul>
 <li>Rows</li>
 <li>Columns</li>
-</ul></li>
+</ul>
+</li>
 <li>Sort user data by user name in the table:
-
 <ul>
 <li>ASC (ascending order from lowest to highest values)</li>
 <li>DESC (descending order from highest to lowest values)</li>
-</ul></li>
+</ul>
+</li>
 <li>Show empty fields if user missed them</li>
 <li>Show user ID in the table</li>
 <li>Customize validation message for:
-
 <ul>
 <li>Empty fields</li>
 <li>Unavailable fields</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Choose extra field type:
-
 <ul>
 <li>Text</li>
 <li>Checkbox</li>
@@ -60,13 +51,14 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 <li>Date and time</li>
 <li>Number</li>
 <li>Phone number</li>
-</ul></li>
+</ul>
+</li>
 <li>Customize extra fields:
-
 <ul>
 <li>Name</li>
 <li>Description</li>
-</ul></li>
+</ul>
+</li>
 <li>Set the max length for text or number in the appropriate fields</li>
 <li>Make any field required</li>
 <li>Set the fields order</li>
@@ -80,38 +72,22 @@ Add extra fields to default WordPress user profile. The easiest way to create an
 <li>Detailed step-by-step documentation and videos</li>
 <li>Multilingual and RTL ready</li>
 </ul>
-
-<p>If you have a feature suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new">Suggest a Feature</a></p>
-
-<h4>Documentation &#38; Videos</h4>
-
+<p>If you have a feature suggestion or idea you&#8217;d like to see in the plugin, we&#8217;d love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow">Suggest a Feature</a></p>
+<h4>Documentation &amp; Videos</h4>
 <ul>
-<li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ">[Doc] Installation</a></li>
+<li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ" rel="nofollow">[Doc] Installation</a></li>
 </ul>
-
-<h4>Help &#38; Support</h4>
-
-<p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <a href="https://support.bestwebsoft.com/">https://support.bestwebsoft.com/</a></p>
-
+<h4>Help &amp; Support</h4>
+<p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow">https://support.bestwebsoft.com/</a></p>
 <h4>Translation</h4>
-
 <ul>
-<li>German (de_DE) (thanks to <a href="mailto:matthias.siebler@gmail.com">Matthias Siebler</a>)</li>
+<li>German (de_DE) (thanks to <a href="mailto:m&#097;&#x74;&#x74;&#104;&#105;&#x61;&#x73;&#046;&#115;&#x69;&#x65;&#098;&#108;&#x65;&#x72;&#064;&#103;&#x6d;a&#105;&#108;&#x2e;c&#111;&#x6d;" rel="nofollow">Matthias Siebler</a>)</li>
 <li>Russian (ru_RU)</li>
 <li>Ukrainian (uk)</li>
 </ul>
-
-<p>Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress">the text of PO and MO files</a> to <a href="https://support.bestwebsoft.com/hc/en-us/requests/new">BestWebSoft</a> and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO <a href="http://www.poedit.net/download.php">files Poedit</a>.</p>
-
+<p>Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="https://codex.wordpress.org/Translating_WordPress" rel="nofollow">the text of PO and MO files</a> to <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow">BestWebSoft</a> and we&#8217;ll add it to the plugin. You can download the latest version of the program for work with PO and MO <a href="https://www.poedit.net/download.php" rel="nofollow">files Poedit</a>.</p>
 <h4>Recommended Plugins</h4>
-
 <ul>
-<li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd">Updater</a> - Automatically check and update WordPress core with all installed plugins to the latest versions. Manual mode, email notifications and backups of all your files and database before updating.</li>
-<li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8">User Role</a> - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd" rel="nofollow">Updater</a> &#8211; Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8" rel="nofollow">User Role</a> &#8211; Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.</li>
 </ul>
-
-<h4>Donate</h4>
-
-<p>Donations play an important role in supporting open-source projects. We greatly appreciate any donation you can make to help us continue further development of free products.</p>
-
-<p><a href="https://bestwebsoft.com/donate/">Donate Now</a></p>

@@ -140,6 +140,29 @@ input.prflxtrflds-value-delete-check + label::before {
 #prflxtrflds-role {
     margin-bottom: 3px;
 }
+#prflxtrflds-caption-checkboxes th {
+	width: 0;
+	text-align: center;
+}
+#prflxtrflds-select-checkboxes td {
+	vertical-align: top;
+}
+tr #prflxtrflds-caption-checkboxes th {
+	padding: 3px 10px 20px 0;
+}
+.prflxtrflds-checkboxes-for-roles {
+	padding-top: 0 !important;
+}
+#prflxtrflds-select-roles,
+#prflxtrflds-select-roles-editable,
+#prflxtrflds-select-roles-visibility {
+	margin-top: 3px;
+}
+#prflxtrflds-select-roles input,
+#prflxtrflds-select-roles-editable input,
+#prflxtrflds-select-roles-visibility input {
+	margin: .37em 0 .6em!important;
+}
 /* End drag n drop styles */
 .rtl .prflxtrflds-drag-values input,
 .rtl .prflxtrflds-sortable-form,
@@ -148,6 +171,10 @@ input.prflxtrflds-value-delete-check + label::before {
 .rtl .prflxtrflds-drag-field {
 	float: right;
 }
+.prflxtrflds-labels-for-mobiles {
+	display: none;
+}
+
 @media screen and (min-width: 800px) {
 	.prflxtrflds-placeholder th,
 	.prflxtrflds-placeholder td {
@@ -156,18 +183,24 @@ input.prflxtrflds-value-delete-check + label::before {
 		height: 10px;
 	}
 }
+
 @media screen and (max-width: 800px) {
 	.prflxtrflds-placeholder td {
 		display: none !important;
 	}
 }
+
 @media screen and (max-width: 782px) {
 	.prflxtrflds-wplisttable-form .wp-list-table .is-expanded .column-user_id,
-	.prflxtrflds-wplisttable-form .fixed .column-user_id {
+	.prflxtrflds-wplisttable-form .fixed .column-user_id,
+	.prflxtrflds-hide-on-mobile {
     	display: none !important;
     }
     .prflxtrflds-wplisttable-form .fixed .column-name .user_id {
 		display: block;
+	}
+	.prflxtrflds-labels-for-mobiles {
+		display: inline;
 	}
 }
 @media screen and ( max-width: 780px ) {

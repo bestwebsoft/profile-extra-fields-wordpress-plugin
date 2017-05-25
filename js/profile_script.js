@@ -1,6 +1,6 @@
 (function( $ ) {
 	$( document ).ready( function() {
-		if ( $( '.prflxtrflds_datetimepicker' ).length > 0 && $.fn.datetimepicker ) {
+		if ( $( '.prflxtrflds_datetimepicker:not([disabled])' ).length > 0 && $.fn.datetimepicker ) {
 			$.each( $( '.prflxtrflds_datetimepicker' ), function() {
 				var current_time_format = $( this ).parent().find( 'input[name="prflxtrflds_time_format"]' );
 				var current_date_format = $( this ).parent().find( 'input[name="prflxtrflds_date_format"]' );

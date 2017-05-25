@@ -129,30 +129,78 @@
 
 		/* Show 'select all' checkbox if js enabled */
 		$( '#prflxtrflds-div-select-all' ).show();
-		/* Set checkbox "Select all" if all roles checked */
-		if ( $( '#prflxtrflds-select-roles input[name="prflxtrflds_roles[]"]').filter( ':visible').size() == $( '#prflxtrflds-select-roles input[name="prflxtrflds_roles[]"]').filter( ':visible').filter( ':checked' ).size() ) {
-			$( '#prflxtrflds-select-roles input#prflxtrflds-select-all' ).attr( 'checked', true );
-		}
-		$( '#prflxtrflds-select-roles input' ).bind( "change click select", function() {
-			var	$select_all = $( '#prflxtrflds-select-roles input#prflxtrflds-select-all' ),
-					$checkboxes = $( '#prflxtrflds-select-roles input[name="prflxtrflds_roles[]"]').filter( ':visible' ),
-					checkboxes_size = $checkboxes.size(),
-					checkboxes_selected_size = $checkboxes.filter( ':checked' ).size();
-			if ( $( this ).attr( 'id' ) == $select_all.attr( 'id' ) ) {
-				if ( $select_all.is( ':checked' ) ) {
-					/* If 'select all' checkbox select on unselect, do this */
-					$checkboxes.attr( 'checked', true );
-				} else {
-					$checkboxes.attr( 'checked', false );
-				}
-			} else {
-				/* If all chexbox selected make checked 'select all' checkbox */
-				if ( checkboxes_size == checkboxes_selected_size ) {
-					$select_all.attr( 'checked', true );
-				} else {
-					$select_all.attr( 'checked', false );
-				}
+
+		$( '#prflxtrflds-select-checkboxes td' ).each( function() {
+			var wrap = $( this ),
+				all_checkbox = wrap.find( '.prflxtrflds-checkboxes-select-all-in-roles' ),
+				checkboxes = wrap.find( 'input[type="checkbox"]' ).not( all_checkbox ).filter( ':visible' );
+
+			if ( checkboxes.length && checkboxes.filter( ':checked' ).length && checkboxes.length == checkboxes.filter( ':checked' ).length ) {
+				all_checkbox.attr( 'checked', true );
 			}
+			
+			if ( $( '#prflxtrflds-select-roles-editable, #prflxtrflds-select-roles-visibility' ).find( '.prflxtrflds-checkboxes-in-roles' ).not( ':disabled' ).length ) {
+				all_checkbox.attr( 'disabled', false );
+			}
+
+			all_checkbox.on( 'click', function() {
+				var $this = $( this ),
+					is_available_checkbox = 'prflxtrflds-select-all' == $this.attr( 'id' ),
+					is_checked = $this.is( ':checked' ),
+					equals_in_column = $this.closest( 'td' ).find( '.prflxtrflds-checkboxes-in-roles' ).filter( ':visible' );
+				
+				if ( is_available_checkbox ) {
+					if ( is_checked ) {
+						$( '.prflxtrflds-checkboxes-in-roles' ).not( '#prflxtrflds-select-roles .prflxtrflds-checkboxes-in-roles' ).attr( 'disabled', false );
+						$( '.prflxtrflds-checkboxes-select-all-in-roles' ).not( '#prflxtrflds-select-all' ).attr( 'disabled', false );
+					} else {
+						$( '.prflxtrflds-checkboxes-in-roles, .prflxtrflds-checkboxes-select-all-in-roles' )
+							.not( '#prflxtrflds-select-roles .prflxtrflds-checkboxes-in-roles' ).not( $this )
+							.attr( 'disabled', true ).attr( 'checked', false );
+					}
+				} else {
+					if ( $this.is( ':disabled' ) )
+						return false;
+				}
+
+				checkboxes.not( ':disabled' ).attr( 'checked', is_checked );
+			});
+		});
+
+		$( '.prflxtrflds-checkboxes-in-roles' ).on( 'click', function() {
+		 	var $this = $( this ),
+		 		is_available_checkboxes = $this.attr( 'name' ) == 'prflxtrflds_roles[]',
+		 		equals_in_column = $this.closest( 'td' ).find( '.prflxtrflds-checkboxes-in-roles' ).not( $this ).not( '.prflxtrflds-checkboxes-select-all-in-roles' ).filter( ':visible' ),
+		 		current_val = $this.val(),
+		 		all_checkbox = $this.closest( 'td' ).find( '.prflxtrflds-checkboxes-select-all-in-roles' );
+
+		 	if ( is_available_checkboxes ) {
+		 		var equals_in_row = $( '.prflxtrflds-checkboxes-in-roles' ).filter( function() {
+					return this.value == current_val;
+    			}).not( $this );
+
+		 		if ( $this.is( ':checked' ) ) {
+		 			equals_in_row.prop( 'disabled', false );
+		 			$( '.prflxtrflds-checkboxes-select-all-in-roles' ).attr( 'disabled', false );
+		 		} else {
+		 			if ( equals_in_column.is( ':checked' ) ) {
+		 				$( '#prflxtrflds-select-all-editable, #prflxtrflds-select-all-visibility' ).attr( 'checked', false );
+		 			} else {
+		 				$( '#prflxtrflds-select-all-editable, #prflxtrflds-select-all-visibility' ).attr( 'disabled', true );
+		 			}
+		 			equals_in_row.prop( 'disabled', true ).attr( 'checked', false );
+		 		}
+		 	} else {
+		 		if ( $this.is( ':disabled' ) ) {
+		 			return false;
+		 		}
+		 	}
+
+ 			if ( $this.is( ':checked' ) && equals_in_column.not( ':disabled' ).length == equals_in_column.filter( ':checked' ).length ) {
+ 				$this.closest( 'td' ).find( '.prflxtrflds-checkboxes-select-all-in-roles' ).attr( 'checked', true );
+ 			} else {
+ 				$this.closest( 'td' ).find( '.prflxtrflds-checkboxes-select-all-in-roles' ).attr( 'checked', false );
+	 		}
 		});
 	});
 })( jQuery );
