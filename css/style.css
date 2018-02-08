@@ -174,6 +174,24 @@ tr #prflxtrflds-caption-checkboxes th {
 .prflxtrflds-labels-for-mobiles {
 	display: none;
 }
+.login-action-register .prflxtrflds_number {
+	width: 100%;
+}
+.login-action-register label select {
+	width: 100%;
+}
+.no-js #prflxtrflds-div-select-all,
+.no-js #prflxtrflds-select-all-visibility,
+.no-js #prflxtrflds-select-all-editable,
+.no-js #prflxtrflds-select-all {
+	display: none;
+}
+
+@-moz-document url-prefix() {
+	.form-table td fieldset label {
+		line-height: 1.5;
+	}
+}
 
 @media screen and (min-width: 800px) {
 	.prflxtrflds-placeholder th,
@@ -194,40 +212,55 @@ tr #prflxtrflds-caption-checkboxes th {
 	.prflxtrflds-wplisttable-form .wp-list-table .is-expanded .column-user_id,
 	.prflxtrflds-wplisttable-form .fixed .column-user_id,
 	.prflxtrflds-hide-on-mobile {
-    	display: none !important;
-    }
-    .prflxtrflds-wplisttable-form .fixed .column-name .user_id {
+		display: none !important;
+	}
+	.prflxtrflds-wplisttable-form .fixed .column-name .user_id {
 		display: block;
 	}
 	.prflxtrflds-labels-for-mobiles {
 		display: inline;
 	}
+
+	.prflxtrflds_input_checkbox,
+	.prflxtrflds_input_radio {
+		height: 16px !important;
+		width: 14px !important;
+	}
+	input[type=radio]:checked:before {
+		margin: 3px 0 0 3px;
+		width: 8px;
+		height: 8px;
+	}
+	input[type=checkbox]:checked:before {
+		font: 400 26px/1 dashicons;
+		margin: -5px -7px;
+	}
 }
 @media screen and ( max-width: 780px ) {
-    .prflxtrflds-delete {
-        padding-right: 10%;
-        float: right;
-    }
+	.prflxtrflds-delete {
+		padding-right: 10%;
+		float: right;
+	}
 }
 @media screen and ( max-width: 620px ) {
-    .prflxtrflds-wplisttable-searchform td,
-    .prflxtrflds-wplisttable-searchform th,
-    .prflxtrflds-wplisttable-form td,
-    .prflxtrflds-wplisttable-form th,
-    .prflxtrflds-wplisttable-container td,
-    .prflxtrflds-wplisttable-container th {
-        /* Overwrite default styles */
-        word-wrap: break-word !important;
-    }
-    .prflxtrflds-delete {
-        padding-right: 8%;
-        float: right;
-    }
+	.prflxtrflds-wplisttable-searchform td,
+	.prflxtrflds-wplisttable-searchform th,
+	.prflxtrflds-wplisttable-form td,
+	.prflxtrflds-wplisttable-form th,
+	.prflxtrflds-wplisttable-container td,
+	.prflxtrflds-wplisttable-container th {
+		/* Overwrite default styles */
+		word-wrap: break-word !important;
+	}
+	.prflxtrflds-delete {
+		padding-right: 8%;
+		float: right;
+	}
 }
 @media screen and ( max-width: 450px ) {
-    .prflxtrflds-drag-values input {
-        /* Must overwrite wp styles to input */
-        max-width: 70% !important;
-        float: left;
-    }
+	.prflxtrflds-drag-values input {
+		/* Must overwrite wp styles to input */
+		max-width: 70% !important;
+		float: left;
+	}
 }

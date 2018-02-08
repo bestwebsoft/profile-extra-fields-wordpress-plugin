@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
-Tested up to: 4.7.5
-Stable tag: 1.0.8
+Tested up to: 4.9.4
+Stable tag: 1.0.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user role data
 	* Certain user data
 	* Current user data
+* Display profile extra fields in user registration form [NEW]
 * User data shortcode settings:
 	* Choose user data rotation on page or post
 		* Rows
@@ -145,6 +146,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.0.9 - 08.02.2018 =
+* NEW : Display profile extra fields in user registration form.
+
 = V1.0.8 - 25.05.2017 =
 * NEW : The ability to set readonly parameter to the field or make it invisible has been added.
 
@@ -178,6 +182,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.0.9 =
+* Functionality expanded.
 
 = V1.0.8 =
 * New feature added.
