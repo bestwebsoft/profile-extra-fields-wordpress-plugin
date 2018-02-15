@@ -146,7 +146,7 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
-= V1.0.9 - 08.02.2018 =
+= V1.0.9 - 15.02.2018 =
 * NEW : Display profile extra fields in user registration form.
 
 = V1.0.8 - 25.05.2017 =
@@ -184,7 +184,7 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 == Upgrade Notice ==
 
 = V1.0.9 =
-* Functionality expanded.
+* New feature added.
 
 = V1.0.8 =
 * New feature added.

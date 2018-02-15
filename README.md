@@ -16,6 +16,7 @@
 <li>Current user data</li>
 </ul>
 </li>
+<li>Display profile extra fields in user registration form [NEW]</li>
 <li>User data shortcode settings:
 <ul>
 <li>Choose user data rotation on page or post
