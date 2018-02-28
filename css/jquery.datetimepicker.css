@@ -518,12 +518,12 @@
 	background: #333 !important;
 }
 .xdsoft_datetimepicker .xdsoft_save_selected {
-    display: block;
-    border: 1px solid #dddddd !important;
-    margin-top: 5px;
-    width: 100%;
-    color: #454551;
-    font-size: 13px;
+	display: block;
+	border: 1px solid #dddddd !important;
+	margin-top: 5px;
+	width: 100%;
+	color: #454551;
+	font-size: 13px;
 }
 .xdsoft_datetimepicker .blue-gradient-button {
 	font-family: "museo-sans", "Book Antiqua", sans-serif;
@@ -550,19 +550,19 @@
 /* IE6-9 */
 }
 .xdsoft_datetimepicker .blue-gradient-button:hover, .xdsoft_datetimepicker .blue-gradient-button:focus, .xdsoft_datetimepicker .blue-gradient-button:hover span, .xdsoft_datetimepicker .blue-gradient-button:focus span {
-  color: #454551;
-  background: -moz-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f8fa), color-stop(73%, #FFF));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #f4f8fa 0%, #FFF 73%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f8fa', endColorstr='#FFF',GradientType=0 );
-  /* IE6-9 */
+	color: #454551;
+	background: -moz-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
+	/* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f8fa), color-stop(73%, #FFF));
+	/* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
+	/* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
+	/* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #f4f8fa 0%, #FFF 73%);
+	/* IE10+ */
+	background: linear-gradient(to bottom, #f4f8fa 0%, #FFF 73%);
+	/* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f8fa', endColorstr='#FFF',GradientType=0 );
+	/* IE6-9 */
 }

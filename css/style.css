@@ -21,7 +21,7 @@
 .prflxtrflds-wplisttable-fullwidth-container,
 .prflxtrflds-wplisttable-fullwidth-sort-container {
 	width: 100%;
-    padding: 10px;
+	padding: 10px;
 }
 .prflxtrflds-sortable-form {
 	float: left;
@@ -44,13 +44,13 @@
 	min-width: 220px;
 }
 .prflxtrflds-value-name {
-    float: left;
-    padding-left: 30px;
-    width: 177px;
+	float: left;
+	padding-left: 30px;
+	width: 177px;
 }
 .prflxtrflds-delete {
-    padding-left: 10px;
-    float: left;
+	padding-left: 10px;
+	float: left;
 }
 #prflxtrflds-add-field {
 	margin: 3px 25px;
@@ -65,7 +65,7 @@ input.prflxtrflds-value-delete-check {
 	display: none;
 }
 .prflxtrflds-value-delete input {
-    margin: 4px;
+	margin: 4px;
 }
 input.prflxtrflds-value-delete-check + label,
 input.prflxtrflds-value-delete-check + label {
@@ -89,29 +89,29 @@ input.prflxtrflds-value-delete-check + label::before {
 	display: none;
 }
 .prflxtrflds-wplisttable-searchform .search-box {
-    margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 .prflxtrflds-wplisttable-fullwidth-container .search-box {
-    bottom: -15px;
+	bottom: -15px;
 }
 .prflxtrflds-drag-values input {
-    /* Must overwrite wp styles to input */
-    max-width: 80% !important;
-    float: left;
+	/* Must overwrite wp styles to input */
+	max-width: 80% !important;
+	float: left;
 }
 .prflxtrflds-date-format input.small-text,
 .prflxtrflds-time-format input.small-text {
-    width: 56px;
+	width: 56px;
 }
 .prflxtrflds-drag-values {
-    clear: both;
+	clear: both;
 }
 .prflxtrflds-drag-field {
-    float: left;
-    padding: 10px;
+	float: left;
+	padding: 10px;
 }
 .prflxtrflds-add-button-container {
-    clear: both;
+	clear: both;
 }
 /* Drag n drop styles */
 .prflxtrflds-wplisttable-fullwidth-sort-container tr.ui-sortable-helper * {
@@ -138,7 +138,7 @@ input.prflxtrflds-value-delete-check + label::before {
 	clear: both;
 }
 #prflxtrflds-role {
-    margin-bottom: 3px;
+	margin-bottom: 3px;
 }
 #prflxtrflds-caption-checkboxes th {
 	width: 0;

@@ -16,7 +16,7 @@
 <li>Current user data</li>
 </ul>
 </li>
-<li>Display profile extra fields in user registration form [NEW]</li>
+<li>Display profile extra fields in user registration form</li>
 <li>User data shortcode settings:
 <ul>
 <li>Choose user data rotation on page or post
@@ -33,12 +33,14 @@
 </li>
 <li>Show empty fields if user missed them</li>
 <li>Show user ID in the table</li>
+<li>Display the shortcode with the field value [NEW]</li>
 <li>Customize validation message for:
 <ul>
 <li>Empty fields</li>
 <li>Unavailable fields</li>
 </ul>
 </li>
+<li>Enable or disable debug mode [NEW]</li>
 </ul>
 </li>
 <li>Choose extra field type:

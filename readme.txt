@@ -4,7 +4,7 @@ Donate link: https://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
 Tested up to: 4.9.4
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user role data
 	* Certain user data
 	* Current user data
-* Display profile extra fields in user registration form [NEW]
+* Display profile extra fields in user registration form
 * User data shortcode settings:
 	* Choose user data rotation on page or post
 		* Rows
@@ -37,9 +37,11 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 		* DESC (descending order from highest to lowest values)
 	* Show empty fields if user missed them
 	* Show user ID in the table
+	* Display the shortcode with the field value [NEW]
 	* Customize validation message for:
 		* Empty fields
 		* Unavailable fields
+	* Enable or disable debug mode [NEW]
 * Choose extra field type:
 	* Text
 	* Checkbox
@@ -89,7 +91,7 @@ Some of these translations are not complete. We are constantly adding new featur
 * [Updater](https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd) - Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.
 * [User Role](https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8) - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.
 
-== Installation == 
+== Installation ==
 
 1. Upload the `profile-extra-fields` folder to `/wp-content/plugins/` directory.
 2. Activate the plugin using the 'Plugins' menu in your WordPress admin panel.
@@ -135,8 +137,8 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 1. Viewing user data via shortcode.
 2. Field Edit Page.
 3. Format setting for the date, time or datetime type fields.
-4. Available values setting for the Radiobutton, Drop down list or Checkbox type fields.
-5. Pattern setting for the phone type field.
+4. Available values setting for the Radio button, Drop down list or Checkbox type fields.
+5. Pattern setting for the Phone number type field.
 6. Plugin Homepage with the list of created Extra Fields.
 7. Viewing user information on the plugin page.
 8. Additional fields on the user's profile page.
@@ -146,7 +148,11 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
-= V1.0.9 - 15.02.2018 =
+= V1.1.0 - 28.02.2018 =
+* NEW : Ability to display the shortcode with the field value has been added.
+* NEW : Ability to enable or disable debug mode has been added.
+
+= V1.0.9 - 08.02.2018 =
 * NEW : Display profile extra fields in user registration form.
 
 = V1.0.8 - 25.05.2017 =
@@ -178,10 +184,13 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : We added ability to restore settings to defaults.
 * Bugfix : A bug with the sorting was fixed.
 
-= V1.0.0 - 18.08.2015 = 
+= V1.0.0 - 18.08.2015 =
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.1.0 =
+* New feature added.
 
 = V1.0.9 =
 * New feature added.
@@ -207,7 +216,7 @@ Ability to add custom styles.
 = V1.0.2 =
 The bug with sorting on mobile devices was fixed. The bug with plugin menu duplicating was fixed.
 
-= V1.0.1 = 
+= V1.0.1 =
 German language file is added to the plugin. We added ability to restore settings to defaults. A bug with the sorting was fixed.
 
 = V1.0.0 =
