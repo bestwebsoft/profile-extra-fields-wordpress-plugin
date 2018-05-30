@@ -21,7 +21,6 @@
 .prflxtrflds-wplisttable-fullwidth-container,
 .prflxtrflds-wplisttable-fullwidth-sort-container {
 	width: 100%;
-	padding: 10px;
 }
 .prflxtrflds-sortable-form {
 	float: left;
@@ -87,6 +86,14 @@ input.prflxtrflds-value-delete-check + label::before {
 }
 .prflxtrflds-wplisttable-form .fixed .column-name .user_id {
 	display: none;
+}
+.prflxtrflds-export-table th {
+	width: 81px;
+	padding-bottom: 0;
+}
+.prflxtrflds-export-table td {
+	padding-bottom: 0;
+	padding-right: 0;
 }
 .prflxtrflds-wplisttable-searchform .search-box {
 	margin-bottom: 5px;
@@ -209,8 +216,6 @@ tr #prflxtrflds-caption-checkboxes th {
 }
 
 @media screen and (max-width: 782px) {
-	.prflxtrflds-wplisttable-form .wp-list-table .is-expanded .column-user_id,
-	.prflxtrflds-wplisttable-form .fixed .column-user_id,
 	.prflxtrflds-hide-on-mobile {
 		display: none !important;
 	}
@@ -225,6 +230,9 @@ tr #prflxtrflds-caption-checkboxes th {
 	.prflxtrflds_input_radio {
 		height: 16px !important;
 		width: 14px !important;
+	}
+	select[name=prflxtrflds_format_export] {
+		margin-bottom: 10px;
 	}
 	input[type=radio]:checked:before {
 		margin: 3px 0 0 3px;

@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
-Tested up to: 4.9.4
-Stable tag: 1.1.0
+Tested up to: 4.9.6
+Stable tag: 1.1.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -28,6 +28,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user data
 	* Current user data
 * Display profile extra fields in user registration form
+* Export all user data to a CSV file [NEW]
 * User data shortcode settings:
 	* Choose user data rotation on page or post
 		* Rows
@@ -37,11 +38,11 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 		* DESC (descending order from highest to lowest values)
 	* Show empty fields if user missed them
 	* Show user ID in the table
-	* Display the shortcode with the field value [NEW]
+	* Display the shortcode with the field value
 	* Customize validation message for:
 		* Empty fields
 		* Unavailable fields
-	* Enable or disable debug mode [NEW]
+	* Enable or disable debug mode
 * Choose extra field type:
 	* Text
 	* Checkbox
@@ -148,6 +149,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.1.1 - 30.05.2018 =
+* NEW : Ability to export all user data to a CSV file has been added.
+
 = V1.1.0 - 28.02.2018 =
 * NEW : Ability to display the shortcode with the field value has been added.
 * NEW : Ability to enable or disable debug mode has been added.
@@ -188,6 +192,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.1.1 =
+* New features added.
 
 = V1.1.0 =
 * New feature added.
