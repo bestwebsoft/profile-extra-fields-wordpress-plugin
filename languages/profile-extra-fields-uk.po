@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Profile Extra Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-15 12:08+0300\n"
-"PO-Revision-Date: 2018-05-15 12:09+0300\n"
+"POT-Creation-Date: 2018-07-09 13:32+0300\n"
+"PO-Revision-Date: 2018-07-09 13:32+0300\n"
 "Last-Translator: bestwebsoft.com <plugins@bestwebsoft.com>\n"
 "Language-Team: bestwebsoft.com <wp_plugins@bestwebsoft.com>\n"
 "Language: uk_UA\n"
@@ -70,7 +70,7 @@ msgstr "Н/Д"
 msgid "Edit Field"
 msgstr "Редагування поля"
 
-#: profile-extra-fields.php:557 profile-extra-fields.php:2003
+#: profile-extra-fields.php:557 profile-extra-fields.php:2002
 msgid "Add New Field"
 msgstr "Додати нове поле"
 
@@ -108,8 +108,8 @@ msgid "The field has been created."
 msgstr "Поле створено."
 
 #: profile-extra-fields.php:789 profile-extra-fields.php:1098
-#: profile-extra-fields.php:1448 profile-extra-fields.php:2362
-#: profile-extra-fields.php:2489
+#: profile-extra-fields.php:1447 profile-extra-fields.php:2375
+#: profile-extra-fields.php:2502
 msgid "Name"
 msgstr "Ім’я"
 
@@ -191,7 +191,7 @@ msgid "Click save button to add more values"
 msgstr "Щоб додати більше значень, натисніть кнопку \"Зберегти\""
 
 #: profile-extra-fields.php:899 profile-extra-fields.php:1099
-#: profile-extra-fields.php:1801
+#: profile-extra-fields.php:1800
 msgid "Description"
 msgstr "Опис"
 
@@ -260,7 +260,7 @@ msgstr "Показувати це поле в формі реєстрації к
 msgid "Field Order"
 msgstr "Порядок поля"
 
-#: profile-extra-fields.php:1033 profile-extra-fields.php:2146
+#: profile-extra-fields.php:1033 profile-extra-fields.php:2157
 msgid "Save Changes"
 msgstr "Зберегти зміни"
 
@@ -288,11 +288,11 @@ msgstr "Видалити назавжди"
 msgid "All"
 msgstr "Всі"
 
-#: profile-extra-fields.php:1201 profile-extra-fields.php:1583
+#: profile-extra-fields.php:1201 profile-extra-fields.php:1582
 msgid "All roles"
 msgstr "Всі ролі"
 
-#: profile-extra-fields.php:1210 profile-extra-fields.php:1592
+#: profile-extra-fields.php:1210 profile-extra-fields.php:1591
 msgid "Filter"
 msgstr "Фільтр"
 
@@ -306,83 +306,83 @@ msgstr "Так"
 msgid "No"
 msgstr "Ні"
 
-#: profile-extra-fields.php:1445 profile-extra-fields.php:1550
-#: profile-extra-fields.php:2359 profile-extra-fields.php:2411
-#: profile-extra-fields.php:2467 profile-extra-fields.php:2554
+#: profile-extra-fields.php:1444 profile-extra-fields.php:1549
+#: profile-extra-fields.php:2372 profile-extra-fields.php:2424
+#: profile-extra-fields.php:2480 profile-extra-fields.php:2567
 msgid "User ID"
 msgstr "ID користувача"
 
-#: profile-extra-fields.php:1446 profile-extra-fields.php:2360
-#: profile-extra-fields.php:2413 profile-extra-fields.php:2474
-#: profile-extra-fields.php:2561
+#: profile-extra-fields.php:1445 profile-extra-fields.php:2104
+#: profile-extra-fields.php:2373 profile-extra-fields.php:2426
+#: profile-extra-fields.php:2487 profile-extra-fields.php:2574
 msgid "Username"
 msgstr "Ім’я користувача"
 
-#: profile-extra-fields.php:1447 profile-extra-fields.php:2361
-#: profile-extra-fields.php:2481
+#: profile-extra-fields.php:1446 profile-extra-fields.php:2374
+#: profile-extra-fields.php:2494
 msgid "User role"
 msgstr "Роль користувача"
 
-#: profile-extra-fields.php:1449 profile-extra-fields.php:2363
-#: profile-extra-fields.php:2497
+#: profile-extra-fields.php:1448 profile-extra-fields.php:2376
+#: profile-extra-fields.php:2510
 msgid "Email"
 msgstr "Емейл"
 
-#: profile-extra-fields.php:1450 profile-extra-fields.php:2364
-#: profile-extra-fields.php:2505
+#: profile-extra-fields.php:1449 profile-extra-fields.php:2377
+#: profile-extra-fields.php:2518
 msgid "Posts"
 msgstr "Пости"
 
-#: profile-extra-fields.php:1548
+#: profile-extra-fields.php:1547
 msgid "Edit user"
 msgstr "Редагувати користувача"
 
-#: profile-extra-fields.php:1800
+#: profile-extra-fields.php:1799
 msgid "Field Name"
 msgstr "Ім'я поля"
 
-#: profile-extra-fields.php:1802
+#: profile-extra-fields.php:1801
 msgid "Show This Field"
 msgstr "Відображати це поле"
 
-#: profile-extra-fields.php:1803
+#: profile-extra-fields.php:1802
 msgid "Show Only If the Next Value is Selected"
 msgstr "Показувати тільки якщо вибрано значення"
 
-#: profile-extra-fields.php:1836
+#: profile-extra-fields.php:1835
 msgid "Show despite the value"
 msgstr "Показувати при будь-якому значенні"
 
-#: profile-extra-fields.php:1974
+#: profile-extra-fields.php:1975
 msgid "Settings saved"
 msgstr "Налаштування збережено"
 
-#: profile-extra-fields.php:1980
+#: profile-extra-fields.php:1981
 msgid "All plugin settings were restored."
 msgstr "Налаштування плагіну відновлені."
 
-#: profile-extra-fields.php:1989
+#: profile-extra-fields.php:1988
 msgid "Extra Fields"
 msgstr "Додаткові поля"
 
-#: profile-extra-fields.php:1990
+#: profile-extra-fields.php:1989
 msgid "User Data"
 msgstr "Дані користувачів"
 
-#: profile-extra-fields.php:1992
+#: profile-extra-fields.php:1991
 msgid "Shortcode Settings"
 msgstr "Налаштування шорткода"
 
-#: profile-extra-fields.php:1994
+#: profile-extra-fields.php:1993
 msgid "Custom Code"
 msgstr "Користувацький код"
 
-#: profile-extra-fields.php:2011
+#: profile-extra-fields.php:2010
 msgid ""
 "Drag each item into the order you would like to display it on the user page"
 msgstr "Перетягувати поля, щоб задати бажаний порядок відображення поля"
 
-#: profile-extra-fields.php:2017 profile-extra-fields.php:2049
+#: profile-extra-fields.php:2016 profile-extra-fields.php:2048
 msgid "Search"
 msgstr "Пошук"
 
@@ -394,13 +394,13 @@ msgstr "Експорт даних"
 msgid "Data layout"
 msgstr "Розташування даних"
 
-#: profile-extra-fields.php:2034 profile-extra-fields.php:2120
-#: profile-extra-fields.php:3103
+#: profile-extra-fields.php:2034 profile-extra-fields.php:2131
+#: profile-extra-fields.php:3112
 msgid "Columns"
 msgstr "Стовпці "
 
-#: profile-extra-fields.php:2035 profile-extra-fields.php:2121
-#: profile-extra-fields.php:3104
+#: profile-extra-fields.php:2035 profile-extra-fields.php:2132
+#: profile-extra-fields.php:3113
 msgid "Rows"
 msgstr "Рядки"
 
@@ -408,7 +408,7 @@ msgstr "Рядки"
 msgid "Export"
 msgstr "Експорт"
 
-#: profile-extra-fields.php:2065
+#: profile-extra-fields.php:2063
 #, php-format
 msgid ""
 "If you would like to add user data to your page or post, please use %s button"
@@ -416,7 +416,7 @@ msgstr ""
 "Якщо ви хочете додати дані користувачів на вашу сторінку або пост, будь "
 "ласка, використовуйте кнопку %s"
 
-#: profile-extra-fields.php:2070
+#: profile-extra-fields.php:2068
 #, php-format
 msgid ""
 "You can add user data to your page or post by clicking on %s button in the "
@@ -429,48 +429,56 @@ msgstr ""
 "відображається, будь ласка, використовуйте шорткод% s, в якому ви можете "
 "вказати розташування даних (колонки або рядка), роль і ID користувача"
 
-#: profile-extra-fields.php:2081
+#: profile-extra-fields.php:2079
 msgid "Message for Empty Field"
 msgstr "Повідомлення для порожнього поля"
 
-#: profile-extra-fields.php:2087
+#: profile-extra-fields.php:2085
 msgid "Message for the Field Unavaliable for the User"
 msgstr "Повідомлення для недоступного користувачеві поля"
 
-#: profile-extra-fields.php:2093
+#: profile-extra-fields.php:2091
 msgid "Sort by User Name"
 msgstr "Сортувати по імені користувача"
 
-#: profile-extra-fields.php:2096
+#: profile-extra-fields.php:2094
 msgid "ASC"
 msgstr "За збільшенням"
 
-#: profile-extra-fields.php:2097
+#: profile-extra-fields.php:2095
 msgid "DESC"
 msgstr "За зменшенням"
 
-#: profile-extra-fields.php:2102
+#: profile-extra-fields.php:2100
+msgid "Display Name"
+msgstr "Відображення імені"
+
+#: profile-extra-fields.php:2107
+msgid "Public Name"
+msgstr "Публічне ім'я"
+
+#: profile-extra-fields.php:2113
 msgid "Show Empty Fields"
 msgstr "Відображати порожні поля"
 
-#: profile-extra-fields.php:2106
+#: profile-extra-fields.php:2117
 msgid "Enable to show the field if the value is not filled by a user."
 msgstr ""
 "Відзначте, щоб відображати поля, навіть якщо вони не заповнені користувачем."
 
-#: profile-extra-fields.php:2111
+#: profile-extra-fields.php:2122
 msgid "Show User ID"
 msgstr "Відображати ID користувачів"
 
-#: profile-extra-fields.php:2117 profile-extra-fields.php:3101
+#: profile-extra-fields.php:2128 profile-extra-fields.php:3110
 msgid "Data Rotation"
 msgstr "Розташування даних"
 
-#: profile-extra-fields.php:2126
+#: profile-extra-fields.php:2137
 msgid "Debug Mode"
 msgstr "Режим налагодження"
 
-#: profile-extra-fields.php:2130
+#: profile-extra-fields.php:2141
 msgid ""
 "Enable to display error messages when shortcode formation is failed (i.e. "
 "there are no users for the selected roles)."
@@ -478,111 +486,119 @@ msgstr ""
 "Увімкніть, для відображення повідомлень о помилках при формуванні шорткоду "
 "(наприклад, не існує користувачів для обраних ролей)."
 
-#: profile-extra-fields.php:2189 profile-extra-fields.php:2640
+#: profile-extra-fields.php:2201 profile-extra-fields.php:2653
 #, php-format
 msgid "User with entered id(id=%s) does not exist!"
 msgstr "Користувач з введенним id(id =%s) не існує!"
 
-#: profile-extra-fields.php:2211
+#: profile-extra-fields.php:2223
 #, php-format
 msgid "There are no users for the selected roles ( %s )"
 msgstr "Не існує користувачів для обраних ролей (% s)"
 
-#: profile-extra-fields.php:2218
+#: profile-extra-fields.php:2230
 #, php-format
 msgid "Unsupported shortcode option(display=%s)"
 msgstr "Непідтримуване значення шорткоду(display=%s)"
 
-#: profile-extra-fields.php:2227 profile-extra-fields.php:2662
+#: profile-extra-fields.php:2239 profile-extra-fields.php:2675
 msgid "Shortcode output error"
 msgstr "Помилка виводу шорткоду"
 
-#: profile-extra-fields.php:2610
+#: profile-extra-fields.php:2623
 msgid "No data for current shortcode settings"
 msgstr "Немає даних для поточних налаштувань шорткода"
 
-#: profile-extra-fields.php:2647
+#: profile-extra-fields.php:2660
 #, php-format
 msgid "Field with entered id(id=%s) does not exist!"
 msgstr "Поле з введенним id(id =%s) не існує!"
 
-#: profile-extra-fields.php:2761
+#: profile-extra-fields.php:2774
 msgid "Extra Profile Information"
 msgstr "Додаткова інформація профілю"
 
-#: profile-extra-fields.php:2779 profile-extra-fields.php:3731
+#: profile-extra-fields.php:2789 profile-extra-fields.php:3787
 msgid "required"
 msgstr "обов’язкове"
 
-#: profile-extra-fields.php:2875 profile-extra-fields.php:3882
+#: profile-extra-fields.php:2885 profile-extra-fields.php:3938
 #, php-format
 msgid "Required field %s is not filled. Data was not saved!"
 msgstr "Обов’язкове поле %s не заповнено. Дані не збережено!"
 
-#: profile-extra-fields.php:2884 profile-extra-fields.php:2906
-#: profile-extra-fields.php:2908 profile-extra-fields.php:3891
-#: profile-extra-fields.php:3913 profile-extra-fields.php:3915
+#: profile-extra-fields.php:2894 profile-extra-fields.php:2916
+#: profile-extra-fields.php:2918 profile-extra-fields.php:3947
+#: profile-extra-fields.php:3969 profile-extra-fields.php:3971
 #, php-format
 msgid "Field %s does not match %s. Data was not saved!"
 msgstr "Обов'язкове поле% s не відповідає шаблоном% s. Дані ще не введено!"
 
-#: profile-extra-fields.php:3086
+#: profile-extra-fields.php:3095
 msgid "Display all users data"
 msgstr "Відображати дані всіх користувачів"
 
-#: profile-extra-fields.php:3087 profile-extra-fields.php:3129
+#: profile-extra-fields.php:3096 profile-extra-fields.php:3149
 msgid "Display logged in user data"
 msgstr "Відображати дані залогіненого користувача"
 
-#: profile-extra-fields.php:3088
+#: profile-extra-fields.php:3097
 msgid "Specify a user role"
 msgstr "Вказати роль користувача"
 
-#: profile-extra-fields.php:3089 profile-extra-fields.php:3130
+#: profile-extra-fields.php:3098 profile-extra-fields.php:3150
 msgid "Specify a user"
 msgstr "Вказати користувача"
 
-#: profile-extra-fields.php:3093
+#: profile-extra-fields.php:3102
 msgid "Select Shortcode"
 msgstr "Тип шорткоду"
 
-#: profile-extra-fields.php:3095
+#: profile-extra-fields.php:3104
 msgid "Table"
 msgstr "Таблиця"
 
-#: profile-extra-fields.php:3096
+#: profile-extra-fields.php:3105
 msgid "Field Value"
 msgstr "Значення поля"
 
-#: profile-extra-fields.php:3108
+#: profile-extra-fields.php:3117
 msgid "Users"
 msgstr "Користувачі"
 
-#: profile-extra-fields.php:3123
+#: profile-extra-fields.php:3132 profile-extra-fields.php:3143
 msgid "Field"
 msgstr "Поле"
 
-#: profile-extra-fields.php:3127
+#: profile-extra-fields.php:3134
+msgid "All Fields"
+msgstr "Всі поля"
+
+#: profile-extra-fields.php:3135
+msgid "Select Field"
+msgstr "Виберіть поле"
+
+#: profile-extra-fields.php:3147
 msgid "User"
 msgstr "Користувач"
 
-#: profile-extra-fields.php:3310 profile-extra-fields.php:3324
+#: profile-extra-fields.php:3365 profile-extra-fields.php:3379
 msgid "Settings"
 msgstr "Налаштування"
 
-#: profile-extra-fields.php:3326
+#: profile-extra-fields.php:3381
 msgid "FAQ"
 msgstr "FAQ"
 
-#: profile-extra-fields.php:3327
+#: profile-extra-fields.php:3382
 msgid "Support"
 msgstr "Підтримка"
 
-#: profile-extra-fields.php:3856
+#: profile-extra-fields.php:3912
 msgid "Please fill all required fields."
 msgstr "Будь ласка, заповніть всі обов'язкові поля."
 
-#: profile-extra-fields.php:3857
+#: profile-extra-fields.php:3913
 msgid "The following fields are required"
 msgstr "Наступні поля є обов'язковими"
 

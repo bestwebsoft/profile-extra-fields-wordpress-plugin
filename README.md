@@ -17,7 +17,8 @@
 </ul>
 </li>
 <li>Display profile extra fields in user registration form</li>
-<li>Export all user data to a CSV file [NEW]</li>
+<li>Display certain fields via the shortcode [NEW]</li>
+<li>Export all user data to a CSV file </li>
 <li>User data shortcode settings:
 <ul>
 <li>Choose user data rotation on page or post
