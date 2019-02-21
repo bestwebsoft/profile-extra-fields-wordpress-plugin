@@ -1,24 +1,24 @@
 === Profile Extra Fields by BestWebSoft ===
 Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
-Tags: add fields, add extra fields, add additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
+Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
-Tested up to: 4.9.8
-Stable tag: 1.1.2
+Tested up to: 5.0.1
+Stable tag: 1.1.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values.
+Add extra fields to WooCommerce and default WordPress user profile. The easiest way to create and manage additional custom values.
 
 == Description ==
 
-Simple plugin which helps to add additional fields to the WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.
+Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields. 
 
 Easily add and display extra information about WordPress users!
 
 https://www.youtube.com/watch?v=O424Kpnffmo
 
-= Features =
+= Free Features =
 
 * Add unlimited number of extra fields
 * Use shortcode to display user data on your page or post:
@@ -28,7 +28,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user data
 	* Current user data
 * Display profile extra fields in user registration form
-* Display certain fields via the shortcode [NEW]
+* Display certain fields via the shortcode
 * Export all user data to a CSV file 
 * User data shortcode settings:
 	* Choose user data rotation on page or post
@@ -70,11 +70,23 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 * Detailed step-by-step documentation and videos
 * Multilingual and RTL ready
 
+> **Pro Features**
+>
+> All features from Free version included plus:
+>
+> * Compatible with WooCommerce:[NEW]
+>   * Registration form
+>   * Checkout billing form
+> * Get answer to your question within one business day ([Support Policy](https://bestwebsoft.com/support-policy/))
+>
+> [Upgrade to Pro Now](https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d)
+
 If you have a feature suggestion or idea you'd like to see in the plugin, we'd love to hear about it! [Suggest a Feature](https://support.bestwebsoft.com/hc/en-us/requests/new)
 
 = Documentation & Videos =
 
 * [[Doc] Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ)
+* [[Doc] Purchase](https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI)
 
 = Help & Support =
 
@@ -150,6 +162,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.1.3 - 21.02.2019 =
+* PRO: Ability to display certain fields in Woocommerce has been added.
+
 = V1.1.2 - 18.10.2018 =
 * NEW : Ability to display Username or Public name has been added.
 * NEW : Ability to display certain fields via the shortcode has been added.
@@ -197,6 +212,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.1.3 =
+* New features added.
 
 = V1.1.2 =
 * New features added.

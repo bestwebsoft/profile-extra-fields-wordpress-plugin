@@ -1,10 +1,10 @@
 <a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
 ========================
 
-<p>Simple plugin which helps to add additional fields to the WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
+<p>Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
 <p>Easily add and display extra information about WordPress users!</p>
 <p><span class="embed-youtube" style="text-align:center; display: block;"></span></p>
-<h4>Features</h4>
+<h4>Free Features</h4>
 <ul>
 <li>Add unlimited number of extra fields</li>
 <li>Use shortcode to display user data on your page or post:
@@ -17,7 +17,7 @@
 </ul>
 </li>
 <li>Display profile extra fields in user registration form</li>
-<li>Display certain fields via the shortcode [NEW]</li>
+<li>Display certain fields via the shortcode</li>
 <li>Export all user data to a CSV file </li>
 <li>User data shortcode settings:
 <ul>
@@ -77,10 +77,25 @@
 <li>Detailed step-by-step documentation and videos</li>
 <li>Multilingual and RTL ready</li>
 </ul>
+<blockquote>
+<p><strong>Pro Features</strong></p>
+<p>All features from Free version included plus:</p>
+<ul>
+<li>Compatible with WooCommerce:[NEW]
+<ul>
+<li>Registration form</li>
+<li>Checkout billing form</li>
+</ul>
+</li>
+<li>Get answer to your question within one business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow">Support Policy</a>)</li>
+</ul>
+<p><a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d" rel="nofollow">Upgrade to Pro Now</a></p>
+</blockquote>
 <p>If you have a feature suggestion or idea you&#8217;d like to see in the plugin, we&#8217;d love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow">Suggest a Feature</a></p>
 <h4>Documentation &amp; Videos</h4>
 <ul>
 <li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ" rel="nofollow">[Doc] Installation</a></li>
+<li><a href="https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI" rel="nofollow">[Doc] Purchase</a></li>
 </ul>
 <h4>Help &amp; Support</h4>
 <p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow">https://support.bestwebsoft.com/</a></p>

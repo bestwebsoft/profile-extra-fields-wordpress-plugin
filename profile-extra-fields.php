@@ -6,12 +6,12 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.1.2
+Version: 1.1.3
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
 
-/*  @ Copyright 2018  BestWebSoft  ( https://support.bestwebsoft.com )
+/*  @ Copyright 2019  BestWebSoft  ( https://support.bestwebsoft.com )
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -428,7 +428,7 @@ if ( ! function_exists( 'prflxtrflds_update_user_roles' ) ) {
 /* Edit or create new field */
 if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 	function prflxtrflds_edit_field() {
-		global $wpdb;
+		global $wpdb, $prflxtrflds_options,$wp_version, $prflxtrflds_plugin_info;
 		$prflxtrflds_field_type_id = prflxtrflds_get_field_type_id();
 		$error = '';
 		$field_name = $description = $field_maxlength = '';
@@ -439,6 +439,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 		$field_type_id = '1';
 		$field_date_format = get_option( 'date_format' );
 		$field_time_format = get_option( 'time_format' );
+		$plugin_basename = plugin_basename( __FILE__ );
 
 		/* Get field id with post or get */
 		$field_id = isset( $_REQUEST['prflxtrflds_field_id'] ) ? absint( $_REQUEST['prflxtrflds_field_id'] ) : NULL;
@@ -451,6 +452,13 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			$checked_editables		= isset( $_POST['prflxtrflds_editable'] ) ? array_filter( array_map( 'absint', ( array )$_POST['prflxtrflds_editable'] ) ) : array(); /* is array */
 			$checked_visibilities	= isset( $_POST['prflxtrflds_visibility'] ) ? array_filter( array_map( 'absint', ( array )$_POST['prflxtrflds_visibility'] ) ) : array(); /* is array */
 			$checked_roles			= array();
+			/*BWS??*/
+			if ( isset( $_POST['bws_hide_premium_options'] ) /*&& check_admin_referer( $plugin_basename, 'prflxtrflds_nonce_name' ) */) {
+				$hide_result  = bws_hide_premium_options( $prflxtrflds_options );
+				$prflxtrflds_options = $hide_result['options'];
+				$message      = $hide_result['message'];
+				update_option( 'prflxtrflds_options', $prflxtrflds_options );
+			}
 
 			foreach ( $checked_roles_data as $role_id ) {
 				$editable = in_array( $role_id, $checked_editables ) ? 1 : 0;
@@ -801,7 +809,11 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 				}
 			}
 		}
+		if ( ! isset( $prflxtrflds_options ) || empty( $prflxtrflds_options ) ) {
+			$prflxtrflds_options = prflxtrflds_get_options_default();
+		}
 
+		$bws_hide_premium_options_check = bws_hide_premium_options_check( $prflxtrflds_options );
 		/* Update roles id */
 		prflxtrflds_update_roles_id();
 		/* Get all avaliable roles */
@@ -1055,6 +1067,52 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 							</td>
 						</tr>
 					<?php }?>
+				</tbody>
+			</table>
+					<?php /*BWS??*/
+					if ( ! $bws_hide_premium_options_check ) { ?>
+						<div class="bws_pro_version_bloc">
+							<div class="bws_pro_version_table_bloc">
+								<button type="submit" name="bws_hide_premium_options" class="notice-dismiss bws_hide_premium_options" title="<?php _e( 'Close', 'contact-form-to-db' ); ?>"></button>
+								<div class="bws_table_bg"></div>
+								<table class="form-table bws_pro_version">
+									<tr valign="top">
+										<th scope="row"><label for="prflxtrflds_show_woocommerce"><?php _e( 'WooСommerce', 'profile-extra-fields' ); ?></label></th>
+										<td>
+											<label>
+												<input disabled="disabled" type="checkbox" id="prflxtrflds-show-woocommerce" name="prflxtrflds_show_woocommerce" value="1" />
+												<span class="bws_info"><?php _e( 'Enable to display this field for WooCommerce.', 'profile-extra-fields' ); ?></span>
+											</label>
+										</td>
+									</tr>
+									<tr valign="top">
+										<th ><label for="prflxtrflds_checkout_woocommerce"><?php _e( 'WooСommerce Сheckout Form', 'profile-extra-fields' ); ?><</label></th>
+										<td>
+											<label>
+												<input disabled="disabled" type="checkbox" id="prflxtrflds-checkout-woocommerce" name="prflxtrflds_checkout_woocommerce" value="1" />
+												<span class="bws_info"><?php _e( 'Enable to display this field for WooCommerce Сheckout Form.', 'profile-extra-fields' ); ?></span>
+											</label>
+										</td>
+									</tr>
+									<tr valign="top">
+										<th scope="row"><label for="prflxtrflds_registration_woocommerce"><?php _e( 'WooСommerce Registration Form' , 'profile-extra-fields-pro' ); ?></label></th>
+										<td>
+											<label>
+												<input disabled="disabled" type="checkbox" id="prflxtrflds-registration-woocommerce" name="prflxtrflds_registration_woocommerce" value="1" />
+												<span class="bws_info"><?php _e( 'Enable to display this field for WooCommerce Registration Form.', 'profile-extra-fields' ); ?></span>
+											</label>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="bws_pro_version_tooltip">
+								<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/contact-form-to-db/?k=c37eed44c2fe607f3400914345cbdc8a&pn=91&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Contact Form to DB Pro"><?php _e( 'Learn More', 'contact-form-to-db' ); ?></a>
+								<div class="clear"></div>
+							</div>
+						</div>
+					<?php } ?>
+			<table class="form-table">
+				<tbody>
 					<tr>
 						<th><?php _e( 'Field Order', 'profile-extra-fields' ); ?></th>
 						<td>
@@ -1993,7 +2051,7 @@ if ( ! function_exists( 'prflxtrflds_remove_field' ) ) {
 /* settings page */
 if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 	function prflxtrflds_settings_page() {
-		global $wpdb, $prflxtrflds_options, $prflxtrflds_plugin_info;
+		global $wpdb, $prflxtrflds_options, $prflxtrflds_plugin_info, $wp_version;
 		$plugin_basename = plugin_basename( __FILE__ );
 		/* Remove slug */
 		if ( isset( $_GET['remove'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'prflxtrflds_nonce_name' ) ) {
@@ -2005,6 +2063,14 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 
 		/* Get all available fields and print it */
 		$available_fields = $wpdb->get_results( "SELECT `field_id` FROM `" . $wpdb->base_prefix . "prflxtrflds_fields_id` LIMIT 1;", ARRAY_A );
+		/*BWS???*/
+		if ( isset( $_POST['bws_hide_premium_options'] ) /*&& check_admin_referer( $plugin_basename, 'prflxtrflds_nonce_name' ) */) {
+			$hide_result  = bws_hide_premium_options( $prflxtrflds_options );
+			$prflxtrflds_options = $hide_result['options'];
+			$message      = $hide_result['message'];
+			update_option( 'prflxtrflds_options', $prflxtrflds_options );
+		}
+
 
 		if ( isset( $_GET['tab-action'] ) && 'shortcode' == $_GET['tab-action'] ) {
 			if ( 0 < sizeof( $available_fields ) ) {
@@ -2037,16 +2103,29 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 					$message = __( 'All plugin settings were restored.', 'profile-extra-fields' );
 				}
 			}
+		}
+		$bws_hide_premium_options_check = bws_hide_premium_options_check( $prflxtrflds_options );
+		/* GO PRO */
+		if ( isset( $_GET['action'] ) && 'go_pro' == $_GET['action'] ) {
+			$go_pro_result = bws_go_pro_tab_check( $plugin_basename, 'prflxtrflds_options' );
+			if ( ! empty( $go_pro_result['error'] ) )
+				$error = $go_pro_result['error'];
+			elseif ( ! empty( $go_pro_result['message'] ) )
+				$message = $go_pro_result['message'];
 		} ?>
 		<div class="wrap">
 			<h1>Profile Extra Fields</h1>
 			<h2 class="nav-tab-wrapper">
 				<a class="nav-tab<?php if ( ! isset( $_GET['tab-action'] ) ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php"><?php _e( 'Extra Fields', 'profile-extra-fields' ); ?></a>
+				<?php if ( ! $bws_hide_premium_options_check  ) { ?>
+					<a id="prflxtrflds-pro-options" class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'woocommerce' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=woocommerce"><?php _e( 'WooСommerce', 'profile-extra-fields-pro' ); ?></a>
+				<?php } ?>
 				<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'userdata' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=userdata"><?php _e( 'User Data', 'profile-extra-fields' ); ?></a>
 				<?php if ( 0 < sizeof( $available_fields ) ) { ?>
 					<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'shortcode' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=shortcode"><?php _e( 'Shortcode Settings', 'profile-extra-fields' ); ?></a>
 				<?php } ?>
 				<a class="nav-tab <?php if ( isset( $_GET['tab-action'] ) && 'custom_code' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=custom_code"><?php _e( 'Custom Code', 'profile-extra-fields' ); ?></a>
+				<a class="nav-tab bws_go_pro_tab<?php if ( isset( $_GET['tab-action'] ) && 'go_pro' == $_GET['tab-action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=go_pro"><?php _e( 'Go PRO', 'profile-extra-fields' ); ?></a>
 			</h2>
 			<?php /* add new/edit entry */
 			if ( isset( $_POST['prflxtrflds_new_entry'] ) || isset( $_GET['edit'] ) ) {
@@ -2073,6 +2152,37 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 						<?php $prflxtrflds_fields_list_table->display(); ?>
 					</form>
 				</div><!-- .prflxtrflds-wplisttable-container -->
+			<?php } elseif (  isset( $_GET['tab-action'] ) && 'woocommerce' == $_GET['tab-action'] ) {
+				if ( ! $bws_hide_premium_options_check  ) { ?>
+				<div class="bws_pro_version_bloc">
+								<div class="bws_pro_version_table_bloc">
+									<form class="bws_form" method="post" action="?page=profile-extra-fields.php">
+										<button type="submit" name="bws_hide_premium_options" class="notice-dismiss bws_hide_premium_options" title="<?php _e( 'Close', 'contact-form-to-db' ); ?>"></button>
+									</form>
+									<div class="bws_table_bg"></div>
+									<table class="form-table bws_pro_version">
+										<form method="post" action="<?php get_admin_url(); ?>?page=profile-extra-fields.php&tab-action=woocommerce">
+											<br>
+												<input type="submit" class="button action" name="prflxtrflds_add_new_field" value="<?php _e( 'Add New Field', 'profile-extra-fields' ) ?>" />
+											<br><br>
+										</form>
+										<div class="prflxtrflds-wplisttable-fullwidth-sort-container">
+											<?php $prflxtrflds_fields_list_table = new Srrlxtrflds_Fields_List(); /* Wp list table to show all fields */
+											?>
+											<form class="prflxtrflds-wplisttable-searchform" method="get" action="<?php get_admin_url(); ?>?page=profile-extra-fields.php&tab-action=woocommerce">
+												<?php wp_nonce_field( 'prflxtrflds_nonce_name', 'prflxtrflds_nonce_name', false );
+												$prflxtrflds_fields_list_table->search_box( __( 'Search', 'profile-extra-fields' ), 'search_id' ); ?>
+												<?php $prflxtrflds_fields_list_table->display(); ?>
+											</form>
+										</div><!-- .prflxtrflds-wplisttable-container -->
+									</table>
+								</div>
+					<div class="bws_pro_version_tooltip">
+						<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/contact-form-to-db/?k=c37eed44c2fe607f3400914345cbdc8a&pn=91&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Contact Form to DB Pro"><?php _e( 'Learn More', 'contact-form-to-db' ); ?></a>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<?php } ?>
 			<?php } else if ( isset( $_GET['tab-action'] ) && 'userdata' == $_GET['tab-action'] ) {
 				global $prflxtrflds_userdatalist_table;
 				if ( ! isset( $prflxtrflds_userdatalist_table ) ) {
@@ -2215,6 +2325,9 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 					</form>
 					<?php bws_form_restore_default_settings( $plugin_basename );
 				}
+				/*BWS????*/
+			} elseif ( 'go_pro' == $_GET['tab-action'] ){
+				bws_go_pro_tab_show( $bws_hide_premium_options_check, $prflxtrflds_plugin_info, $plugin_basename, 'profile-extra-fields.php', 'profile-extra-fields-pro.php', 'profile-extra-fields-pro/profile-extra-fields-pro.php', 'profile-extra-fields', 'c37eed44c2fe607f3400914345cbdc8a', '91', isset( $go_pro_result['pro_plugin_is_activated'] ) );
 			} else {
 				bws_custom_code_tab();
 			}
@@ -2395,12 +2508,12 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 
 				/* Get all field names */
 
-				if ( !empty( $field_id ) ) {
+				/*if ( ! empty( $field_id ) && ! empty ( $field_value ) ) {
 					$all_fields_sql = "SELECT DISTINCT `field_id`, `field_name` FROM `" . $table_fields_id . "` WHERE `field_id` IN (" . $field_id . ")";
-				} else {
+				} else {*/
 					/* By default show all fields */
 					$all_fields_sql = "SELECT DISTINCT `field_id`, `field_name` FROM " . $table_fields_id;
-				}
+				//}
 
 				$all_fields = $wpdb->get_results( $all_fields_sql, ARRAY_A );
 
@@ -2409,18 +2522,18 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 					/* delete not filled columns */
 					foreach ( $all_fields as $key => $one_field ) {
 						$is_empty = 1;
-						foreach ( $printed_table as $printed_line ) {
+						foreach ($printed_table as $printed_line) {
 							/* If field not empty */
-							if ( $printed_line['field_id'] == $one_field['field_id'] ) {
-								if ( ! empty( $printed_line['value'] ) ) {
+							if ($printed_line['field_id'] == $one_field['field_id']) {
+								if (!empty($printed_line['value'])) {
 									$is_empty = 0;
 									break;
 								}
 							}
 						}
-						if ( 1 == $is_empty ) {
+						if (1 == $is_empty) {
 							/* Delete if empty from all fields */
-							unset( $all_fields[ $key ] );
+							unset($all_fields[$key]);
 						}
 					}
 				}
@@ -3529,34 +3642,37 @@ if ( ! function_exists( 'prflxtrflds_load_script' ) ) {
 if ( ! function_exists( 'prflxtrflds_uninstall' ) ) {
 	function prflxtrflds_uninstall() {
 		global $wpdb;
+		$all_plugins = get_plugins();
 		/* Drop all plugin tables */
-		$table_names = array(
-			'`' . $wpdb->base_prefix . 'prflxtrflds_fields_id`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_field_types`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_field_values`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_roles_and_fields`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_roles_id`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_user_field_data`',
-			'`' . $wpdb->base_prefix . 'prflxtrflds_user_roles`',
-		);
-		$wpdb->query( "DROP TABLE IF EXISTS " . implode( ', ', $table_names ) );
-		/* Delete options */
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-			$old_blog = $wpdb->blogid;
-			/* Get all blog ids */
-			$blogids = $wpdb->get_col( "SELECT `blog_id` FROM $wpdb->blogs" );
-			foreach ( $blogids as $blog_id ) {
-				switch_to_blog( $blog_id );
-				delete_option( 'prflxtrflds_options' );
+		if ( ! array_key_exists( 'profile-extra-fields-pro/profile-extra-fields-pro.php', $all_plugins ) ) {
+			$table_names = array(
+				'`' . $wpdb->base_prefix . 'prflxtrflds_fields_id`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_field_types`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_field_values`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_roles_and_fields`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_roles_id`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_user_field_data`',
+				'`' . $wpdb->base_prefix . 'prflxtrflds_user_roles`',
+			);
+			$wpdb->query("DROP TABLE IF EXISTS " . implode(', ', $table_names));
+			/* Delete options */
+			if (function_exists('is_multisite') && is_multisite()) {
+				$old_blog = $wpdb->blogid;
+				/* Get all blog ids */
+				$blogids = $wpdb->get_col("SELECT `blog_id` FROM $wpdb->blogs");
+				foreach ($blogids as $blog_id) {
+					switch_to_blog($blog_id);
+					delete_option('prflxtrflds_options');
+				}
+				switch_to_blog($old_blog);
+			} else {
+				delete_option('prflxtrflds_options');
 			}
-			switch_to_blog( $old_blog );
-		} else {
-			delete_option( 'prflxtrflds_options' );
-		}
 
-		require_once( dirname( __FILE__ ) . '/bws_menu/bws_include.php' );
-		bws_include_init( plugin_basename( __FILE__ ) );
-		bws_delete_plugin( plugin_basename( __FILE__ ) );
+			require_once(dirname(__FILE__) . '/bws_menu/bws_include.php');
+			bws_include_init(plugin_basename(__FILE__));
+			bws_delete_plugin(plugin_basename(__FILE__));
+		}
 	}
 }
 

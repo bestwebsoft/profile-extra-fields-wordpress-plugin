@@ -194,6 +194,11 @@ tr #prflxtrflds-caption-checkboxes th {
 .no-js #prflxtrflds-select-all {
 	display: none;
 }
+#prflxtrflds-pro-options{
+
+	background: #f5e177;;
+	opacity: 0.3;
+}
 
 @-moz-document url-prefix() {
 	.form-table td fieldset label {
