@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.1.3
+Version: 1.1.4
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -2106,7 +2106,7 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 		}
 		$bws_hide_premium_options_check = bws_hide_premium_options_check( $prflxtrflds_options );
 		/* GO PRO */
-		if ( isset( $_GET['action'] ) && 'go_pro' == $_GET['action'] ) {
+		if ( isset( $_GET['tab-action'] ) && 'go_pro' == $_GET['tab-action'] ) {
 			$go_pro_result = bws_go_pro_tab_check( $plugin_basename, 'prflxtrflds_options' );
 			if ( ! empty( $go_pro_result['error'] ) )
 				$error = $go_pro_result['error'];
