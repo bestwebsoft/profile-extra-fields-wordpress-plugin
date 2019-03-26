@@ -48,6 +48,7 @@
 <li>Choose extra field type:
 <ul>
 <li>Text</li>
+<li>Textarea [NEW]</li>
 <li>Checkbox</li>
 <li>Radiobutton</li>
 <li>Dropdown list</li>
@@ -81,7 +82,7 @@
 <p><strong>Pro Features</strong></p>
 <p>All features from Free version included plus:</p>
 <ul>
-<li>Compatible with WooCommerce:[NEW]
+<li>Compatible with WooCommerce:
 <ul>
 <li>Registration form</li>
 <li>Checkout billing form</li>

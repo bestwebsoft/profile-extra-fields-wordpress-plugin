@@ -26,21 +26,25 @@
 		/* Show fields for diffrent field type */
 		$( '#prflxtrflds-select-type' ).on( 'change', function() {
 			type_value = $( this ).val();
-			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format, .prflxtrflds-maxlength' ).hide();
+			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format, .prflxtrflds-maxlength, .prflxtrflds-rows, .prflxtrflds-cols' ).hide();
 
-			if ( '2' == type_value || '3' == type_value || '4' == type_value ) {
+			if ( '3' == type_value || '4' == type_value || '5' == type_value ) {
 				$( '.prflxtrflds-fields-container' ).show();
-			} else if ( '9' == type_value ) {
+			} else if ( '10' == type_value ) {
 				$( '.prflxtrflds-pattern' ).show();
 			} else {
-				if ( '5' == type_value || '7' == type_value )
+				if ( '6' == type_value || '8' == type_value ) {
 					$( '.prflxtrflds-date-format' ).show();
-
-				if ( '6' == type_value || '7' == type_value )
+				}
+				if ( '7' == type_value || '8' == type_value ) {
 					$( '.prflxtrflds-time-format' ).show();
-
-				if ( '1' == type_value || '8' == type_value )
+				}
+				if ( '1' == type_value || '9' == type_value ) {
 					$( '.prflxtrflds-maxlength' ).show();
+				}
+				if ( '2' == type_value ) {
+					$( '.prflxtrflds-rows, .prflxtrflds-cols, .prflxtrflds-maxlength' ).show();
+				}
 			}
 		} ).trigger( 'change' );
 

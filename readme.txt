@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
-Tested up to: 5.1
-Stable tag: 1.1.4
+Tested up to: 5.1.1
+Stable tag: 1.1.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,6 +46,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Enable or disable debug mode
 * Choose extra field type:
 	* Text
+	* Textarea [NEW]
 	* Checkbox
 	* Radiobutton
 	* Dropdown list
@@ -74,7 +75,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 >
 > All features from Free version included plus:
 >
-> * Compatible with WooCommerce:[NEW]
+> * Compatible with WooCommerce:
 >   * Registration form
 >   * Checkout billing form
 > * Get answer to your question within one business day ([Support Policy](https://bestwebsoft.com/support-policy/))
@@ -162,6 +163,10 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.1.5 - 26.03.2019 =
+* New : Textarea field type has been added.
+* Update : All functionality was updated for WordPress 5.1.1
+
 = V1.1.4 - 28.02.2019 =
 * Update : All functionality was updated for WordPress 5.1.
 
@@ -215,6 +220,10 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.1.5 =
+* New features added.
+* The compatibility with new WordPress version updated.
 
 = V1.1.4 =
 * The compatibility with new WordPress version updated.

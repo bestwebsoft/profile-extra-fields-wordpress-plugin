@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.1.4
+Version: 1.1.5
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -236,14 +236,15 @@ if ( ! function_exists( 'prflxtrflds_get_field_type_id' ) ) {
 		/* Conformity between field type id and field type name */
 		$field_type_id = array(
 			'1' => __( 'Text field', 'profile-extra-fields' ),
-			'2' => __( 'Checkbox', 'profile-extra-fields' ),
-			'3' => __( 'Radio button', 'profile-extra-fields' ),
-			'4' => __( 'Drop down list', 'profile-extra-fields' ),
-			'5' => __( 'Date', 'profile-extra-fields' ),
-			'6' => __( 'Time', 'profile-extra-fields' ),
-			'7' => __( 'Datetime', 'profile-extra-fields' ),
-			'8' => __( 'Number', 'profile-extra-fields' ),
-			'9' => __( 'Phone number', 'profile-extra-fields' )
+			'2' => __( 'Textarea', 'profile-extra-fields' ),
+			'3' => __( 'Checkbox', 'profile-extra-fields' ),
+			'4' => __( 'Radio button', 'profile-extra-fields' ),
+			'5' => __( 'Drop down list', 'profile-extra-fields' ),
+			'6' => __( 'Date', 'profile-extra-fields' ),
+			'7' => __( 'Time', 'profile-extra-fields' ),
+			'8' => __( 'Datetime', 'profile-extra-fields' ),
+			'9' => __( 'Number', 'profile-extra-fields' ),
+			'10' => __( 'Phone number', 'profile-extra-fields' )
 		);
 		return $field_type_id;
 	}
@@ -431,7 +432,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 		global $wpdb, $prflxtrflds_options,$wp_version, $prflxtrflds_plugin_info;
 		$prflxtrflds_field_type_id = prflxtrflds_get_field_type_id();
 		$error = '';
-		$field_name = $description = $field_maxlength = '';
+		$field_name = $description = $field_maxlength = $field_rows = $field_cols = '';
 		$field_order = $field_required = $field_show_default = $field_show_always = 0;
 		$field_show_in_register_form = 0;
 		$field_pattern = '***-**-**';
@@ -467,6 +468,11 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			}
 
 			$field_maxlength	= ! empty( $_POST['prflxtrflds_maxlength'] ) ? intval( $_POST['prflxtrflds_maxlength'] ) : '';
+
+			// textarea rows columns and maxlenght
+			$field_rows = ! empty( $_POST['prflxtrflds_rows'] ) ? intval( $_POST['prflxtrflds_rows'] ) : '';
+			$field_cols = ! empty( $_POST['prflxtrflds_cols'] ) ? intval( $_POST['prflxtrflds_cols'] ) : '';
+
 			$field_pattern		= isset( $_POST['prflxtrflds_pattern'] ) ? preg_replace( '/[^\*\-\(\)\+]/', '', esc_html( $_POST['prflxtrflds_pattern'] ) ) : '***-**-**';
 
 			if ( isset( $_POST['prflxtrflds_time_format'] ) ) {
@@ -558,13 +564,13 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 
 				$field_order = $wpdb->get_var( $wpdb->prepare( "SELECT `field_order` FROM `" . $wpdb->base_prefix . "prflxtrflds_roles_and_fields` WHERE `field_id`=%d LIMIT 1", $field_id ) );
 				/* Get available values to checkbox, radiobutton, select, etc */
-				if ( '9' == $field_type_id ) {
+				if ( '10' == $field_type_id ) {
 					$field_pattern = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
-				} elseif ( '5' == $field_type_id ) {
-					$field_date_format = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
 				} elseif ( '6' == $field_type_id ) {
-					$field_time_format = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
+					$field_date_format = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
 				} elseif ( '7' == $field_type_id ) {
+					$field_time_format = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
+				} elseif ( '8' == $field_type_id ) {
 					$date_and_time = unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) ) );
 					if ( isset( $date_and_time['date'] ) ) {
 						$field_date_format = $date_and_time['date'];
@@ -572,8 +578,13 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					if ( isset( $date_and_time['time'] ) ) {
 						$field_time_format = $date_and_time['time'];
 					}
-				} elseif ( '1' == $field_type_id || '8' == $field_type_id ) {
+				} elseif ( '1' == $field_type_id || '9' == $field_type_id ) {
 					$field_maxlength = $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) );
+				} elseif ( '2' == $field_type_id ) {
+					$unser_textarea = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT `value_name` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d", $field_id ) ) );
+					$field_rows = $unser_textarea['rows'];
+					$field_cols = $unser_textarea['cols'];
+					$field_maxlength = $unser_textarea['max_length'];
 				} else {
 					$available_values = $wpdb->get_results( $wpdb->prepare( "SELECT `value_id`, `value_name`, `order` FROM `" . $wpdb->base_prefix . "prflxtrflds_field_values` WHERE `field_id`=%d ORDER BY `order`", $field_id ), ARRAY_A );
 				}
@@ -604,11 +615,11 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 				$error .= sprintf( '<p><strong>%s</strong></p>', __( 'Select at least one user role.', 'profile-extra-fields' ) );
 			}
 
-			if ( '9' == $field_type_id ) {
+			if ( '10' == $field_type_id ) {
 				if ( empty( $_POST['prflxtrflds_pattern'] ) )
 					$error .= '<p><strong>' . sprintf( __( 'Please specify a mask which will be used for the phone validation, where * is a number. Use only the following symbols %s', 'profile-extra-fields' ), '* - ( ) +' ) . '</strong></p>';
 
-			} elseif ( in_array( $field_type_id, array( '2', '3', '4' ) ) &&
+			} elseif ( in_array( $field_type_id, array( '3', '4', '5' ) ) &&
                 ! empty( $_POST['prflxtrflds_available_values'] )
             ) {
 				/* If not choisen values */
@@ -622,7 +633,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					/* if all values is empty */
 					if ( 0 == $filled ) {
 						$error .= sprintf( '<p><strong>%s</strong></p>', __( 'Select at least one available value.', 'profile-extra-fields' ) );
-					} elseif ( 2 > $filled && ( 3 == $field_type_id || 4 == $field_type_id ) ) {
+					} elseif ( 2 > $filled && ( 4 == $field_type_id || 5 == $field_type_id ) ) {
 						/* If is radiobutton or select, select more if two available values */
 						$error .= sprintf( '<p><strong>%s</strong></p>', __( 'Select at least two available values.', 'profile-extra-fields' ) );
 					}
@@ -729,29 +740,39 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 
 				/* prflxtrflds_field_values update */
 				if ( '1' == $field_type_id ||
-                    '5' == $field_type_id ||
+					'2' == $field_type_id ||
                     '6' == $field_type_id ||
                     '7' == $field_type_id ||
                     '8' == $field_type_id ||
-                    '9' == $field_type_id
+                    '9' == $field_type_id ||
+                    '10' == $field_type_id
                 ) {
 					switch ( $field_type_id ) {
 						case '1':
 							$value_name = $field_maxlength;
 							break;
-						case '8':
-							$value_name = $field_maxlength;
+						case '2':
+							$value_name = serialize(
+								array(
+									'rows'       => $field_rows,
+									'cols'       => $field_cols,
+									'max_length' => $field_maxlength
+								)
+							);
 							break;
 						case '9':
+							$value_name = $field_maxlength;
+							break;
+						case '10':
 							$value_name = $field_pattern;
 							break;
-						case '5':
+						case '6':
 							$value_name = $field_date_format;
 							break;
-						case '6':
+						case '7':
 							$value_name = $field_time_format;
 							break;
-						case '7':
+						case '8':
 							$value_name = serialize( array( 'date' => $field_date_format, 'time' => $field_time_format ) );
 							break;
 					}
@@ -853,9 +874,21 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 						<th><?php _e( 'Max Length', 'profile-extra-fields' ); ?></th>
 						<td>
 							<input type="number" min="1" name="prflxtrflds_maxlength" value="<?php echo $field_maxlength; ?>" />
-							<div class="bws_info"><?php _e( 'Specify field max length (for text field type) or max number (for number field type).', 'profile-extra-fields' ); ?></div>
+							<div class="bws_info"><?php _e( 'Specify field max length (for text field and textarea type) or max number (for number field type).', 'profile-extra-fields' ); ?></div>
 						</td>
 					</tr>
+                    <tr class="prflxtrflds-rows">
+                        <th><?php _e( 'Field width in characters', 'profile-extra-fields' ); ?></th>
+                        <td>
+                            <input type="number" min="1" name="prflxtrflds_rows" value="<?php echo $field_rows; ?>" />
+                        </td>
+                    </tr>
+                    <tr class="prflxtrflds-cols">
+                        <th><?php _e( 'The height of the field in the text lines', 'profile-extra-fields' ); ?></th>
+                        <td>
+                            <input type="number" min="1" name="prflxtrflds_cols" value="<?php echo $field_cols; ?>" />
+                        </td>
+                    </tr>
 					<tr class="prflxtrflds-date-format">
 						<th scope="row"><?php _e( 'Date Format', 'profile-extra-fields' ) ?></th>
 						<td>
@@ -1754,13 +1787,13 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 								AND `user_id` = '" . $user->ID . "'
 								AND `" . $table_field_values . "`.`field_id`= `" . $table_fields_id . "`.`field_id`
 								AND `" . $table_user_field_data . "`.`field_id`= `" . $table_fields_id . "`.`field_id`
-								AND `" . $table_fields_id . "`.`field_type_id` IN ( '2', '3', '4' )
+								AND `" . $table_fields_id . "`.`field_type_id` IN ( '3', '4', '5' )
 						UNION
 						SELECT `" . $table_user_field_data . "`.`field_id`, `user_value`
 							FROM " . $table_user_field_data . ", " . $table_fields_id .
 							" WHERE `user_id` = '" . $user->ID . "'
 								AND `" . $table_user_field_data . "`.`field_id`= `" . $table_fields_id . "`.`field_id`
-								AND `" . $table_fields_id . "`.`field_type_id` NOT IN ( '2', '3', '4' )
+								AND `" . $table_fields_id . "`.`field_type_id` NOT IN ( '3', '4', '5' )
 						", ARRAY_A );
 
 					if ( ! empty( $filled_fields ) ) {
@@ -1981,9 +2014,9 @@ if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
 				if ( 0 < sizeof( $available_fields ) ) {
 					/* Add available values to array with available fields */
 					foreach ( $available_fields as &$field ) {
-						if ( 2 == $field['field_type_id'] ||
-                            3 == $field['field_type_id'] ||
-                            4 == $field['field_type_id']
+						if ( 3 == $field['field_type_id'] ||
+                            4 == $field['field_type_id'] ||
+                            5 == $field['field_type_id']
                         ) {
 							$field['available_values'] = $wpdb->get_results( $wpdb->prepare( "SELECT `value_id`, `value_name` FROM " . $wpdb->base_prefix . "prflxtrflds_field_values WHERE `field_id`=%d", $field['field_id'] ), ARRAY_A );
 						}
@@ -2488,7 +2521,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 			if ( ! empty( $printed_table ) ) {
 				foreach ( $printed_table as $key => $column ) {
 					if ( ! empty( $column['field_id'] ) ) {
-						if ( in_array( $column['field_type_id'], array( '2', '3', '4' ) ) ) {
+						if ( in_array( $column['field_type_id'], array( '3', '4', '5' ) ) ) {
 							$user_value = $wpdb->get_col( $wpdb->prepare(
 								"SELECT `value_name`
 								FROM " . $table_field_values .
@@ -2905,7 +2938,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 				}
 			} else {
 				/* add selected values */
-				if ( '2' == $one_entry['field_type_id'] ) {
+				if ( '3' == $one_entry['field_type_id'] ) {
 					$user_value = $wpdb->get_results( "SELECT `user_value` FROM `" . $wpdb->base_prefix . "prflxtrflds_user_field_data`
 							WHERE `user_id`='" . $userid . "' AND `field_id` ='" . $one_entry['field_id'] . "'", ARRAY_A );
 
@@ -2986,9 +3019,20 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 								<td>
 									<?php switch ( $one_entry['field_type_id'] ) {
 										case '1': ?>
-											<input type="text" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php if ( isset( $one_entry['available_fields'][0]['value_name'] ) ) echo 'maxlength="' . $one_entry['available_fields'][0]['value_name'] . '"'; echo $editable_attr; ?> />
+											<input type="text"
+                                                   id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+                                                   name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+                                                   value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php if ( isset( $one_entry['available_fields'][0]['value_name'] ) ) echo 'maxlength="' . $one_entry['available_fields'][0]['value_name'] . '"'; echo $editable_attr; ?> />
 											<?php break;
 										case '2':
+											$unser_textarea = maybe_unserialize( $one_entry['available_fields'][0]['value_name'] ); ?>
+                                            <textarea
+                                                    id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+                                                    name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+                                                    rows="<?php echo $unser_textarea['rows'] ?>" cols="<?php echo $unser_textarea['cols'] ?>" maxlength="<?php echo $unser_textarea['max_length'] ?>"
+                                                <?php echo $editable_attr; ?> ><?php echo $one_entry['user_value'] ?></textarea>
+											<?php break;
+										case '3':
 											foreach ( $one_entry['available_fields'] as $one_sub_entry ) { ?>
 												<label>
 													<input type="checkbox" class="prflxtrflds_input_checkbox" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>][]" value="<?php echo $one_sub_entry['value_id']; ?>"<?php if ( ! empty( $one_entry['user_value'] ) && in_array( $one_sub_entry['value_id'], $one_entry['user_value'] ) ) echo " checked"; echo $editable_attr; ?> />
@@ -2997,7 +3041,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 												<br />
 											<?php }
 											break;
-										case '3':
+										case '4':
 											foreach ( $one_entry['available_fields'] as $one_sub_entry ) { ?>
 												<label>
 													<input type="radio" class="prflxtrflds_input_radio" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_sub_entry['value_id']; ?>"<?php if ( isset( $one_entry['user_value'] ) && $one_sub_entry['value_id'] == $one_entry['user_value'] ) echo " checked"; echo $editable_attr; ?> />
@@ -3006,7 +3050,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 												<br />
 											<?php }
 											break;
-										case '4': ?>
+										case '5': ?>
 											<select id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" <?php echo $editable_attr; ?>>
 												<option></option>
 												<?php foreach ( $one_entry['available_fields'] as $one_sub_entry ) { ?>
@@ -3014,19 +3058,19 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 												<?php } ?>
 											</select>
 											<?php break;
-										case '5': ?>
+										case '6': ?>
 											<input class="prflxtrflds_datetimepicker" type="text" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php echo $editable_attr; ?>>
 											 <?php if ( strripos( $one_entry['available_fields'][0]['value_name'], 'T' ) ) echo date_i18n( 'T' ); ?>
 											<input type="hidden" name="prflxtrflds_date_format" value="<?php echo trim( str_replace( 'T', '', $one_entry['available_fields'][0]['value_name'] ) ); ?>">
 											<input type="hidden" name="prflxtrflds_user_field_datetime[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 											<?php break;
-										case '6': ?>
+										case '7': ?>
 											<input class="prflxtrflds_datetimepicker" type="text" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php echo $editable_attr; ?>>
 											 <?php if ( strripos( $one_entry['available_fields'][0]['value_name'], 'T' ) ) echo date_i18n( 'T' ); ?>
 											<input type="hidden" name="prflxtrflds_time_format" value="<?php echo trim( str_replace( 'T', '', $one_entry['available_fields'][0]['value_name'] ) ); ?>">
 											<input type="hidden" name="prflxtrflds_user_field_datetime[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 											<?php break;
-										case '7':
+										case '8':
 											$date_and_time = unserialize( $one_entry['available_fields'][0]['value_name'] ); ?>
 											<input class="prflxtrflds_datetimepicker" type="text" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php echo $editable_attr; ?>>
 											 <?php if ( strripos( $date_and_time['time'], 'T' ) || strripos( $date_and_time['date'], 'T' ) ) echo date_i18n( 'T' ); ?>
@@ -3034,13 +3078,13 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 											<input type="hidden" name="prflxtrflds_date_format" value="<?php echo trim( str_replace( 'T', '', $date_and_time['date'] ) ); ?>">
 											<input type="hidden" name="prflxtrflds_user_field_datetime[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $date_and_time['date'] . ' ' . $date_and_time['time']; ?>">
 											<?php break;
-										case '8': ?>
+										case '9': ?>
 											<input type="number" class="prflxtrflds_number" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php if ( isset( $one_entry['available_fields'][0]['value_name'] ) ) echo 'max="' . $one_entry['available_fields'][0]['value_name'] . '"'; echo $editable_attr; ?>/>
 											<?php if ( isset( $one_entry['available_fields'][0]['value_name'] ) ) { ?>
 												<input type="hidden" name="prflxtrflds_user_field_max_number[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 											<?php }
 											break;
-										case '9': ?>
+										case '10': ?>
 											<input type="text" class="prflxtrflds_phone" id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]" value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>" <?php echo $editable_attr; ?> >
 											<input type="hidden" name="prflxtrflds_user_field_pattern[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 											<?php break;
@@ -3755,23 +3799,32 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 	function prflxtrflds_get_field_html( $field_data = array(), $name = 'prflxtrflds_user_field_value', $echo = false ) {
 		$field_types = array(
 			'1' => 'text',
-			'2' => 'checkbox',
-			'3' => 'radio',
-			'4' => 'select',
-			'5' => 'date',
-			'6' => 'time',
-			'7' => 'datetime',
-			'8' => 'number',
-			'9' => 'phone'
+			'2' => 'textarea',
+			'3' => 'checkbox',
+			'4' => 'radio',
+			'5' => 'select',
+			'6' => 'date',
+			'7' => 'time',
+			'8' => 'datetime',
+			'9' => 'number',
+			'10' => 'phone'
 		);
 
-		$html = '';
+		$html = $rows = $cols = $max_length_textarea = '';
 
 		$value = ( isset( $field_data['user_value'] ) ) ? $field_data['user_value'] : '';
 		if ( '' == $value && isset( $_POST[ $name ][ $field_data['field_id'] ] ) ) {
 			$value = esc_html( $_POST[ $name ][ $field_data['field_id'] ] );
 		}
 		$max_length = ( isset( $field_data['available_fields'][0]['value_name'] ) ) ? 'maxlength="' . $field_data['available_fields'][0]['value_name'] . '"' : '';
+
+		if ( '2' == $field_data['field_type_id'] ) {
+			$unser_textarea = maybe_unserialize( $field_data['available_fields'][0]['value_name'] );
+			$rows = $unser_textarea['rows'];
+			$cols = $unser_textarea['cols'];
+			$max_length_textarea = $unser_textarea['max_length'];
+		}
+
 		$editable_attr = disabled( empty( $field_data['editable'] ), true, false );
 		$required_attr = ( ! empty( $field_data['required'] ) && ! empty( $field_data['editable'] ) ) ? ' required="required"' : '';
 
@@ -3782,6 +3835,19 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 				$field_data['field_id'],
 				$value,
 				$max_length,
+				$editable_attr,
+				$required_attr
+			);
+		}
+
+		if ( 'textarea' == $field_types[ $field_data['field_type_id'] ] ) {
+			$html = sprintf(
+				'<textarea name="%1$s[%2$s]" rows="%3$s" cols="%4$s" maxlength="%5$s" %6$s %7$s></textarea>',
+				$name,
+				$field_data['field_id'],
+				$rows,
+				$cols,
+				$max_length_textarea,
 				$editable_attr,
 				$required_attr
 			);
