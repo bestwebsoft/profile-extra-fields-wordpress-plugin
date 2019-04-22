@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.1.5
+Version: 1.1.6
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -162,6 +162,13 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 		if ( ! isset( $prflxtrflds_options['plugin_option_version'] ) ||
             $prflxtrflds_options['plugin_option_version'] != $prflxtrflds_plugin_info["Version"]
         ) {
+			if (  isset( $prflxtrflds_options['plugin_option_version'] ) ) {
+				$prflxtrflds_prev_version = str_replace( 'pro-', '', $prflxtrflds_options['plugin_option_version'] );
+				if ( version_compare( $prflxtrflds_prev_version, '1.1.4', '<=' ) ) {
+					/*In version 1.1.5, the field type "textarea" has been added and we need to rewrite the db*/
+					$wpdb->query( "UPDATE `" . $wpdb->base_prefix . "prflxtrflds_fields_id`  SET `field_type_id` = IF ( `field_type_id` > 1 ,`field_type_id` + 1 , `field_type_id`);" );
+				}
+			}
 			foreach ( $prflxtrflds_options['available_values'] as $key => $value ) {
 				if ( '-1' == $value ) {
 					unset( $prflxtrflds_options['available_values'][$key] );
@@ -1119,7 +1126,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 										</td>
 									</tr>
 									<tr valign="top">
-										<th ><label for="prflxtrflds_checkout_woocommerce"><?php _e( 'WooСommerce Сheckout Form', 'profile-extra-fields' ); ?><</label></th>
+										<th ><label for="prflxtrflds_checkout_woocommerce"><?php _e( 'WooСommerce Сheckout Form', 'profile-extra-fields' ); ?></label></th>
 										<td>
 											<label>
 												<input disabled="disabled" type="checkbox" id="prflxtrflds-checkout-woocommerce" name="prflxtrflds_checkout_woocommerce" value="1" />
@@ -2477,13 +2484,13 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 			if ( ! empty( $prflxtrflds_options['available_values'] ) ) {
 				$i = 0;
 				$extended_value = '';
-				foreach ( $prflxtrflds_options['available_values'] as $field_id => $field_value ) {
-					if ( '' != $field_value ) {
+				foreach ( $prflxtrflds_options['available_values'] as $value => $key ) {
+					if ( '' != $key ) {
 						if ( 0 != $i ) {
 							$extended_value .= " OR ";
 						}
 
-						$extended_value .= "(`user_value`='" . $field_value . "' AND `field_id`='" . $field_id . "')";
+						$extended_value .= "(`user_value`='" . $key . "' AND `field_id`='" . $value . "')";
 						$i++;
 					}
 				}
@@ -2555,18 +2562,18 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 					/* delete not filled columns */
 					foreach ( $all_fields as $key => $one_field ) {
 						$is_empty = 1;
-						foreach ($printed_table as $printed_line) {
+						foreach ( $printed_table as $printed_line ) {
 							/* If field not empty */
-							if ($printed_line['field_id'] == $one_field['field_id']) {
-								if (!empty($printed_line['value'])) {
+							if ( $printed_line['field_id'] == $one_field['field_id'] ) {
+								if ( ! empty( $printed_line['value'] ) ) {
 									$is_empty = 0;
 									break;
 								}
 							}
 						}
-						if (1 == $is_empty) {
+						if ( 1 == $is_empty ) {
 							/* Delete if empty from all fields */
-							unset($all_fields[$key]);
+							unset( $all_fields[ $key ] );
 						}
 					}
 				}
@@ -2878,15 +2885,33 @@ if( ! function_exists( 'prflxtrflds_show_field' ) ) {
 			$error_message = sprintf( __( 'Field with entered id(id=%s) does not exist!', 'profile-extra-fields' ), esc_html( $param['field_id'] ) );
 		}
 
-		$query = $wpdb->prepare(
+		$field_type = $wpdb->get_var( $wpdb->prepare(
+			"SELECT `field_type_id`
+                FROM `" . $wpdb->prefix ."prflxtrflds_fields_id` 
+                WHERE `field_id` =%d" ,
+			$param['field_id']
+		) );
+
+		if ( in_array( $field_type, array( '3', '4', '5' ) ) ) {
+			/* Query if type of field is checkbox, radio or drop list*/
+			$query = $wpdb->prepare(
+				"SELECT `value_name`
+                FROM `" . $wpdb->prefix ."prflxtrflds_field_values` 
+                WHERE `value_id` 
+                IN ( SELECT `user_value` FROM `" . $wpdb->prefix . "prflxtrflds_user_field_data` WHERE `user_id`=%d AND `field_id`=%d )",
+				$user_id,  $param['field_id']
+			) ;
+			$field = implode( ', ', $wpdb->get_col( $query ) );
+		} else {
+			$query = $wpdb->prepare(
 				"SELECT `user_value`
 				FROM `" . $wpdb->prefix . "prflxtrflds_user_field_data`
 				WHERE `field_id` = %d AND `user_id` = %d",
 				$param['field_id'],
 				$user_id
 			);
-
-		$field = $wpdb->get_var( $query );
+			$field = $wpdb->get_var( $query );
+		}
 
 		if ( ! empty( $error_message ) ) {
 			if ( ! empty( $prflxtrflds_options['shortcode_debug'] ) ) {
@@ -2987,7 +3012,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 					break;
 				}
 			}
-
+			$user = wp_get_current_user();
 			if ( $visible_entry_count > 0 ) {
 				$hidden_nonvisible_field = ''; ?>
 				<!-- Begin code from user role extra field -->
@@ -2996,7 +3021,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 					<?php foreach ( $all_entry as $one_entry ) {
 						if ( ( 0 == $one_entry['editable'] ||
                                 0 == $one_entry['visible'] ) &&
-                            ! current_user_can( 'edit_others_pages' )
+                            ! current_user_can( 'edit_users' )
                         ) {
 							$editable_attr = ' readonly="readonly" disabled="disabled"';
 							$hidden_noneditable_field = '<input type="hidden" name="prflxtrflds_not_editable[]" value="' . $one_entry['field_id'] . '" />';
@@ -3004,7 +3029,7 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields' ) ) {
 							$editable_attr = $hidden_noneditable_field = '';
 						}
 
-						if ( 1 == $one_entry['visible'] || current_user_can( 'edit_others_pages' ) ) { ?>
+						if ( 1 == $one_entry['visible'] || current_user_can( 'edit_users' ) ) { ?>
 							<tr>
 								<th>
 									<?php echo $one_entry['field_name'];
@@ -3757,7 +3782,7 @@ if ( ! function_exists( 'prflxtrflds_get_fields' ) ) {
 			$where .= "AND `" . $wpdb->base_prefix . "prflxtrflds_fields_id`.`show_in_register_form`='" . absint( $args['show_in_register_form'] ) . "' ";
 		}
 
-		if ( current_user_can( 'edit_others_pages' ) ) {
+		if ( current_user_can( 'edit_users' ) ) {
 			$roles = implode( '", "', $args['roles'] );
 			$where = "AND `" . $wpdb->base_prefix . "prflxtrflds_roles_id`.`role` IN ( '" . $roles . "' ) ";
 		}

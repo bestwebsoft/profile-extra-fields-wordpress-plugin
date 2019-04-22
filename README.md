@@ -48,7 +48,7 @@
 <li>Choose extra field type:
 <ul>
 <li>Text</li>
-<li>Textarea [NEW]</li>
+<li>Textarea</li>
 <li>Checkbox</li>
 <li>Radiobutton</li>
 <li>Dropdown list</li>
