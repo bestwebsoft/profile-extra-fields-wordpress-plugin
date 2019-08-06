@@ -16,6 +16,7 @@
 <li>Current user data</li>
 </ul>
 </li>
+<li>Compatible with Car Rental V2 [NEW]</li>
 <li>Display profile extra fields in user registration form</li>
 <li>Display certain fields via the shortcode</li>
 <li>Export all user data to a CSV file </li>
@@ -66,6 +67,7 @@
 </ul>
 </li>
 <li>Set the max length for text or number in the appropriate fields</li>
+<li>Set the required symbol [NEW]</li>
 <li>Make any field required</li>
 <li>Set the fields order</li>
 <li>Choose date and time formats for the corresponding field types</li>

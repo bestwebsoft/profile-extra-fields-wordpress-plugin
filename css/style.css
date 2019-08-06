@@ -1,3 +1,11 @@
+/* Profile Extra Fields icon */
+.menu-top.toplevel_page_profile-extra-fields .wp-menu-image {
+	font-family: 'bwsicons' !important;
+}
+.menu-top.toplevel_page_profile-extra-fields .wp-menu-image:before {
+	content: "\e923";
+	font-family: 'bwsicons' !important;
+}
 /*
 * Custom styles
 */
@@ -81,6 +89,23 @@ input.prflxtrflds-value-delete-check + label::before {
 	margin: 2px 5px 0 0;
 	background: url("../images/del_icon.png") no-repeat scroll 0 0 transparent;
 }
+/* Table wrap for booking tab start */
+.prflxtrflds-table-wrap {
+	margin: 10px 0;
+}
+.prflxtrflds-table-wrap .hndle {
+	padding: 8px 12px;
+    margin: 0;
+	cursor: pointer !important;
+}
+.prflxtrflds-table-wrap table {
+	border: none;
+}
+.prflxtrflds-table-wrap .inside {
+	margin: 0;
+	padding: 0;
+}
+/* Table wrap for booking tab end */
 .prflxtrflds-wplisttable-form {
 	padding-bottom: 20px;
 }

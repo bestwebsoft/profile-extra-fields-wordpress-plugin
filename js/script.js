@@ -131,6 +131,31 @@
 			}
 		} );
 
+		$( '[id*=prflxtrflds-show-in-]' ).on( 'click', function() {
+			if ( $( this ).is( ':checked' ) ) {
+				$( '.' + this.id ).show();
+			} else {
+				$( '.' + this.id ).hide().find( '[type="checkbox"]' ).prop( 'checked', false );
+			}
+		} );
+
+		$( '[id*=prflxtrflds-show-in-]' ).each(function() {
+			if ( $( this ).is( ':checked' ) ) {
+				$( '.' + this.id ).show();
+			} else {
+				$( '.' + this.id ).hide();
+			}
+		} );
+		
+		/* Make inputs always send value */
+		$( '.prflxtrflds-hidden-checkbox' ).each( function( i, e ) {
+			e.disabled = $( '[type="checkbox"][name="' + e.name + '"]' ).prop( 'checked' );
+
+			$( '[name="' + e.name + '"]' ).change( function( e ) {
+				$( '[type="hidden"][name="' + e.target.name + '"]' ).prop( 'disabled', e.target.checked );
+			} );
+		} );
+
 		/* Show 'select all' checkbox if js enabled */
 		$( '#prflxtrflds-div-select-all' ).show();
 
@@ -169,5 +194,27 @@
 			}
 		} ).trigger( 'change' );
 
+		var table = $( 'table.toplevel_page_profile-extra-fields' );
+		if ( table.length > 1 ) {
+			table.wrap( '<div class="postbox prflxtrflds-table-wrap"><div class="inside"></div></div>' );
+			table.parents( 'form' ).addClass( 'meta-box-sortables' );
+
+			var table_wrap = $( '.prflxtrflds-table-wrap' );
+
+			table_wrap.prepend( '<h2 class="hndle"></h2>' );
+
+			table_wrap.each( function( i, e ) {
+				var 	$this = $( e ),
+						name = $this.next( '.prflxtrflds-tables-name' ).val(),
+						button = '<button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: <label><input class="hide-if-no-js" id="plugins_checkbox" type="checkbox" value="prflxtrflds_tab_button">' + name + '</label></span><span class="toggle-indicator" aria-hidden="true"></span></button>';
+
+				$this.prepend( button );
+				$this.find( '.hndle' ).text( name );
+			} );
+
+			$( '.prflxtrflds-table-wrap .hndle, .prflxtrflds-table-wrap .handlediv' ).click( function( e ) {
+				$( e.target ).parents( '.prflxtrflds-table-wrap' ).toggleClass( 'closed' );
+			} );
+		}
 	} );
 } )( jQuery );
