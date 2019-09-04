@@ -4,7 +4,7 @@ Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 3.9
 Tested up to: 5.2.2
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user role data
 	* Certain user data
 	* Current user data
-* Compatible with Car Rental V2 [NEW]
+* Compatible with Car Rental V2
 * Display profile extra fields in user registration form
 * Display certain fields via the shortcode
 * Export all user data to a CSV file 
@@ -60,7 +60,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Name
 	* Description
 * Set the max length for text or number in the appropriate fields
-* Set the required symbol [NEW]
+* Set the required symbol
 * Make any field required
 * Set the fields order
 * Choose date and time formats for the corresponding field types
@@ -165,6 +165,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.1.8 - 04.09.2019 =
+* Update: The deactivation feedback has been changed. Misleading buttons have been removed.
+
 = V1.1.7 - 06.08.2019 =
 * NEW : Compatibility with Car Rental V2 plugin has been added.
 
@@ -229,6 +232,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.1.8 =
+* Usability improved
 
 = V1.1.7 =
 * New features added.

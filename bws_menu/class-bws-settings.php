@@ -743,7 +743,7 @@ if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 								window.setTimeout( bws_set_timeout, 1000 );
 							})(jQuery);
                         </script>
-                        <p><strong><?php printf( _e( 'Congratulations! %s license is activated successfully.', 'bestwebsoft' ), $pro_plugin_name ); ?></strong></p>
+                        <p><strong><?php printf( __( 'Congratulations! %s license is activated successfully.', 'bestwebsoft' ), $pro_plugin_name ); ?></strong></p>
                         <p><?php printf( __( 'You will be automatically redirected to the %s in %s seconds.', 'bestwebsoft' ), '<a href="' . esc_url( self_admin_url( $this->pro_page ) ) . '">' . __( 'Settings page', 'bestwebsoft' ) . '</a>', '<span id="bws_timeout_counter">7</span>' ); ?></p>
 					<?php } else {
 						$attr = '';
@@ -757,7 +757,7 @@ if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 						if( ! empty( $single_license['pro_basename'] ) ) {
 							$license_key = ! empty( $bstwbsftwppdtplgns_options[ $single_license['pro_basename'] ] ) ? $bstwbsftwppdtplgns_options[ $single_license['pro_basename'] ] : '';
 						}
-						$current_plugin_link = ( ! empty( $this->link_key ) && ! empty( $this->link_pn ) ? esc_url( 'https://bestwebsoft.com/products/wordpress/plugins/' . $single_license['slug'] . '/' . '?k=' . $this->link_key . '&pn=' . $this->link_pn . '&v=' . $this->plugins_info["Version"] . '&wp_v=' . $wp_version ) : esc_url( 'https://bestwebsoft.com/products/wordpress/plugins/' . $single_license['slug'] . '/' ) );
+						$current_plugin_link = ( ! empty( $this->link_key ) && ! empty( $this->link_pn ) ? esc_url( 'https://bestwebsoft.com/products/wordpress/plugins/' . $this->wp_slug . '/' . '?k=' . $this->link_key . '&pn=' . $this->link_pn . '&v=' . $this->plugins_info["Version"] . '&wp_v=' . $wp_version ) : esc_url( 'https://bestwebsoft.com/products/wordpress/plugins/' . $this->wp_slug . '/' ) );
 						?>
                         <table class="form-table">
                             <tr>
