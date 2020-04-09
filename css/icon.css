@@ -1,0 +1,7 @@
+#toplevel_page_profile-extra-fields .wp-menu-image {
+	font-family: 'bwsicons' !important;
+}
+#toplevel_page_profile-extra-fields .wp-menu-image:before {
+	content: "\e923";
+	font-family: 'bwsicons' !important;
+}
