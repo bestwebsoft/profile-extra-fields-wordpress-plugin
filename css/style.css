@@ -194,7 +194,7 @@ tr #prflxtrflds-caption-checkboxes th {
 #prflxtrflds-select-roles input,
 #prflxtrflds-select-roles-editable input,
 #prflxtrflds-select-roles-visibility input {
-	margin: .37em 0 .6em!important;
+	margin: .37em 0 .7em!important;
 }
 /* End drag n drop styles */
 .rtl .prflxtrflds-drag-values input,

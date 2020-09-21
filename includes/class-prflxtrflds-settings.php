@@ -31,10 +31,9 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 				'is_network_options'		=> is_network_admin(),
 				'tabs'						=> $tabs,
 				'wp_slug'					=> 'profile-extra-fields',
-				'pro_page'					=> 'admin.php?page=profile-extra-fields-pro-settings.php',
-				'bws_license_plugin'		=> 'profile-extra-fields-pro/profile-extra-fields-pro.php',
 				'link_key'					=> 'c37eed44c2fe607f3400914345cbdc8a',
-				'link_pn'					=> '300'
+				'link_pn'					=> '300',
+				'doc_link' 					=> 'https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk/'
 			) );
 		}
 		public function save_options() {}

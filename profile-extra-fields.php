@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.1.9
+Version: 1.2.0
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -378,7 +378,8 @@ if ( ! function_exists( 'prflxtrflds_get_field_type_id' ) ) {
 			'7' => __( 'Time', 'profile-extra-fields' ),
 			'8' => __( 'Datetime', 'profile-extra-fields' ),
 			'9' => __( 'Number', 'profile-extra-fields' ),
-			'10' => __( 'Phone number', 'profile-extra-fields' )
+			'10' => __( 'Phone number', 'profile-extra-fields' ),
+			'11' => __( 'URL link', 'profile-extra-fields' )
 		);
 	}
 }
@@ -914,7 +915,8 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
                     '7' == $field_type_id ||
                     '8' == $field_type_id ||
                     '9' == $field_type_id ||
-                    '10' == $field_type_id
+                    '10' == $field_type_id ||
+                    '11' == $field_type_id
                 ) {
 					switch ( $field_type_id ) {
 						case '1':
@@ -934,6 +936,9 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 							break;
 						case '10':
 							$value_name = $field_pattern;
+							break;
+						case '11':
+							$value_name = $field_maxlength;
 							break;
 						case '6':
 							$value_name = $field_date_format;
@@ -2892,13 +2897,8 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 				}
 
 				/* Get all field names */
-
-				/*if ( ! empty( $field_id ) && ! empty ( $field_value ) ) {
-					$all_fields_sql = "SELECT DISTINCT `field_id`, `field_name` FROM `" . $table_fields_id . "` WHERE `field_id` IN (" . $field_id . ")";
-				} else {*/
-					/* By default show all fields */
-					$all_fields_sql = "SELECT DISTINCT `field_id`, `field_name` FROM " . $table_fields_id;
-				//}
+				/* By default show all fields */
+				$all_fields_sql = "SELECT DISTINCT `field_id`, `field_name` FROM " . $table_fields_id;
 
 				$all_fields = $wpdb->get_results( $all_fields_sql, ARRAY_A );
 
@@ -3006,9 +3006,13 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 									}
 
 									foreach ( $user_fields_temp as $key => $one_field ) {
-										if ( $column['field_id'] == $one_field['field_id'] ) {
-											if ( ! empty( $column['value'] ) ) {
-												$user_fields_temp[ $key ]['user_value'] = esc_attr( $column['value'] );
+										if ( $column['field_id'] == $one_field['field_id'] ) {											
+											if ( ! empty( $column['value'] ) ) {												
+												if ( $column['field_type_id'] == '11' ) {
+													$user_fields_temp[ $key ]['user_value'] = '<a href="' . esc_attr( $column['value'] ) . '" title="">' . esc_attr( $column['value'] ) . '</a>';
+												} else {											
+													$user_fields_temp[ $key ]['user_value'] = esc_attr( $column['value'] );											
+												}	
 												break;
 											} else {
 												$user_fields_temp[ $key ]['user_value'] = $prflxtrflds_options['empty_value'];
@@ -3161,7 +3165,11 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 														$user_field_data = '';
 													} else {
 														/* Save user value */
-														$user_field_data = $one_row['value'];
+														if ( $one_row['field_type_id'] == '11' )  {
+															$user_field_data = '<a href="' . esc_attr( $one_row['value'] ) . '" title="" >' . esc_attr( $one_row['value'] ) . '</a>';
+														} else {
+															$user_field_data = esc_attr( $one_row['value'] );
+														}															
 													}
 												}
 											}
@@ -3176,7 +3184,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 												unset( $user_field_data );
 											} else {
 												/* Print user data. Unset for next user */
-												echo esc_attr( $user_field_data );
+												echo $user_field_data;
 												unset( $user_field_data );
 											} ?>
 										</td>
@@ -3270,16 +3278,21 @@ if( ! function_exists( 'prflxtrflds_show_field' ) ) {
 	}
 }
 
+/* Show info in user profile page */
 if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 	function prflxtrflds_fields_table( $profileuser = false ) {
-		global $wpdb, $hook_suffix;
+		global $wpdb, $hook_suffix, $pagenow;
+		if ( $pagenow == 'user-new.php' ) {
+	      $user_id = NULL;
+	      $user_info = array();
+	      $user_role = get_option( 'default_role' );
+	    } else {
+	      $user_id = isset( $profileuser->ID ) ? $profileuser->ID : get_current_user_id();
+	      $user_info = get_userdata( $user_id );
+	      $user_role = isset( $user_info->roles ) ? implode( "', '", $user_info->roles ) : get_option( 'default_role' );
+	    }
 
-		$user_id = isset( $profileuser->ID ) ? $profileuser->ID : get_current_user_id();
-
-		$user_info = get_userdata( $user_id );
-		$user_role = isset( $user_info->roles ) ? implode( "', '", $user_info->roles ) : get_option( 'default_role' );
-
-		$plugins_data = apply_filters( 'bws_bkng_prflxtrflds_get_data', $plugins_data = array() );
+    $plugins_data = apply_filters( 'bws_bkng_prflxtrflds_get_data', $plugins_data = array() );
 
 		preg_match( '/bws_bkng_(.*?)_(.*?)$/', current_filter(), $matches );
 
@@ -3538,6 +3551,15 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 										   name="prflxtrflds_user_field_pattern[<?php echo $one_entry['field_id']; ?>]"
 										   value="<?php echo $one_entry['available_fields'][0]['value_name']; ?>">
 									<?php break;
+
+								case '11': ?>
+									<input type="url" class="prflxtrflds_url"
+										   id="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+										   name="prflxtrflds_user_field_value[<?php echo $one_entry['field_id']; ?>]"
+										   value="<?php if ( isset( $one_entry['user_value'] ) ) echo $one_entry['user_value']; ?>"
+										   <?php if ( isset( $one_entry['available_fields'][0]['value_name'] ) ) echo 'maxlength="' . $one_entry['available_fields'][0]['value_name'] . '"';
+									echo $editable_attr; ?> />
+									<?php break;	
 							}
 							echo $hidden_noneditable_field;
 							if (isset($one_entry['description'])) { ?>
@@ -4342,7 +4364,8 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			'7' => 'time',
 			'8' => 'datetime',
 			'9' => 'number',
-			'10' => 'phone'
+			'10' => 'phone',
+			'11' => 'url'
 		);
 		$html = $rows = $cols = $max_length_textarea = '';
 
@@ -4528,6 +4551,18 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			}
 		}
 
+		if ( 'url' == $field_types[ $field_data['field_type_id'] ] ) {
+			$html = sprintf(
+				'<input type="text" class="medium" name="%1$s[%2$s]" ',
+				$name,
+				$field_data['field_id'],
+				$value,
+				$max_length,
+				$editable_attr,
+				$required_attr
+			);
+		}
+
 		if ( $echo ) {
 			echo $html;
 		}
@@ -4540,7 +4575,7 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 if ( ! function_exists( 'prflxtrflds_user_profile_fields_in_register_form' ) ) {
 	function prflxtrflds_user_profile_fields_in_register_form() {
 
-		if ( ! is_multisite() ){
+		if ( ! is_multisite() ) {
 
 				global $wpdb, $hook_suffix;
 
@@ -4571,16 +4606,17 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields_in_register_form' ) ) {
 							echo '<input type="hidden" name="prflxtrflds_not_editable[]" value="' . $one_entry['field_id'] . '" />';
 						} else { ?>
 							<tr>
-								<input type="hidden" name="prflxtrflds_field_name[<?php echo $one_entry['field_id']; ?>]" value="<?php echo $one_entry['field_name']; ?>">
+								<input type="hidden"
+										name="prflxtrflds_field_name[<?php echo $one_entry['field_id']; ?>]"
+										value="<?php echo $one_entry['field_name']; ?>">
 								<p>
-									<label>
-
-										<?php _e( $one_entry['field_name'], 'profile-extra-fields' );
-										if ( 1 == $one_entry['required'] ) {
-											printf( '( %s )', __( 'required', 'profile-extra-fields' ) );
-										} ?>
-									</label>
-									<br />
+										<label>
+											<?php _e( $one_entry['field_name'], 'profile-extra-fields');
+											if ( ! empty( $one_entry['required'] ) ) {
+												echo $one_entry['required'];
+											} ?>
+										</label>
+										<br/>
 									<?php prflxtrflds_get_field_html( $one_entry, 'prflxtrflds_user_field_value', array(), true ); ?>
 								</p>
 								<br />
@@ -4595,11 +4631,13 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields_in_register_form' ) ) {
 }
 
 /* Connecting CSS styles to the registration form. */
-function prflxtrflds_login_enqueue_scripts() {
-	if ( isset( $_GET['action'] ) && 'register' == $_GET['action'] ) {
-		wp_enqueue_style( 'prflxtrflds_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
+if ( ! function_exists( 'prflxtrflds_login_enqueue_scripts' ) ) {
+	function prflxtrflds_login_enqueue_scripts() {
+		if ( isset( $_GET['action'] ) && 'register' == $_GET['action'] ) {
+			wp_enqueue_style( 'prflxtrflds_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
 
-		prflxtrflds_enqueue_fields_styles();
+			prflxtrflds_enqueue_fields_styles();
+		}
 	}
 }
 if ( ! function_exists( 'prflxtrflds_enqueue_fields_styles' ) ) {
@@ -4816,6 +4854,8 @@ add_action( 'set_user_role', 'prflxtrflds_update_user_roles', 10, 2 );
 /*show info in user profile page*/
 add_action( 'show_user_profile', 'prflxtrflds_fields_table' );
 add_action( 'edit_user_profile', 'prflxtrflds_fields_table' );
+/* add custom fields to the user registration form */
+add_action( 'user_new_form', 'prflxtrflds_fields_table' );
 /* save user information where Save button is pressed */
 add_action( 'edit_user_profile_update', 'prflxtrflds_save_user_data' );
 add_action( 'personal_options_update', 'prflxtrflds_save_user_data' );

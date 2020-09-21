@@ -16,7 +16,7 @@
 <li>Current user data</li>
 </ul>
 </li>
-<li>Compatible with Car Rental V2</li>
+<li>Compatible with <a href="https://bestwebsoft.com/products/wordpress/plugins/car-rental-v2/?k=a8f05dd9a324c003f22923d43eb75eea" rel="nofollow ugc">Car Rental V2</a></li>
 <li>Display profile extra fields in user registration form</li>
 <li>Display certain fields via the shortcode</li>
 <li>Export all user data to a CSV file </li>
@@ -58,6 +58,7 @@
 <li>Date and time</li>
 <li>Number</li>
 <li>Phone number</li>
+<li>URL</li>
 </ul>
 </li>
 <li>Customize extra fields:
@@ -90,7 +91,7 @@
 <li>Checkout billing form</li>
 </ul>
 </li>
-<li>Compatible with Gravity Forms [NEW]</li>
+<li>Compatible with Gravity Forms</li>
 <li>Get answer to your question within one business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow ugc">Support Policy</a>)</li>
 </ul>
 <p><a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d" rel="nofollow ugc">Upgrade to Pro Now</a></p>
@@ -98,6 +99,7 @@
 <p>If you have a feature suggestion or idea you&#8217;d like to see in the plugin, we&#8217;d love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">Suggest a Feature</a></p>
 <h4>Documentation &amp; Videos</h4>
 <ul>
+<li><a href="https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk" rel="nofollow ugc">[Doc] User Guide</a></li>
 <li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ" rel="nofollow ugc">[Doc] Installation</a></li>
 <li><a href="https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI" rel="nofollow ugc">[Doc] Purchase</a></li>
 </ul>

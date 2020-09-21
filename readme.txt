@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
-Tested up to: 5.4
-Stable tag: 1.1.9
+Tested up to: 5.5.1
+Stable tag: 1.2.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Certain user role data
 	* Certain user data
 	* Current user data
-* Compatible with Car Rental V2
+* Compatible with [Car Rental V2](https://bestwebsoft.com/products/wordpress/plugins/car-rental-v2/?k=a8f05dd9a324c003f22923d43eb75eea)
 * Display profile extra fields in user registration form
 * Display certain fields via the shortcode
 * Export all user data to a CSV file 
@@ -56,6 +56,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 	* Date and time
 	* Number
 	* Phone number
+	* URL
 * Customize extra fields:
 	* Name
 	* Description
@@ -80,7 +81,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 > * Compatible with WooCommerce:
 >   * Registration form
 >   * Checkout billing form
-> * Compatible with Gravity Forms [NEW]
+> * Compatible with Gravity Forms
 > * Get answer to your question within one business day ([Support Policy](https://bestwebsoft.com/support-policy/))
 >
 > [Upgrade to Pro Now](https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d)
@@ -89,6 +90,7 @@ If you have a feature suggestion or idea you'd like to see in the plugin, we'd l
 
 = Documentation & Videos =
 
+* [[Doc] User Guide](https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk)
 * [[Doc] Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ)
 * [[Doc] Purchase](https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI)
 
@@ -170,6 +172,12 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.2.0 - 21.09.2020 =
+* NEW : 'URL link' field type was added.
+* NEW : Ability to display profile extra fields on the user registration page.
+* Update : BWS Panel section was updated.
+* Update : The plugin settings page was changed.
+
 = V1.1.9 - 09.04.2020 =
 * Update : The plugin settings page was changed.
 * Update : The compatibility with Car Rental V2 plugin has been improved.
@@ -243,6 +251,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.0 =
+* Functionality has been expanded.
 
 = V1.1.9 =
 * Usability improved.

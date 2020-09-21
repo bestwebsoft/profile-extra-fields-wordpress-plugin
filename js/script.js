@@ -39,7 +39,7 @@
 				if ( '7' == type_value || '8' == type_value ) {
 					$( '.prflxtrflds-time-format' ).show();
 				}
-				if ( '1' == type_value || '9' == type_value ) {
+				if ( '1' == type_value || '9' == type_value || '11' == type_value ) {
 					$( '.prflxtrflds-maxlength' ).show();
 				}
 				if ( '2' == type_value ) {
@@ -161,9 +161,11 @@
 
 		$( '.prflxtrflds-checkboxes-select-all-in-roles' ).on( 'click', function() {
 			var $parent = $( this ).closest( 'td' ),
-				$child_cb = $parent.find( '.prflxtrflds-checkboxes-in-roles' );
+				$child_cb = $parent.find( '.prflxtrflds-checkboxes-in-roles' ),
+				$child_cb_disabled = $parent.find( '.prflxtrflds-checkboxes-in-roles' ).filter( ':disabled' );
 			if ( $( this ).is( ':checked' ) ) {
-				$child_cb.attr( 'checked', 'checked' ).trigger( 'change' );
+				$child_cb.prop( 'checked', true ).trigger( 'change' );
+				$child_cb_disabled.removeAttr( 'checked' ).trigger( 'change' );
 			} else {
 				$child_cb.removeAttr( 'checked' ).trigger( 'change' );
 			}
@@ -172,10 +174,12 @@
 		$( '.prflxtrflds-checkboxes-in-roles' ).on( 'change', function() {
 			var $parent = $( this ).closest( 'td' ),
 				$cb_all = $parent.find( '.prflxtrflds-checkboxes-select-all-in-roles' ),
+
 				$checkboxes = $parent.find( '.prflxtrflds-checkboxes-in-roles' ).filter( ':enabled' ),
 				$enabled_checkboxes = $checkboxes.filter( ':checked' );
+
 			if ( $checkboxes.length > 0 && $checkboxes.length == $enabled_checkboxes.length ) {
-				$cb_all.attr( 'checked', 'checked' );
+				$cb_all.prop( 'checked', true );
 				$cb_all.removeAttr( 'disabled' );
 			} else {
 				$cb_all.removeAttr( 'checked' );
@@ -188,11 +192,14 @@
 				role_id = $( this ).data( 'prflxtrflds-role-id' ),
 				checkboxes = $( '.prflxtrflds-checkboxes-editable[data-prflxtrflds-role-id="' + role_id + '"], .prflxtrflds-checkboxes-visible[data-prflxtrflds-role-id="' + role_id + '"]' );
 			if ( $( this ).is( ':checked' ) ) {
+				checkboxes.removeAttr( 'checked' ).trigger( 'change' );
 				checkboxes.removeAttr( 'disabled' ).trigger( 'change' );
 			} else {
-				checkboxes.attr( 'disabled', 'disabled' ).trigger( 'change' );
-			}
-		} ).trigger( 'change' );
+				checkboxes.prop( 'disabled', true ).trigger( 'change' );
+				checkboxes.removeAttr( 'checked' ).trigger( 'change' );
+			}			
+		} );
+
 
 		var table = $( 'table.toplevel_page_profile-extra-fields' );
 		if ( table.length > 1 ) {
