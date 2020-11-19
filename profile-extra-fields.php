@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.2.0
+Version: 1.2.1
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
@@ -2623,19 +2623,6 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 					<div class="updated fade below-h2"><p><?php echo $message; ?></p></div>
 				<?php } ?>
                 <br/>
-                <div><?php printf(
-                    __( "If you would like to add user data to your page or post, please use %s button", 'profile-extra-fields' ),
-                    '<span class="bwsicons bwsicons-shortcode"></span>' ); ?>
-                    <div class="bws_help_box bws_help_box_right dashicons dashicons-editor-help">
-                        <div class="bws_hidden_help_text" style="min-width: 180px;">
-                            <?php printf(
-                                __( "You can add user data to your page or post by clicking on %s button in the content edit block using the Visual mode. If the button isn't displayed, please use the following shortcode %s, where you can specify the data position (columns or rows), user role and user ID", 'profile-extra-fields' ),
-                                '<code><span class="bwsicons bwsicons-shortcode"></span></code>',
-                                '<code>[prflxtrflds_user_data display=* user_role=* user_id=*]</code>'
-                            ); ?>
-                        </div>
-                    </div>
-                </div>
                 <form class="bws_form" method="post" action="">
                     <table class="form-table">
                         <tbody>
@@ -2977,7 +2964,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 						}
 						return $return_output_export;
 					} ?>
-					<div style ="max-width: 100%; overflow-x: scroll;margin-bottom: 15px;">
+					<div style ="max-width: 100%; overflow-x: auto;margin-bottom: 15px;">
 						<table>
 							<thead>
 								<tr>
@@ -3132,7 +3119,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 							$distinct_users[ $one_row['user_id'] ] = $one_row[ 'username' == $prflxtrflds_options['display_user_name'] ? 'user_nicename' : 'display_name' ];
 						}
 					} ?>
-					<div style ="max-width: 100%; overflow-x: scroll;margin-bottom: 15px;">
+					<div style ="max-width: 100%; overflow-x: auto;margin-bottom: 15px;">
 						<table>
 							<?php if ( 1 == $prflxtrflds_options['show_id'] ) { ?>
 							<tr>
@@ -4204,10 +4191,7 @@ if ( ! function_exists( 'prflxtrflds_load_script' ) ) {
 	function prflxtrflds_load_script() {
 		global $hook_suffix;
 
-		wp_enqueue_style( 'prflxtrflds_icon_stylesheet', plugins_url( 'css/icon.css', __FILE__ ) );
-
 		if ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'profile-extra-fields.php', 'profile-extra-field-add-new.php', 'profile-extra-fields-settings.php' ) ) ) {
-			wp_enqueue_style( 'prflxtrflds_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
 
 			if ( wp_is_mobile() ) {
 				wp_enqueue_script( 'jquery-touch-punch' );
@@ -4825,6 +4809,19 @@ if ( ! function_exists( 'prflxtrflds_register_error' ) ) {
 	}
 }
 
+if ( ! function_exists( 'prflxtrflds_wp_new_user_notification_email_admin' ) ) {
+	function prflxtrflds_wp_new_user_notification_email_admin( $wp_new_user_notification_email_admin ) {
+		if ( isset( $_POST['prflxtrflds_field_name'], $_POST['prflxtrflds_user_field_value'] ) ) {
+			$wp_new_user_notification_email_admin['message'] .= "\r\n";
+			foreach ( $_POST['prflxtrflds_field_name'] as $key => $name ) {
+				$wp_new_user_notification_email_admin['message'] .= $name . ': ' . $_POST['prflxtrflds_user_field_value'][$key] . "\r\n\r\n";
+			}
+		}
+
+		return $wp_new_user_notification_email_admin;
+	}
+}
+
 register_activation_hook( __FILE__, 'prflxtrflds_activation' );
 /* add css styles to the admin panel */
 add_action( 'admin_head', 'prflxtrflds_admin_style' );
@@ -4865,6 +4862,8 @@ add_filter( 'bws_bkng_order_errors', 'prflxtrflds_add_error_message', 10, 2 );
 add_action( 'admin_enqueue_scripts', 'prflxtrflds_load_script' );
 /* check fields from user settings page */
 add_filter( 'user_profile_update_errors', 'prflxtrflds_create_user_error' );
+/* adding fields to the admin email after registering a new user */
+add_filter( 'wp_new_user_notification_email_admin', 'prflxtrflds_wp_new_user_notification_email_admin' );
 /* save order through ajax */
 add_action( 'wp_ajax_prflxtrflds_table_order', 'prflxtrflds_table_order' );
 add_action( 'wp_ajax_prflxtrflds_get_users', 'prflxtrflds_get_users' );

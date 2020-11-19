@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
-Tested up to: 5.5.1
-Stable tag: 1.2.0
+Tested up to: 5.5.3
+Stable tag: 1.2.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -142,6 +142,7 @@ To display the user data on the site, please use the shortcode [prflxtrflds_user
 Also, it is possible to display data only for specific users. To do this, please enter the relevant user id to the shortcode. For example: [prflxtrflds_user_data user_id=3,1].
 You can specify a user role, separated by commas without spaces. Example: [prflxtrflds_user_data user_role=administrator,contributor]
 You can specify a header position manually (top, left or right). Example: [prflxtrflds_user_data display=top]
+Also you can select the current user. Example: [prflxtrflds_user_data user_id=get_current_user]
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
@@ -171,6 +172,13 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+
+= V1.2.1 - 19.11.2020 =
+* NEW : Extra Fields have been added to the User Registration Email.
+* NEW : Meta box with shortcodes has been added.
+* Update : BWS Panel section was updated.
+* Pro : Fixed a bug with required fields in Woocommerce.
+* Pro : Fixed a bug with displaying visible fields when working with Gravity Forms.
 
 = V1.2.0 - 21.09.2020 =
 * NEW : 'URL link' field type was added.
@@ -251,6 +259,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.1 =
+* Bugs fixed.
 
 = V1.2.0 =
 * Functionality has been expanded.
