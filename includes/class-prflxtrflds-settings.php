@@ -33,10 +33,11 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 				'wp_slug'					=> 'profile-extra-fields',
 				'link_key'					=> 'c37eed44c2fe607f3400914345cbdc8a',
 				'link_pn'					=> '300',
-				'doc_link' 					=> 'https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk/'
+				'doc_link' 					=> 'https://bestwebsoft.com/documentation/profile-extra-fields/profile-extra-fields-user-guide/'
 			) );
 
             add_action( get_parent_class( $this ) . '_display_metabox', array( $this, 'display_metabox' ) );
+            add_action( get_parent_class( $this ) . '_additional_misc_options_affected', array( $this, 'additional_misc_options_affected' ) );
         }
 
         public function display_metabox() { ?>
@@ -63,5 +64,29 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
             </div>
         <?php }
         public function save_options() {}
+
+        public function additional_misc_options_affected() {
+			if ( ! $this->hide_pro_tabs ) { ?>
+				</table>
+					<div class="bws_pro_version_bloc">
+						<div class="bws_pro_version_table_bloc">
+							<button type="submit" name="bws_hide_premium_options" class="notice-dismiss bws_hide_premium_options" title="<?php _e( 'Close', 'profile-extra-fields' ); ?>"></button>
+							<div class="bws_table_bg"></div>
+							<table class="form-table bws_pro_version">
+								<tr valign="top">
+						                <th scope="row"><?php _e( 'Gravity Forms', 'profile-extra-fields' ); ?></th>
+						                <td>
+						                    <label>
+						                        <input type="checkbox" disabled="disabled" /> <span class="bws_info"><?php _e( 'Ability to add Profile Extra Fields to the Gravity Forms.', 'profile-extra-fields' ); ?></span>
+						                    </label>
+						                </td>
+						            </tr>
+							</table>
+						</div>
+						<?php $this->bws_pro_block_links(); ?>
+					</div>
+				<table class="form-table">
+			<?php } 
+		}
     }
 }

@@ -26,12 +26,15 @@
 		/* Show fields for diffrent field type */
 		$( '#prflxtrflds-select-type' ).on( 'change', function() {
 			type_value = $( this ).val();
-			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format, .prflxtrflds-maxlength, .prflxtrflds-rows, .prflxtrflds-cols' ).hide();
-
+			$( '.prflxtrflds-fields-container, .prflxtrflds-pattern, .prflxtrflds-time-format, .prflxtrflds-date-format, .prflxtrflds-maxlength, .prflxtrflds-rows, .prflxtrflds-cols, .prflxtrflds-selected-extensions' ).hide();
+			$( '.prflxtrflds-fields-edit-table' ).show();
+			
 			if ( '3' == type_value || '4' == type_value || '5' == type_value ) {
 				$( '.prflxtrflds-fields-container' ).show();
 			} else if ( '10' == type_value ) {
 				$( '.prflxtrflds-pattern' ).show();
+			} else if ( '12' == type_value ) {
+				$( '.prflxtrflds-selected-extensions' ).show();
 			} else {
 				if ( '6' == type_value || '8' == type_value ) {
 					$( '.prflxtrflds-date-format' ).show();

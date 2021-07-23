@@ -6,12 +6,12 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.2.1
+Version: 1.2.2
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
 */
 
-/*  @ Copyright 2020  BestWebSoft  ( https://support.bestwebsoft.com )
+/*  @ Copyright 2021  BestWebSoft  ( https://support.bestwebsoft.com )
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -379,7 +379,8 @@ if ( ! function_exists( 'prflxtrflds_get_field_type_id' ) ) {
 			'8' => __( 'Datetime', 'profile-extra-fields' ),
 			'9' => __( 'Number', 'profile-extra-fields' ),
 			'10' => __( 'Phone number', 'profile-extra-fields' ),
-			'11' => __( 'URL link', 'profile-extra-fields' )
+			'11' => __( 'URL link', 'profile-extra-fields' ),
+			'12' => __( 'Attachment', 'profile-extra-fields' )
 		);
 	}
 }
@@ -590,6 +591,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 		if ( ! empty( $_POST ) ) {
 			$field_name				= isset( $_POST['prflxtrflds_field_name'] ) ? stripslashes( sanitize_text_field( $_POST['prflxtrflds_field_name'] ) ) : '';
 			$field_type_id			= isset( $_POST['prflxtrflds_type'] ) ? absint( $_POST['prflxtrflds_type'] ) : 1;
+			$error = '12' == $field_type_id ? sprintf( '<p><strong>%s</strong></p>', __( 'Unable to create field of this type.', 'profile-extra-fields' ) ) : '';
 			$description			= isset( $_POST['prflxtrflds_description'] ) ? stripslashes( sanitize_text_field( $_POST['prflxtrflds_description'] ) ) : '';
 			$checked_roles_data		= isset( $_POST['prflxtrflds_roles'] ) ? array_filter( array_map( 'absint', ( array )$_POST['prflxtrflds_roles'] ) ) : array(); /* is array */
 			$checked_editables		= isset( $_POST['prflxtrflds_editable'] ) ? array_filter( array_map( 'absint', ( array )$_POST['prflxtrflds_editable'] ) ) : array(); /* is array */
@@ -622,7 +624,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			$field_required		= isset( $_POST['prflxtrflds_required'], $_POST['prflxtrflds_required_symbol'] ) ? sanitize_text_field( $_POST['prflxtrflds_required_symbol'] ) : '';
 			$field_show_default	= isset( $_POST['prflxtrflds_show_default'] ) ? 1 : 0;
 			$field_show_always	= isset( $_POST['prflxtrflds_show_always'] ) ? 1 : 0;
-			$show_in = isset( $_POST['prflxtrflds_show_in'] ) ? $_POST['prflxtrflds_show_in'] : false;
+			$show_in = isset( $_POST['prflxtrflds_show_in'] ) ? 1 : 0;
 
 			if ( isset( $_POST['prflxtrflds-value-delete'] ) ) {
 				$field_value_to_delete = $_POST['prflxtrflds-value-delete'];
@@ -631,7 +633,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			$i = 1;
 			if ( isset( $_POST['prflxtrflds_available_values'] ) && is_array( $_POST['prflxtrflds_available_values'] ) ) {
 				$nonsort_available_values	= array_map( 'stripslashes_deep', $_POST['prflxtrflds_available_values'] );
-				$value_ids					= isset( $_POST['prflxtrflds_value_id'] ) ? $_POST['prflxtrflds_value_id'] : '';
+				$value_ids					= isset( $_POST['prflxtrflds_value_id'] ) ? intval( $_POST['prflxtrflds_value_id'] ) : '';
 				/* is array */
 				foreach ( $nonsort_available_values as $key => $value ) {
 					if ( '' != sanitize_text_field( $value ) ) {
@@ -1004,9 +1006,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 				}
 			}
 		}
-		if ( ! isset( $prflxtrflds_options ) || empty( $prflxtrflds_options ) ) {
-			$prflxtrflds_options = prflxtrflds_get_options_default();
-		}
+		prflxtrflds_settings();
 
 		$bws_hide_premium_options_check = bws_hide_premium_options_check( $prflxtrflds_options );
 		/* Update roles id */
@@ -1041,7 +1041,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 						<td>
 							<select id="prflxtrflds-select-type" name="prflxtrflds_type">
 								<?php foreach ( $prflxtrflds_field_type_id as $id => $field_name ) { /* Create select with field types */ ?>
-									<option value="<?php echo $id; ?>"<?php selected( $field_type_id, $id ); ?>><?php echo $field_name; ?></option>
+									<option value="<?php echo $id; ?>" style="<?php echo 12 == $id ? 'background-color: #dcd6b8;' : ''; ?>" <?php selected( $field_type_id, $id ); ?>><?php echo $field_name; ?></option>
 								<?php } ?>
 							</select>
 						</td>
@@ -1122,36 +1122,96 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					<tr class="prflxtrflds-fields-container">
 						<th><?php _e( 'Available Values', 'profile-extra-fields' ); ?></th>
 						<td>
-							<div class="bws_info hide-if-js">
-								<div class="prflxtrflds-value-name">
-									<?php _e( 'Name of value', 'profile-extra-fields' ); ?>
+							<fieldset>
+								<label><input type="radio" class="bws_option_affect" name="mode_edit_values" value="manually" data-affect-hide=".prflxtrflds-import-values" data-affect-show=".prflxtrflds-write-in-values" checked>&nbsp<?php _e( 'Edit values manually', 'profile-extra-fields' ); ?></label><br/>
+								<div class="prflxtrflds-write-in-values">
+									<div class="bws_info hide-if-js">
+										<div class="prflxtrflds-value-name">
+											<?php _e( 'Name of value', 'profile-extra-fields' ); ?>
+										</div>
+										<div class="prflxtrflds-delete">
+											<?php _e( 'Delete', 'profile-extra-fields' ); ?>
+										</div>
+									</div><!--.prflxtrflds-values-info-->
+									<div class="prflxtrflds-drag-values-container">
+										<?php for ( $i = 0; $i < sizeof( $available_values ); $i++ ) { ?>
+											<div class="prflxtrflds-drag-values">
+												<input type="hidden" name="prflxtrflds_value_id[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" />
+												<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
+												<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="<?php echo $available_values[ $i ]['value_name']; ?>" />
+												<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" /><label></label></span>
+											</div><!--.prflxtrflds-drag-values-->
+										<?php } ?>
+										<div class="prflxtrflds-drag-values <?php if ( ! empty( $available_values ) ) echo 'hide-if-js'; ?>">
+											<input type="hidden" name="prflxtrflds_value_id[]" value="" />
+											<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
+											<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="" />
+											<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="" /><label></label></span>
+										</div><!--.prflxtrflds-drag-values-->
+									</div><!--.prflxtrflds-drag-values-container-->
+									<div class="prflxtrflds-add-button-container">
+										<input type="button" class="button-small button prflxtrflds-small-button hide-if-no-js" id="prflxtrflds-add-field" name="prflxtrflds-add-field" value="<?php _e( 'Add', 'profile-extra-fields' ); ?>" />
+										<p class="hide-if-js"><?php _e( 'Click save button to add more values', 'profile-extra-fields' ); ?></p>
+									</div>
+								</div><br/>
+							</fieldset>
+							<?php if ( ! $bws_hide_premium_options_check ) { ?>
+								<div class="bws_pro_version_bloc">
+									<div class="bws_pro_version_table_bloc">
+										<div class="bws_table_bg"></div>
+										<table class="form-table bws_pro_version">
+											<tbody>
+												<tr>
+													<td>
+														<label><input type="radio" name="mode_edit_values" value="import" data-affect-hide=".prflxtrflds-write-in-values" disabled="disabled">&nbsp<?php _e( 'Import values', 'profile-extra-fields' ); ?><?php echo $bws_hide_premium_options_check ? 'disabled' : ''; ?></label><br/>
+														
+														<div>
+															<input type="file" name="prflxtrflds-import-file" accept=".xlsx"  disabled="disabled" />	
+															<div class="bws_info"><?php _e( 'Upload XLSX file that includes the values to overwrite the standard values. Example: location1,location2,location3', 'profile-extra-fields' ); ?></div>		
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="bws_pro_version_tooltip">
+										<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=c37eed44c2fe607f3400914345cbdc8a&pn=300&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Upgrade to Pro', 'profile-extra-fields' ); ?></a>
+										<div class="clear"></div>
+									</div>
 								</div>
-								<div class="prflxtrflds-delete">
-									<?php _e( 'Delete', 'profile-extra-fields' ); ?>
-								</div>
-							</div><!--.prflxtrflds-values-info-->
-							<div class="prflxtrflds-drag-values-container">
-								<?php for ( $i = 0; $i < sizeof( $available_values ); $i++ ) { ?>
-									<div class="prflxtrflds-drag-values">
-										<input type="hidden" name="prflxtrflds_value_id[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" />
-										<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
-										<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="<?php echo $available_values[ $i ]['value_name']; ?>" />
-										<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="<?php if ( ! empty( $available_values[ $i ]['value_id'] ) ) echo $available_values[ $i ]['value_id']; ?>" /><label></label></span>
-									</div><!--.prflxtrflds-drag-values-->
-								<?php } ?>
-								<div class="prflxtrflds-drag-values <?php if ( ! empty( $available_values ) ) echo 'hide-if-js'; ?>">
-									<input type="hidden" name="prflxtrflds_value_id[]" value="" />
-									<img class="prflxtrflds-drag-field hide-if-no-js prflxtrflds-hide-if-is-mobile" title="" src="<?php echo plugins_url( 'images/dragging-arrow.png', __FILE__ ); ?>" alt="drag-arrow" />
-									<input placeholder="<?php _e( 'Name of value', 'profile-extra-fields' ); ?>" class="prflxtrflds-add-options-input" type="text" name="prflxtrflds_available_values[]" value="" />
-									<span class="prflxtrflds-value-delete"><input type="checkbox" name="prflxtrflds-value-delete[]" value="" /><label></label></span>
-								</div><!--.prflxtrflds-drag-values-->
-							</div><!--.prflxtrflds-drag-values-container-->
-							<div class="prflxtrflds-add-button-container">
-								<input type="button" class="button-small button prflxtrflds-small-button hide-if-no-js" id="prflxtrflds-add-field" name="prflxtrflds-add-field" value="<?php _e( 'Add', 'profile-extra-fields' ); ?>" />
-								<p class="hide-if-js"><?php _e( 'Click save button to add more values', 'profile-extra-fields' ); ?></p>
-							</div>
+							<?php } ?>
 						</td>
 					</tr>
+				</tbody>
+			</table>
+			<?php if ( ! $bws_hide_premium_options_check ) { ?>
+			<div class="bws_pro_version_bloc prflxtrflds-selected-extensions">
+				<div class="bws_pro_version_table_bloc">
+					<div class="bws_table_bg"></div>
+					<table class="form-table bws_pro_version">
+						<tbody>
+							<tr class="prflxtrflds-selected-extensions">
+								<th><?php _e( 'Available Extensions', 'profile-extra-fields' ); ?></th>
+								<td>
+									<select class="select" id="prflxtrflds_available_extensions" disabled="disabled" multiple>
+										<?php $all_available_extensions = array( '.jpg', '.jpeg', '.png', '.gif', '.ico', '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.pps', '.ppsx', '.odt', '.xls', '.xlsx', '.psd', '.mp3', '.m4a', '.ogg', '.wav', '.mp4', '.m4v', '.mov', '.wmv', '.avi', '.mpg', '.ogv', '.3gp', '.3g2' );
+										foreach ( $all_available_extensions as $value ) {
+											echo '<option value="' . $value . '">' . $value . '</option>';
+										} ?>				
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>	
+				</div>
+				<div class="bws_pro_version_tooltip">
+			       <a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=c37eed44c2fe607f3400914345cbdc8a&pn=300&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Upgrade to Pro', 'profile-extra-fields' ); ?></a>
+					<div class="clear"></div>
+				</div>
+			</div>
+		<?php } ?>
+			<table class="form-table prflxtrflds-fields-edit-table">
+				<tbody>
 					<tr>
 						<th><?php _e( 'Description', 'profile-extra-fields' ); ?></th>
 						<td>
@@ -1172,7 +1232,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 									<td class="prflxtrflds-checkboxes-for-roles">
 										<div id="prflxtrflds-select-roles">
 											<div class="prflxtrflds-div-select-all">
-												<input class="prflxtrflds-checkboxes-select-all-in-roles prflxtrflds-checkboxes-available" type="checkbox" name="prflxtrflds-select-all" id="prflxtrflds-select-all" data-prflxtrflds-role-id="all" />
+												<input class="prflxtrflds-checkboxes-select-all-in-roles prflxtrflds-checkboxes-available" type="checkbox" id="prflxtrflds-select-all"/>
 												<span class="prflxtrflds-labels-for-mobiles"><b><?php _e( 'Select all', 'profile-extra-fields' ); ?></b></span>
 											</div>
 											<?php $args = array();
@@ -1288,7 +1348,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 				</tbody>
 			</table>
 			<?php if ( ! $bws_hide_premium_options_check ) { ?>
-				<div class="bws_pro_version_bloc">
+				<div class="bws_pro_version_bloc prflxtrflds-fields-edit-table">
 					<div class="bws_pro_version_table_bloc">
 						<div class="bws_table_bg"></div>
 						<table class="form-table bws_pro_version">
@@ -1322,13 +1382,13 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 						</table>
 					</div>
 					<div class="bws_pro_version_tooltip">
-						<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=c37eed44c2fe607f3400914345cbdc8a&pn=300&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Learn More', 'profile-extra-fields' ); ?></a>
+						<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=c37eed44c2fe607f3400914345cbdc8a&pn=300&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Upgrade to Pro', 'profile-extra-fields' ); ?></a>
 						<div class="clear"></div>
 					</div>
 				</div>
 			<?php }
 			$plugins_data = apply_filters( 'bws_bkng_prflxtrflds_get_data', $plugins_data = array() ); ?>
-			<table class="form-table">
+			<table class="form-table prflxtrflds-fields-edit-table">
 				<?php foreach ( $plugins_data as $plugin ) { ?>
 					<tr>
 						<th><?php echo $plugin['name']; ?></th>
@@ -1392,7 +1452,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					<?php }
 				} ?>
 			</table>
-			<table class="form-table">
+			<table class="form-table prflxtrflds-fields-edit-table">
 				<tbody>
 					<tr>
 						<th><?php _e( 'Field Order', 'profile-extra-fields' ); ?></th>
@@ -1402,7 +1462,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					</tr>
 				</tbody>
 			</table>
-			<p class="submit">
+			<p class="submit prflxtrflds-fields-edit-table">
 				<input type="hidden" name="prflxtrflds_save_field" value="true" />
 				<input type="hidden" name="prflxtrflds_field_id" value="<?php echo $field_id; ?>" />
 				<input id="bws-submit-button" type="submit" class="button-primary" name="prflxtrflds_save_settings" value="<?php _e( 'Save Changes', 'profile-extra-fields' ); ?>" />
@@ -2392,7 +2452,10 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 		if ( ! class_exists( 'Bws_Settings_Tabs' ) )
 			require_once( dirname( __FILE__ ) . '/bws_menu/class-bws-settings.php' );
 		require_once( dirname( __FILE__ ) . '/includes/class-prflxtrflds-settings.php' );
-		$page = new Prflxtrflds_Settings_Tabs( plugin_basename( __FILE__ ) ); ?>
+		$page = new Prflxtrflds_Settings_Tabs( plugin_basename( __FILE__ ) ); 
+		if ( method_exists( $page, 'add_request_feature' ) ) {
+       		$page->add_request_feature();
+		} ?>
         <div class="wrap">
             <h1><?php _e( 'Profile Extra Fields Settings', 'profile-extra-fields' ); ?></h1>
 			<?php $page->display_content(); ?>
@@ -2507,7 +2570,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 							</table>
 						</div>
 						<div class="bws_pro_version_tooltip">
-							<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=23e9c49f512f7a6d0900c5a1503ded4f&pn=91&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Learn More', 'profile-extra-fields' ); ?></a>
+							<a class="bws_button" href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=23e9c49f512f7a6d0900c5a1503ded4f&pn=91&v=<?php echo $prflxtrflds_plugin_info["Version"]; ?>&wp_v=<?php echo $wp_version; ?>" target="_blank" title="Profile Extra Fields Pro"><?php _e( 'Upgrade to Pro', 'profile-extra-fields' ); ?></a>
 							<div class="clear"></div>
 						</div>
 					</div>
@@ -3586,7 +3649,7 @@ if ( ! function_exists( 'prflxtrflds_create_user_error' ) ) {
                     ! in_array( $field_id, $required_array )
                 ) {
 					if ( ! preg_match( '/^' . str_replace( '\*', '[0-9]', preg_quote( $pattern ) ) . '$/', $_POST['prflxtrflds_user_field_value'][ $field_id ] ) ) {
-						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . $_POST['prflxtrflds_field_name'][ $field_id ] . '</strong>', '<strong>' . $pattern . '</strong>' ) );
+						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . sanitize_text_field( $_POST['prflxtrflds_field_name'][ $field_id ] ) . '</strong>', '<strong>' . $pattern . '</strong>' ) );
 					}
 				}
 			}
@@ -3619,7 +3682,7 @@ if ( ! function_exists( 'prflxtrflds_create_user_error' ) ) {
 							$errors->add('prflxtrflds_match_error', sprintf(__('Field %s does not match %s. Data was not saved!', 'profile-extra-fields'), '<strong>' . $_POST['prflxtrflds_field_name'][$field_id] . '</strong>', '<strong>' . $pattern . '</strong>'));
 						}
 					} elseif ( ! strtotime( $_POST['prflxtrflds_user_field_value'][ $field_id ] ) ) {
-						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . $_POST['prflxtrflds_field_name'][ $field_id ] . '</strong>', '<strong>' . $pattern . '</strong>' ) );
+						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . sanitize_text_field( $_POST['prflxtrflds_field_name'][ $field_id ] ) . '</strong>', '<strong>' . $pattern . '</strong>' ) );
 					}
 				}
 			}
@@ -4766,7 +4829,7 @@ if ( ! function_exists( 'prflxtrflds_register_error' ) ) {
 			foreach ( $_POST['prflxtrflds_user_field_pattern'] as $field_id => $pattern ) {
 				if ( ! empty( $_POST['prflxtrflds_user_field_value'][ $field_id ] ) && ! in_array( $field_id, $required_array ) ) {
 					if ( ! preg_match( '/^' . str_replace( '\*', '[0-9]', preg_quote( $pattern ) ) . '$/', $_POST['prflxtrflds_user_field_value'][ $field_id ] ) ) {
-						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . $_POST['prflxtrflds_field_name'][ $field_id ] . '</strong>', '<strong>' . $pattern . '</strong>' ) );
+						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . sanitize_text_field( $_POST['prflxtrflds_field_name'][ $field_id ] ) . '</strong>', '<strong>' . $pattern . '</strong>' ) );
 					}
 				}
 			}
@@ -4796,10 +4859,10 @@ if ( ! function_exists( 'prflxtrflds_register_error' ) ) {
 					if ( function_exists( 'date_create_from_format' ) ) {
 						$d = date_create_from_format( $pattern, $_POST['prflxtrflds_user_field_value'][ $field_id ] );
 						if ( ! $d || ! $d->format( $pattern ) == $_POST['prflxtrflds_user_field_value'][ $field_id ] ) {
-							$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . $_POST['prflxtrflds_field_name'][ $field_id ] . '</strong>', '<strong>' . $pattern . '</strong>' ) );
+							$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . sanitize_text_field( $_POST['prflxtrflds_field_name'][ $field_id ] ) . '</strong>', '<strong>' . $pattern . '</strong>' ) );
 						}
 					} elseif ( ! strtotime( $_POST['prflxtrflds_user_field_value'][ $field_id ] ) ) {
-						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . $_POST['prflxtrflds_field_name'][ $field_id ] . '</strong>', '<strong>' . $pattern . '</strong>' ) );
+						$errors->add( 'prflxtrflds_match_error', sprintf( __( 'Field %s does not match %s. Data was not saved!', 'profile-extra-fields' ), '<strong>' . sanitize_text_field( $_POST['prflxtrflds_field_name'][ $field_id ] ) . '</strong>', '<strong>' . $pattern . '</strong>' ) );
 					}
 				}
 			}
@@ -4814,7 +4877,7 @@ if ( ! function_exists( 'prflxtrflds_wp_new_user_notification_email_admin' ) ) {
 		if ( isset( $_POST['prflxtrflds_field_name'], $_POST['prflxtrflds_user_field_value'] ) ) {
 			$wp_new_user_notification_email_admin['message'] .= "\r\n";
 			foreach ( $_POST['prflxtrflds_field_name'] as $key => $name ) {
-				$wp_new_user_notification_email_admin['message'] .= $name . ': ' . $_POST['prflxtrflds_user_field_value'][$key] . "\r\n\r\n";
+				$wp_new_user_notification_email_admin['message'] .= $name . ': ' . sanitize_text_field( $_POST['prflxtrflds_user_field_value'][$key] ) . "\r\n\r\n";
 			}
 		}
 
@@ -4876,7 +4939,7 @@ add_action( 'register_form', 'prflxtrflds_user_profile_fields_in_register_form' 
 /* connecting CSS styles to the registration form. */
 add_action( 'login_enqueue_scripts', 'prflxtrflds_login_enqueue_scripts', 1 );
 /* save user data from register form */
-add_action( 'register_new_user', 'prflxtrflds_save_data_from_registration_form' );
+add_action( 'user_register', 'prflxtrflds_save_data_from_registration_form' );
 /* form validation */
 add_filter( 'registration_errors', 'prflxtrflds_register_check', 10, 1 );
 add_filter( 'registration_errors', 'prflxtrflds_register_error' );

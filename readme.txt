@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
-Tested up to: 5.5.3
-Stable tag: 1.2.1
+Tested up to: 5.8
+Stable tag: 1.2.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,6 +15,8 @@ Add extra fields to WooCommerce and default WordPress user profile. The easiest 
 Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields. 
 
 Easily add and display extra information about WordPress users!
+
+[View Demo](https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme)
 
 https://www.youtube.com/watch?v=O424Kpnffmo
 
@@ -78,10 +80,16 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 >
 > All features from Free version included plus:
 >
+> * Choose extra field type:
+>	* Attachment [NEW]
 > * Compatible with WooCommerce:
->   * Registration form
->   * Checkout billing form
+>	* Registration form
+>	* Checkout billing form
 > * Compatible with Gravity Forms
+> * Import available values for: [NEW] 
+>   * Checkbox list
+>   * Drop down list
+>   * Radio button list
 > * Get answer to your question within one business day ([Support Policy](https://bestwebsoft.com/support-policy/))
 >
 > [Upgrade to Pro Now](https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d)
@@ -90,9 +98,9 @@ If you have a feature suggestion or idea you'd like to see in the plugin, we'd l
 
 = Documentation & Videos =
 
-* [[Doc] User Guide](https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk)
-* [[Doc] Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ)
-* [[Doc] Purchase](https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI)
+* [[Doc] User Guide](https://bestwebsoft.com/documentation/profile-extra-fields/profile-extra-fields-user-guide/)
+* [[Doc] Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
+* [[Doc] Purchase](https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/)
 
 = Help & Support =
 
@@ -118,7 +126,7 @@ Some of these translations are not complete. We are constantly adding new featur
 3. You can adjust the necessary settings using your WordPress admin panel in "Profile Extra Fields".
 4. Create a page or a post and insert the shortcode [prflxtrflds_user_data] into the text.
 
-[View a Step-by-step Instruction on Profile Extra Fields Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ/)
+[View a Step-by-step Instruction on Profile Extra Fields Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
 
 == Frequently Asked Questions ==
 
@@ -151,7 +159,7 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 1. The link to the page where the problem occurs.
 2. The name of the plugin and its version. If you are using a pro version - your order number.
 3. The version of your WordPress installation.
-4. Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/).
+4. Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://bestwebsoft.com/documentation/admin-panel-issues/system-status/).
 
 == Screenshots ==
 
@@ -172,6 +180,13 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+
+= V1.2.2 - 22.07.2021 =
+* Bugfix : The issue with saving registration form field values has been fixed.
+* Update : BWS Panel section was updated.
+* Update : All functionality was updated for WordPress 5.8.
+* Pro : Ability to import available values for: Checkbox, Drop down list, Radio button has been added.
+* Pro : Attachment type field has been added.
 
 = V1.2.1 - 19.11.2020 =
 * NEW : Extra Fields have been added to the User Registration Email.
@@ -259,6 +274,12 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.2 =
+* New features added.
+* The compatibility with new WordPress version updated.
+* Usability improved.
+* Bugs fixed.
 
 = V1.2.1 =
 * Bugs fixed.
