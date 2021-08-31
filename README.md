@@ -85,6 +85,12 @@
 <p><strong>Pro Features</strong></p>
 <p>All features from Free version included plus:</p>
 <ul>
+<li>Choose extra field type:
+<ul>
+<li>Attachment</li>
+</ul>
+</li>
+<ul>
 <li>Compatible with WooCommerce:
 <ul>
 <li>Registration form</li>
@@ -92,6 +98,15 @@
 </ul>
 </li>
 <li>Compatible with Gravity Forms</li>
+<li>Compatible with Subscriber [NEW]</li>
+<ul>
+<li>Import available values for:
+<ul>
+<li>Checkbox list</li>
+<li>Drop down list</li>
+<li>Radio button list</li>
+</ul>
+</li> 
 <li>Get answer to your question within one business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow ugc">Support Policy</a>)</li>
 </ul>
 <p><a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d" rel="nofollow ugc">Upgrade to Pro Now</a></p>
@@ -99,9 +114,9 @@
 <p>If you have a feature suggestion or idea you&#8217;d like to see in the plugin, we&#8217;d love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">Suggest a Feature</a></p>
 <h4>Documentation &amp; Videos</h4>
 <ul>
-<li><a href="https://docs.google.com/document/d/1dS8WUgdJOa4O5Ft48oe3z4iGTyN0cXC-SBBDoeHbChk" rel="nofollow ugc">[Doc] User Guide</a></li>
-<li><a href="https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ" rel="nofollow ugc">[Doc] Installation</a></li>
-<li><a href="https://docs.google.com/document/d/1EUdBVvnm7IHZ6y0DNyldZypUQKpB8UVPToSc_LdOYQI" rel="nofollow ugc">[Doc] Purchase</a></li>
+<li><a href="https://bestwebsoft.com/documentation/profile-extra-fields/profile-extra-fields-user-guide/" rel="nofollow ugc">[Doc] User Guide</a></li>
+<li><a href="https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/" rel="nofollow ugc">[Doc] Installation</a></li>
+<li><a href="https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/" rel="nofollow ugc">[Doc] Purchase</a></li>
 </ul>
 <h4>Help &amp; Support</h4>
 <p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow ugc">https://support.bestwebsoft.com/</a></p>
