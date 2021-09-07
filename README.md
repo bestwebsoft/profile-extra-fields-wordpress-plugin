@@ -120,6 +120,8 @@
 </ul>
 <h4>Help &amp; Support</h4>
 <p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow ugc">https://support.bestwebsoft.com/</a></p>
+<h4>Affiliate Program</h4>
+<p>Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — <a href="https://bestwebsoft.com/affiliate/" rel="nofollow">https://bestwebsoft.com/affiliate/</a></p>
 <h4>Translation</h4>
 <ul>
 <li>German (de_DE) (thanks to <a href="mailto:m&#097;&#x74;&#x74;&#104;&#105;&#x61;&#x73;&#046;&#115;&#x69;&#x65;&#098;&#108;&#x65;&#x72;&#064;&#103;&#x6d;a&#105;&#108;&#x2e;c&#111;&#x6d;" rel="nofollow ugc">Matthias Siebler</a>)</li>
