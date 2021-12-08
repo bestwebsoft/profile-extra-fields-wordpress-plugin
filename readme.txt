@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
-Tested up to: 5.8
-Stable tag: 1.2.2
+Tested up to: 5.8.2
+Stable tag: 1.2.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,13 +80,15 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 >
 > All features from Free version included plus:
 >
+> * Import all user data to a CSV file [NEW]
 > * Choose extra field type:
->	* Attachment [NEW]
+>	* Attachment
 > * Compatible with WooCommerce:
 >	* Registration form
 >	* Checkout billing form
 > * Compatible with Gravity Forms
-> * Import available values for: [NEW] 
+> * Compatible with [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69) [NEW]
+> * Import available values for:
 >   * Checkbox list
 >   * Drop down list
 >   * Radio button list
@@ -106,6 +108,10 @@ If you have a feature suggestion or idea you'd like to see in the plugin, we'd l
 
 Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <https://support.bestwebsoft.com/>
 
+= Affiliate Program =
+
+Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — [https://bestwebsoft.com/affiliate/](https://bestwebsoft.com/affiliate/?utm_source=plugin&utm_medium=readme&utm_campaign=affiliate_program)
+
 = Translation =
 
 * German (de_DE) (thanks to [Matthias Siebler](mailto:matthias.siebler@gmail.com))
@@ -118,6 +124,7 @@ Some of these translations are not complete. We are constantly adding new featur
 
 * [Updater](https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd) - Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.
 * [User Role](https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8) - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.
+* [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69) - Add email newsletter sign up form to WordPress posts, pages, and widgets. Collect data and subscribe your users.
 
 == Installation ==
 
@@ -180,6 +187,25 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+
+= V1.2.4 - 24.11.2021 =
+* Bugfix: The issue with get fields has been fixed.
+* Update: Escape the user input in front-end has been updated
+* Update : BWS Panel section was updated.
+* Update : All functionality was updated for WordPress 5.8.2.
+* Pro : Ability to import all user data to a CSV file has been added.
+
+= V1.2.3 - 25.08.2021 =
+* Bugfix : The issue with adding values for: Checkbox, Drop down list, Radio button has been fixed.
+* Bugfix : The issue with screen options has been fixed.
+* Pro : Ability to import available values for: Checkbox, Drop down list, Radio button in csv format has been added.
+* Pro : Compatibility with Subscriber by BestWebSoft plugin has been added.
+
+= V1.2.3 - 25.08.2021 =
+* Bugfix : The issue with adding values for: Checkbox, Drop down list, Radio button has been fixed.
+* Bugfix : The issue with screen options has been fixed.
+* Pro : Ability to import available values for: Checkbox, Drop down list, Radio button in csv format has been added.
+* Pro : Compatibility with Subscriber by BestWebSoft plugin has been added.
 
 = V1.2.2 - 22.07.2021 =
 * Bugfix : The issue with saving registration form field values has been fixed.
@@ -274,6 +300,16 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.4 =
+* New features added.
+* The compatibility with new WordPress version updated.
+* Usability improved.
+* Bugs fixed.
+
+= V1.2.3 =
+* Bugs fixed.
+* New features added.
 
 = V1.2.2 =
 * New features added.

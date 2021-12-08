@@ -3,6 +3,7 @@
 
 <p>Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
 <p>Easily add and display extra information about WordPress users!</p>
+<p><a href="https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme" rel="nofollow ugc">View Demo</a></p>
 <p><span class="embed-youtube" style="text-align:center; display: block;"></span></p>
 <h4>Free Features</h4>
 <ul>
@@ -85,12 +86,12 @@
 <p><strong>Pro Features</strong></p>
 <p>All features from Free version included plus:</p>
 <ul>
+<li>Import all user data to a CSV file [NEW]</li>
 <li>Choose extra field type:
 <ul>
 <li>Attachment</li>
 </ul>
 </li>
-<ul>
 <li>Compatible with WooCommerce:
 <ul>
 <li>Registration form</li>
@@ -98,15 +99,14 @@
 </ul>
 </li>
 <li>Compatible with Gravity Forms</li>
-<li>Compatible with Subscriber [NEW]</li>
-<ul>
+<li>Compatible with <a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a> [NEW]</li>
 <li>Import available values for:
 <ul>
 <li>Checkbox list</li>
 <li>Drop down list</li>
 <li>Radio button list</li>
 </ul>
-</li> 
+</li>
 <li>Get answer to your question within one business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow ugc">Support Policy</a>)</li>
 </ul>
 <p><a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d" rel="nofollow ugc">Upgrade to Pro Now</a></p>
@@ -121,7 +121,7 @@
 <h4>Help &amp; Support</h4>
 <p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow ugc">https://support.bestwebsoft.com/</a></p>
 <h4>Affiliate Program</h4>
-<p>Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — <a href="https://bestwebsoft.com/affiliate/" rel="nofollow">https://bestwebsoft.com/affiliate/</a></p>
+<p>Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — <a href="https://bestwebsoft.com/affiliate/?utm_source=plugin&amp;utm_medium=readme&amp;utm_campaign=affiliate_program" rel="nofollow ugc">https://bestwebsoft.com/affiliate/</a></p>
 <h4>Translation</h4>
 <ul>
 <li>German (de_DE) (thanks to <a href="mailto:m&#097;&#x74;&#x74;&#104;&#105;&#x61;&#x73;&#046;&#115;&#x69;&#x65;&#098;&#108;&#x65;&#x72;&#064;&#103;&#x6d;a&#105;&#108;&#x2e;c&#111;&#x6d;" rel="nofollow ugc">Matthias Siebler</a>)</li>
@@ -133,4 +133,5 @@
 <ul>
 <li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd" rel="nofollow ugc">Updater</a> &#8211; Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.</li>
 <li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8" rel="nofollow ugc">User Role</a> &#8211; Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a> &#8211; Add email newsletter sign up form to WordPress posts, pages, and widgets. Collect data and subscribe your users.</li>
 </ul>

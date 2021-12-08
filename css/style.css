@@ -95,7 +95,7 @@ input.prflxtrflds-value-delete-check + label::before {
 }
 .prflxtrflds-table-wrap .hndle {
 	padding: 8px 12px;
-    margin: 0;
+	margin: 0;
 	cursor: pointer !important;
 }
 .prflxtrflds-table-wrap table {
@@ -224,7 +224,10 @@ tr #prflxtrflds-caption-checkboxes th {
 	background: #f5e177;;
 	opacity: 0.3;
 }
-
+/* Register page */
+textarea {
+	max-width: 100%;
+}
 @-moz-document url-prefix() {
 	.form-table td fieldset label {
 		line-height: 1.5;
