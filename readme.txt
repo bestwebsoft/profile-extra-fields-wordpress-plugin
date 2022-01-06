@@ -4,7 +4,7 @@ Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
 Tested up to: 5.8.2
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -188,6 +188,11 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Changelog ==
 
+= V1.2.5 - 30.12.2021 =
+* Bugfix: The issue with show fields on the user edit page has been fixed.
+* Bugfix: The issue with edit fields on the user edit page for administrator has been fixed.
+* Update : BWS Panel section was updated.
+
 = V1.2.4 - 24.11.2021 =
 * Bugfix: The issue with get fields has been fixed.
 * Update: Escape the user input in front-end has been updated
@@ -300,6 +305,10 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.5 =
+* Bugs fixed.
+* Plugin optimization completed.
 
 = V1.2.4 =
 * New features added.

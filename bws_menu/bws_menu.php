@@ -1,7 +1,7 @@
 <?php
 /*
 * Function for displaying BestWebSoft menu
-* Version: 2.4.0
+* Version: 2.4.1
 */
 
 if ( ! function_exists( 'bws_admin_enqueue_scripts' ) ) {
@@ -581,7 +581,7 @@ if ( ! function_exists( 'bws_add_menu_render' ) ) {
 									<div class="bws_product_box
 									<?php
 									if ( $is_active || $is_pro_active ) {
-										echo esc_atr( ' bws_product_active' );}
+										echo esc_attr( ' bws_product_active' );}
 									?>
 									">
 										<div class="bws_product_image">

@@ -211,10 +211,10 @@ if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 															}
 															?>
 															<div class="misc-pub-section">
-																<strong><?php _e( 'License', 'bestwebsoft' ); ?>:</strong> <?php echo esc_html( $license_type ); ?>
+																<strong><?php _e( 'License', 'bestwebsoft' ); ?>:</strong> <?php echo $license_type; ?>
 															</div>
 															<div class="misc-pub-section">
-																<strong><?php _e( 'Status', 'bestwebsoft' ); ?>:</strong> <?php echo esc_html( $license_status ); ?>
+																<strong><?php _e( 'Status', 'bestwebsoft' ); ?>:</strong> <?php echo $license_status; ?>
 															</div><!-- .misc-pub-section -->
 														<?php } ?>
 														<div class="misc-pub-section">
@@ -289,13 +289,11 @@ if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 				</ul>
 				<?php $this->display_tabs_content(); ?>
 				<div class="clear"></div>
-				<input type="hidden" name="bws_active_tab" value="
-				<?php
+				<input type="hidden" name="bws_active_tab" value="<?php
 				if ( isset( $_REQUEST['bws_active_tab'] ) ) {
 					echo esc_html( sanitize_text_field( $_REQUEST['bws_active_tab'] ) );
 				}
-				?>
-				" />
+				?>" />
 			</div>
 			<?php
 		}
@@ -611,7 +609,7 @@ if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 																				?>
 				</textarea>
 				<p class="bws_info">
-					<?php echo esc_html( $extension_data['description'] ); ?>
+					<?php echo $extension_data['description']; ?>
 					<br>
 					<a href="<?php echo esc_url( $extension_data['learn_more_link'] ); ?>" target="_blank">
 						<?php printf( __( 'Learn more about %s', 'bestwebsoft' ), $name ); ?>
