@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
 Requires at least: 4.5
-Tested up to: 5.8.2
-Stable tag: 1.2.5
+Tested up to: 6.0
+Stable tag: 1.2.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -187,6 +187,19 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+= V1.2.6 - 02.06.2022 =
+* Update : BWS Panel section minor changes.
+* Bugfix : Bug with URL link in front end has been fixed.
+* Bugfix : Bug with Textarea has been fixed.
+* Bugfix : Bug with Non editable fields has been fixed.
+* Bugfix : Required field bug has been fixed.
+* Bugfix : Rows and Columns export bug has been fixed.
+* Pro : Gravity Forms compatibility bugfix.
+* Bugfix : "Time" field custom format fix.
+* Bugfix : User registration form bug has been fixed.
+* Bugfix : CSV export has been fixed.
+* Bugfix : Roles filter option has been fixed.
+* Pro : WooCommerce registration form fields has been fixed.
 
 = V1.2.5 - 30.12.2021 =
 * Bugfix: The issue with show fields on the user edit page has been fixed.
@@ -305,6 +318,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.6 =
+* Bugs fixed.
 
 = V1.2.5 =
 * Bugs fixed.
