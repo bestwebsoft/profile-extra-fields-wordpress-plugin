@@ -63,6 +63,10 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 					<?php esc_html_e( 'Add user data specifying the data position (columns or rows) using the following shortcode (where * is top, left or right):', 'profile-extra-fields' ); ?>
 					<?php bws_shortcode_output( '[prflxtrflds_user_data display=*]' ); ?>
 				</div>
+				<div class="inside">
+					<?php esc_html_e( 'Display user data edit form on the front page:', 'profile-extra-fields' ); ?>
+					<?php bws_shortcode_output( '[prflxtrflds_user_data_edit_form]' ); ?>
+				</div>
 			</div>
 			<?php
 		}
@@ -82,6 +86,24 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 										<td>
 											<label>
 												<input type="checkbox" disabled="disabled" /> <span class="bws_info"><?php esc_html_e( 'Ability to add Profile Extra Fields to the Gravity Forms.', 'profile-extra-fields' ); ?></span>
+											</label>
+										</td>
+									</tr>
+									<tr valign="top">
+										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Checkout Form', 'profile-extra-fields' ) ?></th>
+										<td>
+											<label>
+												<input class="regular-text" type="text" disabled="disabled" value="" /><br />
+												<span class="bws_info"><?php esc_html_e( 'This title will be displayed on Checkout Page and WooCommerce order emails', 'profile-extra-fields' ); ?></span>
+											</label>
+										</td>
+									</tr>
+									<tr valign="top">
+										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Registration Form', 'profile-extra-fields' ) ?></th>
+										<td>
+											<label>
+												<input class="regular-text" type="text" disabled="disabled" value="" /><br />
+												<span class="bws_info"><?php esc_html_e( 'This title will be displayed only on the WooCommerce Registration For', 'profile-extra-fields' ); ?></span>
 											</label>
 										</td>
 									</tr>

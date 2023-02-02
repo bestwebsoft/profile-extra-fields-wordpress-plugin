@@ -1,0 +1,10 @@
+.prflxtrflds-error p {
+	padding-left: 30px;
+	background: url('../images/error.svg') no-repeat transparent;
+	background-size: 25px;
+}
+.prflxtrflds-success p {
+	padding-left: 30px;
+	background: url('../images/success.svg') no-repeat transparent;
+	background-size: 25px;
+}

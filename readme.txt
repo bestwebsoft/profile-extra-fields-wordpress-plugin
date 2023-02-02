@@ -2,9 +2,9 @@
 Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
-Requires at least: 4.5
-Tested up to: 6.0
-Stable tag: 1.2.6
+Requires at least: 5.6
+Tested up to: 6.1
+Stable tag: 1.2.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,6 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 * Set the phone number format for the corresponding field type
 * Drag and drop fields to change their order in the list
 * Make extra fields available for certain user roles
-* Add custom code via plugin settings page
 * Compatible with latest WordPress version
 * Incredibly simple settings for fast setup without modifying code
 * Detailed step-by-step documentation and videos
@@ -80,14 +79,17 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 >
 > All features from Free version included plus:
 >
-> * Import all user data to a CSV file [NEW]
+> * Import all user data to a CSV file
 > * Choose extra field type:
 >	* Attachment
 > * Compatible with WooCommerce:
 >	* Registration form
 >	* Checkout billing form
+>	* WooCommerce Order email
 > * Compatible with Gravity Forms
-> * Compatible with [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69) [NEW]
+> * Add fields on front end
+> * Compatible with [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69)
+> * Add custom code via plugin settings page
 > * Import available values for:
 >   * Checkbox list
 >   * Drop down list
@@ -187,6 +189,14 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+= V1.2.7 - 02.02.2023 =
+* NEW: My Account page for frontend
+* NEW: WooCommerce Order custom fields to email
+* Update : BWS Panel section minor changes.
+* Pro : Gravity Forms compatibility bugfix.
+* Bugfix : "Time" field custom format fix.
+* Bugfix : User registration form bug for admin has been fixed.
+
 = V1.2.6 - 02.06.2022 =
 * Update : BWS Panel section minor changes.
 * Bugfix : Bug with URL link in front end has been fixed.
@@ -318,6 +328,11 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.2.7 =
+* New features added.
+* Usability improved.
+* Bugs fixed.
 
 = V1.2.6 =
 * Bugs fixed.
