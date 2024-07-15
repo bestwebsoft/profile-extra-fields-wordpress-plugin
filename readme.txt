@@ -1,10 +1,10 @@
 === Profile Extra Fields by BestWebSoft ===
 Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
-Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields, add custom fields, adding fields plugin, profile extra fields, profile extra fields plugin, profile user data, profile information, extra user data, extra fields, additional fields
+Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields
 Requires at least: 5.6
-Tested up to: 6.1
-Stable tag: 1.2.7
+Tested up to: 6.5
+Stable tag: 1.3.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,6 +70,7 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 * Set the phone number format for the corresponding field type
 * Drag and drop fields to change their order in the list
 * Make extra fields available for certain user roles
+* Display user data edit form on the front pages
 * Compatible with latest WordPress version
 * Incredibly simple settings for fast setup without modifying code
 * Detailed step-by-step documentation and videos
@@ -87,7 +88,6 @@ https://www.youtube.com/watch?v=O424Kpnffmo
 >	* Checkout billing form
 >	* WooCommerce Order email
 > * Compatible with Gravity Forms
-> * Add fields on front end
 > * Compatible with [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69)
 > * Add custom code via plugin settings page
 > * Import available values for:
@@ -189,6 +189,23 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+
+= V1.3.0 - 15.07.2024 =
+* Bugfix : Non-editable fields saving issue has been fixed.
+
+= V1.2.9 - 03.07.2024 =
+* Update : BWS Panel section minor changes.
+* Update : All functionality was updated for WordPress 6.5.4.
+* Bugfix : Fields were fixed for WooCommerce and Gravity forms.
+
+= V1.2.8 - 18.12.2023 =
+* NEW : Added a new field type: Country.
+* Pro : Attachment field dispay has been fixed.
+* Bugfix : Fields were fixed when creating the user.
+* Bugfix : Shortcode settings has been fixed.
+* Bugfix : Unauthorized access vulnerability has been fixed.
+* Update : All functionality was updated for WordPress 6.3.
+
 = V1.2.7 - 02.02.2023 =
 * NEW: My Account page for frontend
 * NEW: WooCommerce Order custom fields to email
@@ -328,6 +345,17 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.3.0 =
+* Bugs fixed.
+
+= V1.2.9 =
+* The compatibility with new WordPress version updated.
+* Plugin optimization completed.
+* Bugs fixed.
+
+= V1.2.8 =
+* Bugs fixed.
 
 = V1.2.7 =
 * New features added.

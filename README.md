@@ -76,6 +76,7 @@
 <li>Set the phone number format for the corresponding field type</li>
 <li>Drag and drop fields to change their order in the list</li>
 <li>Make extra fields available for certain user roles</li>
+<li>Display user data edit form on the front pages</li>
 <li>Compatible with latest WordPress version</li>
 <li>Incredibly simple settings for fast setup without modifying code</li>
 <li>Detailed step-by-step documentation and videos</li>
@@ -99,7 +100,6 @@
 </ul>
 </li>
 <li>Compatible with Gravity Forms</li>
-<li>Add fields on front end</li>
 <li>Compatible with <a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a></li>
 <li>Add custom code via plugin settings page</li>
 <li>Import available values for:

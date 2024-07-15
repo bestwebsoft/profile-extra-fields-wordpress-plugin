@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.2.7
+Version: 1.3.0
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
  */
@@ -28,13 +28,29 @@ License: GPLv3 or later
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/**
- * Add WordPress page 'bws_panel' and sub-page of this plugin to admin-panel.
- *
- * @return void
- */
-/*add settings page in bws menu*/
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
+	/**
+	 * Create new class to displaying fields*/
+	if ( ! class_exists( 'WP_List_Table' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+	}
+
+	require_once( dirname( __FILE__ ) . '/includes/class-prflxtrflds-fields-list.php' );
+
+	require_once( dirname( __FILE__ ) . '/includes/class-prflxtrflds-shortcode-list.php' );
+
+	require_once( dirname( __FILE__ ) . '/includes/class-prflxtrflds-userdata-list.php' );
+
+}
+
 if ( ! function_exists( 'prflxtrflds_admin_menu' ) ) {
+	/**
+	 * Add WordPress page 'bws_panel' and sub-page of this plugin to admin-panel.
+	 */
 	function prflxtrflds_admin_menu() {
 		global $submenu, $prflxtrflds_plugin_info, $wp_version;
 
@@ -89,19 +105,19 @@ if ( ! function_exists( 'prflxtrflds_admin_menu' ) ) {
 	}
 }
 
-/**
- * Internationalization
- */
 if ( ! function_exists( 'prflxtrflds_plugins_loaded' ) ) {
+	/**
+	 * Internationalization
+	 */
 	function prflxtrflds_plugins_loaded() {
 		load_plugin_textdomain( 'profile-extra-fields', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 }
 
-/**
- * Plugin init
- */
 if ( ! function_exists( 'prflxtrflds_init' ) ) {
+	/**
+	 * Plugin init
+	 */
 	function prflxtrflds_init() {
 		global $prflxtrflds_plugin_info;
 
@@ -134,8 +150,10 @@ if ( ! function_exists( 'prflxtrflds_init' ) ) {
 	}
 }
 
-/** Admin init */
 if ( ! function_exists( 'prflxtrflds_admin_init' ) ) {
+	/**
+	 * Admin init
+	 */
 	function prflxtrflds_admin_init() {
 		global $bws_plugin_info, $prflxtrflds_plugin_info, $bws_shortcode_list, $pagenow, $prflxtrflds_options;
 		/** Add variable for bws_menu */
@@ -160,18 +178,26 @@ if ( ! function_exists( 'prflxtrflds_admin_init' ) ) {
 			}
 		}
 
-		if ( isset( $_POST['prflxtrflds_export_submit'] ) ) {
-			$format_export = sanitize_text_field( wp_unslash( $_POST['prflxtrflds_format_export'] ) );
-			$format        = in_array( $format_export, array( 'columns', 'rows' ) ) ? $format_export : 'columns';
-			$nonce         = wp_create_nonce( 'prflxtrflds_export_action' );
-			prflxtrflds_export_file( $format, $nonce );
+		if ( isset( $_POST['prflxtrflds_export_submit'] ) && isset( $_POST['prflxtrflds_export_field'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_export_field'] ) ), 'prflxtrflds_export_action' ) ) {
+			if ( current_user_can( 'edit_users' ) && isset( $_POST['prflxtrflds_format_export'] ) ) {
+				$format_export = sanitize_text_field( wp_unslash( $_POST['prflxtrflds_format_export'] ) );
+				$format        = in_array( $format_export, array( 'columns', 'rows' ) ) ? $format_export : 'columns';
+				$nonce         = wp_create_nonce( 'prflxtrflds_export_action' );
+				prflxtrflds_export_file( $format, $nonce );
+			}
 		}
 	}
 }
 
 if ( ! function_exists( 'prflxtrflds_export_file' ) ) {
+	/**
+	 * Admin init
+	 *
+	 * @param string $format Format for export.
+	 * @param string $nonce  Nonce for action.
+	 */
 	function prflxtrflds_export_file( $format, $nonce ) {
-		if ( wp_verify_nonce( $nonce, 'prflxtrflds_export_action' ) ) {
+		if ( wp_verify_nonce( $nonce, 'prflxtrflds_export_action' ) && current_user_can( 'edit_users' ) ) {
 			global $wp_filesystem;
 			WP_Filesystem();
 			$param     = array(
@@ -186,7 +212,7 @@ if ( ! function_exists( 'prflxtrflds_export_file' ) ) {
 			}
 			$export_str = '';
 			if ( is_array( $export ) ) {
-				foreach( $export as $export_array ) {
+				foreach ( $export as $export_array ) {
 					$export_str .= '"' . implode( '";"', $export_array ) . '";' . PHP_EOL;
 				}
 			}
@@ -196,15 +222,17 @@ if ( ! function_exists( 'prflxtrflds_export_file' ) ) {
 			}
 			header( 'Content-Type: application/octet-stream' );
 			header( 'Content-Disposition: attachment; filename="prflxtrflds_' . $format . '_export.csv"' );
-			echo $wp_filesystem->get_contents( $file_name );
+			echo wp_kses_post( $wp_filesystem->get_contents( $file_name ) );
 			unlink( $file_name );
 			exit();
 		}
 	}
 }
 
-/** Update new users and roles */
 if ( ! function_exists( 'prflxtrflds_update_users' ) ) {
+	/**
+	 * Update new users and roles
+	 */
 	function prflxtrflds_update_users() {
 		global $wpdb;
 		$cache_key          = 'prflxtrflds_user_data';
@@ -217,7 +245,7 @@ if ( ! function_exists( 'prflxtrflds_update_users' ) ) {
 		if ( $users_data_from_db ) {
 			$all_user_in_db = array();
 			foreach ( $users_data_from_db as $user ) {
-				/** convert to 2D-array */
+				/** Convert to 2D-array */
 				$all_user_in_db[ $user['id'] ] = $user['role'];
 			}
 		}
@@ -246,8 +274,10 @@ if ( ! function_exists( 'prflxtrflds_update_users' ) ) {
 	}
 }
 
-/** This is settings functions */
 if ( ! function_exists( 'prflxtrflds_settings' ) ) {
+	/**
+	 * This is settings functions
+	 */
 	function prflxtrflds_settings() {
 		global $prflxtrflds_options, $prflxtrflds_plugin_info, $wpdb;
 		/** Db version in plugin */
@@ -381,6 +411,9 @@ if ( ! function_exists( 'prflxtrflds_settings' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_options_default' ) ) {
+	/**
+	 * Get default options for plugin
+	 */
 	function prflxtrflds_get_options_default() {
 		global $prflxtrflds_plugin_info;
 		/** Create array with default options */
@@ -403,6 +436,9 @@ if ( ! function_exists( 'prflxtrflds_get_options_default' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_field_type_id' ) ) {
+	/**
+	 * All type for fields
+	 */
 	function prflxtrflds_get_field_type_id() {
 		/** Conformity between field type id and field type name */
 		return array(
@@ -418,11 +454,219 @@ if ( ! function_exists( 'prflxtrflds_get_field_type_id' ) ) {
 			'10' => __( 'Phone number', 'profile-extra-fields' ),
 			'11' => __( 'URL link', 'profile-extra-fields' ),
 			'12' => __( 'Attachment', 'profile-extra-fields' ),
+			'13' => __( 'Country', 'profile-extra-fields' ),
+		);
+	}
+}
+
+if ( ! function_exists( 'prflxtrflds_get_country' ) ) {
+	/**
+	 * Countries array
+	 */
+	function prflxtrflds_get_country() {
+		return array(
+			'1'   => __( 'Afghanistan', 'profile-extra-fields' ),
+			'2'   => __( 'Albania', 'profile-extra-fields' ),
+			'3'   => __( 'Algeria', 'profile-extra-fields' ),
+			'4'   => __( 'Andorra', 'profile-extra-fields' ),
+			'5'   => __( 'Angola', 'profile-extra-fields' ),
+			'6'   => __( 'Antigua and Barbuda', 'profile-extra-fields' ),
+			'7'   => __( 'Argentina', 'profile-extra-fields' ),
+			'8'   => __( 'Armenia', 'profile-extra-fields' ),
+			'9'   => __( 'Australia', 'profile-extra-fields' ),
+			'10'  => __( 'Austria', 'profile-extra-fields' ),
+			'11'  => __( 'Azerbaijan', 'profile-extra-fields' ),
+			'12'  => __( 'Bahamas', 'profile-extra-fields' ),
+			'13'  => __( 'Bahrain', 'profile-extra-fields' ),
+			'14'  => __( 'Bangladesh', 'profile-extra-fields' ),
+			'15'  => __( 'Barbados', 'profile-extra-fields' ),
+			'16'  => __( 'Belarus', 'profile-extra-fields' ),
+			'17'  => __( 'Belgium', 'profile-extra-fields' ),
+			'18'  => __( 'Belize', 'profile-extra-fields' ),
+			'19'  => __( 'Benin', 'profile-extra-fields' ),
+			'20'  => __( 'Bhutan', 'profile-extra-fields' ),
+			'21'  => __( 'Bolivia', 'profile-extra-fields' ),
+			'22'  => __( 'Bosnia and Herzegovina', 'profile-extra-fields' ),
+			'23'  => __( 'Botswana', 'profile-extra-fields' ),
+			'24'  => __( 'Brazil', 'profile-extra-fields' ),
+			'25'  => __( 'Brunei', 'profile-extra-fields' ),
+			'26'  => __( 'Bulgaria', 'profile-extra-fields' ),
+			'27'  => __( 'Burkina Faso', 'profile-extra-fields' ),
+			'28'  => __( 'Burundi', 'profile-extra-fields' ),
+			'29'  => __( 'Cambodia', 'profile-extra-fields' ),
+			'30'  => __( 'Cameroon', 'profile-extra-fields' ),
+			'31'  => __( 'Canada', 'profile-extra-fields' ),
+			'32'  => __( 'Cape Verde', 'profile-extra-fields' ),
+			'33'  => __( 'Central African Republic', 'profile-extra-fields' ),
+			'34'  => __( 'Chad', 'profile-extra-fields' ),
+			'35'  => __( 'Chile', 'profile-extra-fields' ),
+			'36'  => __( 'China', 'profile-extra-fields' ),
+			'37'  => __( 'Colombia', 'profile-extra-fields' ),
+			'38'  => __( 'Comoros', 'profile-extra-fields' ),
+			'39'  => __( 'Costa Rica', 'profile-extra-fields' ),
+			'40'  => __( 'Croatia', 'profile-extra-fields' ),
+			'41'  => __( 'Cuba', 'profile-extra-fields' ),
+			'42'  => __( 'Cyprus', 'profile-extra-fields' ),
+			'43'  => __( 'Czech Republic', 'profile-extra-fields' ),
+			'44'  => __( 'Democratic Republic of the Congo', 'profile-extra-fields' ),
+			'45'  => __( 'Denmark', 'profile-extra-fields' ),
+			'46'  => __( 'Djibouti', 'profile-extra-fields' ),
+			'47'  => __( 'Dominica', 'profile-extra-fields' ),
+			'48'  => __( 'Dominican Republic', 'profile-extra-fields' ),
+			'49'  => __( 'Ecuador', 'profile-extra-fields' ),
+			'50'  => __( 'Egypt', 'profile-extra-fields' ),
+			'51'  => __( 'El Salvador', 'profile-extra-fields' ),
+			'52'  => __( 'Equatorial Guinea', 'profile-extra-fields' ),
+			'53'  => __( 'Eritrea', 'profile-extra-fields' ),
+			'54'  => __( 'Eswatini', 'profile-extra-fields' ),
+			'55'  => __( 'Estonia', 'profile-extra-fields' ),
+			'56'  => __( 'Ethiopia', 'profile-extra-fields' ),
+			'57'  => __( 'Fiji', 'profile-extra-fields' ),
+			'58'  => __( 'Finland', 'profile-extra-fields' ),
+			'59'  => __( 'France', 'profile-extra-fields' ),
+			'60'  => __( 'Gabon', 'profile-extra-fields' ),
+			'61'  => __( 'Gambia', 'profile-extra-fields' ),
+			'62'  => __( 'Georgia', 'profile-extra-fields' ),
+			'63'  => __( 'Germany', 'profile-extra-fields' ),
+			'64'  => __( 'Ghana', 'profile-extra-fields' ),
+			'65'  => __( 'Greece', 'profile-extra-fields' ),
+			'66'  => __( 'Grenada', 'profile-extra-fields' ),
+			'67'  => __( 'Guatemala', 'profile-extra-fields' ),
+			'68'  => __( 'Guinea', 'profile-extra-fields' ),
+			'69'  => __( 'Guinea-Bissau', 'profile-extra-fields' ),
+			'70'  => __( 'Guyana', 'profile-extra-fields' ),
+			'71'  => __( 'Haiti', 'profile-extra-fields' ),
+			'72'  => __( 'Honduras', 'profile-extra-fields' ),
+			'73'  => __( 'Hungary', 'profile-extra-fields' ),
+			'74'  => __( 'Iceland', 'profile-extra-fields' ),
+			'75'  => __( 'India', 'profile-extra-fields' ),
+			'76'  => __( 'Indonesia', 'profile-extra-fields' ),
+			'77'  => __( 'Iran', 'profile-extra-fields' ),
+			'78'  => __( 'Iraq', 'profile-extra-fields' ),
+			'79'  => __( 'Ireland', 'profile-extra-fields' ),
+			'80'  => __( 'Israel', 'profile-extra-fields' ),
+			'81'  => __( 'Italy', 'profile-extra-fields' ),
+			'82'  => __( 'Jamaica', 'profile-extra-fields' ),
+			'83'  => __( 'Japan', 'profile-extra-fields' ),
+			'84'  => __( 'Jordan', 'profile-extra-fields' ),
+			'85'  => __( 'Kazakhstan', 'profile-extra-fields' ),
+			'86'  => __( 'Kenya', 'profile-extra-fields' ),
+			'87'  => __( 'Kiribati', 'profile-extra-fields' ),
+			'88'  => __( 'Kuwait', 'profile-extra-fields' ),
+			'89'  => __( 'Kyrgyzstan', 'profile-extra-fields' ),
+			'90'  => __( 'Laos', 'profile-extra-fields' ),
+			'91'  => __( 'Latvia', 'profile-extra-fields' ),
+			'92'  => __( 'Lebanon', 'profile-extra-fields' ),
+			'93'  => __( 'Lesotho', 'profile-extra-fields' ),
+			'94'  => __( 'Liberia', 'profile-extra-fields' ),
+			'95'  => __( 'Libya', 'profile-extra-fields' ),
+			'96'  => __( 'Liechtenstein', 'profile-extra-fields' ),
+			'97'  => __( 'Lithuania', 'profile-extra-fields' ),
+			'98'  => __( 'Luxembourg', 'profile-extra-fields' ),
+			'99'  => __( 'Madagascar', 'profile-extra-fields' ),
+			'100' => __( 'Malawi', 'profile-extra-fields' ),
+			'101' => __( 'Malaysia', 'profile-extra-fields' ),
+			'102' => __( 'Maldives', 'profile-extra-fields' ),
+			'103' => __( 'Mali', 'profile-extra-fields' ),
+			'104' => __( 'Malta', 'profile-extra-fields' ),
+			'105' => __( 'Marshall Islands', 'profile-extra-fields' ),
+			'106' => __( 'Mauritania', 'profile-extra-fields' ),
+			'107' => __( 'Mauritius', 'profile-extra-fields' ),
+			'108' => __( 'Mexico', 'profile-extra-fields' ),
+			'109' => __( 'Micronesia', 'profile-extra-fields' ),
+			'110' => __( 'Moldova', 'profile-extra-fields' ),
+			'111' => __( 'Monaco', 'profile-extra-fields' ),
+			'112' => __( 'Mongolia', 'profile-extra-fields' ),
+			'113' => __( 'Montenegro', 'profile-extra-fields' ),
+			'114' => __( 'Morocco', 'profile-extra-fields' ),
+			'115' => __( 'Mozambique', 'profile-extra-fields' ),
+			'116' => __( 'Myanmar', 'profile-extra-fields' ),
+			'117' => __( 'Namibia', 'profile-extra-fields' ),
+			'118' => __( 'Nauru', 'profile-extra-fields' ),
+			'119' => __( 'Nepal', 'profile-extra-fields' ),
+			'120' => __( 'Netherlands', 'profile-extra-fields' ),
+			'121' => __( 'New Zealand', 'profile-extra-fields' ),
+			'122' => __( 'Nicaragua', 'profile-extra-fields' ),
+			'123' => __( 'Niger', 'profile-extra-fields' ),
+			'124' => __( 'Nigeria', 'profile-extra-fields' ),
+			'125' => __( 'North Korea', 'profile-extra-fields' ),
+			'126' => __( 'North Macedonia', 'profile-extra-fields' ),
+			'127' => __( 'Norway', 'profile-extra-fields' ),
+			'128' => __( 'Oman', 'profile-extra-fields' ),
+			'129' => __( 'Pakistan', 'profile-extra-fields' ),
+			'130' => __( 'Palau', 'profile-extra-fields' ),
+			'131' => __( 'Palestine', 'profile-extra-fields' ),
+			'132' => __( 'Panama', 'profile-extra-fields' ),
+			'133' => __( 'Papua New Guinea', 'profile-extra-fields' ),
+			'134' => __( 'Paraguay', 'profile-extra-fields' ),
+			'135' => __( 'Peru', 'profile-extra-fields' ),
+			'136' => __( 'Philippines', 'profile-extra-fields' ),
+			'137' => __( 'Poland', 'profile-extra-fields' ),
+			'138' => __( 'Portugal', 'profile-extra-fields' ),
+			'139' => __( 'Qatar', 'profile-extra-fields' ),
+			'140' => __( 'Republic of the Congo', 'profile-extra-fields' ),
+			'141' => __( 'Romania', 'profile-extra-fields' ),
+			'142' => __( 'Russia', 'profile-extra-fields' ),
+			'143' => __( 'Rwanda', 'profile-extra-fields' ),
+			'144' => __( 'Saint Kitts and Nevis', 'profile-extra-fields' ),
+			'145' => __( 'Saint Lucia', 'profile-extra-fields' ),
+			'146' => __( 'Saint Vincent and the Grenadines', 'profile-extra-fields' ),
+			'147' => __( 'Samoa', 'profile-extra-fields' ),
+			'148' => __( 'San Marino', 'profile-extra-fields' ),
+			'149' => __( 'Sao Tome and Principe', 'profile-extra-fields' ),
+			'150' => __( 'Saudi Arabia', 'profile-extra-fields' ),
+			'151' => __( 'Senegal', 'profile-extra-fields' ),
+			'152' => __( 'Serbia', 'profile-extra-fields' ),
+			'153' => __( 'Seychelles', 'profile-extra-fields' ),
+			'154' => __( 'Sierra Leone', 'profile-extra-fields' ),
+			'155' => __( 'Singapore', 'profile-extra-fields' ),
+			'156' => __( 'Slovakia', 'profile-extra-fields' ),
+			'157' => __( 'Slovenia', 'profile-extra-fields' ),
+			'158' => __( 'Solomon Islands', 'profile-extra-fields' ),
+			'159' => __( 'Somalia', 'profile-extra-fields' ),
+			'160' => __( 'South Africa', 'profile-extra-fields' ),
+			'161' => __( 'South Korea', 'profile-extra-fields' ),
+			'162' => __( 'South Sudan', 'profile-extra-fields' ),
+			'163' => __( 'Spain', 'profile-extra-fields' ),
+			'164' => __( 'Sri Lanka', 'profile-extra-fields' ),
+			'165' => __( 'Sudan', 'profile-extra-fields' ),
+			'166' => __( 'Suriname', 'profile-extra-fields' ),
+			'167' => __( 'Sweden', 'profile-extra-fields' ),
+			'168' => __( 'Switzerland', 'profile-extra-fields' ),
+			'169' => __( 'Syria', 'profile-extra-fields' ),
+			'170' => __( 'Tajikistan', 'profile-extra-fields' ),
+			'171' => __( 'Tanzania', 'profile-extra-fields' ),
+			'172' => __( 'Thailand', 'profile-extra-fields' ),
+			'173' => __( 'Timor-Leste', 'profile-extra-fields' ),
+			'174' => __( 'Togo', 'profile-extra-fields' ),
+			'175' => __( 'Tonga', 'profile-extra-fields' ),
+			'176' => __( 'Trinidad and Tobago', 'profile-extra-fields' ),
+			'177' => __( 'Tunisia', 'profile-extra-fields' ),
+			'178' => __( 'Turkey', 'profile-extra-fields' ),
+			'179' => __( 'Turkmenistan', 'profile-extra-fields' ),
+			'180' => __( 'Tuvalu', 'profile-extra-fields' ),
+			'181' => __( 'Uganda', 'profile-extra-fields' ),
+			'182' => __( 'Ukraine', 'profile-extra-fields' ),
+			'183' => __( 'United Arab Emirates', 'profile-extra-fields' ),
+			'184' => __( 'United Kingdom', 'profile-extra-fields' ),
+			'185' => __( 'United States', 'profile-extra-fields' ),
+			'186' => __( 'Uruguay', 'profile-extra-fields' ),
+			'187' => __( 'Uzbekistan', 'profile-extra-fields' ),
+			'188' => __( 'Vanuatu', 'profile-extra-fields' ),
+			'189' => __( 'Vatican City', 'profile-extra-fields' ),
+			'190' => __( 'Venezuela', 'profile-extra-fields' ),
+			'191' => __( 'Vietnam', 'profile-extra-fields' ),
+			'192' => __( 'Yemen', 'profile-extra-fields' ),
+			'193' => __( 'Zambia', 'profile-extra-fields' ),
+			'194' => __( 'Zimbabwe', 'profile-extra-fields' ),
 		);
 	}
 }
 
 if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
+	/**
+	 * Create table in DB
+	 */
 	function prflxtrflds_create_table() {
 		global $wpdb;
 
@@ -547,6 +791,9 @@ if ( ! function_exists( 'prflxtrflds_create_table' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_activation' ) ) {
+	/**
+	 * Register uninstallhook
+	 */
 	function prflxtrflds_activation() {
 		/** Uninstall plugin */
 		if ( is_multisite() ) {
@@ -559,8 +806,10 @@ if ( ! function_exists( 'prflxtrflds_activation' ) ) {
 	}
 }
 
-/** Create conformity between roles and role_id */
 if ( ! function_exists( 'prflxtrflds_update_roles_id' ) ) {
+	/**
+	 * Create conformity between roles and role_id
+	 */
 	function prflxtrflds_update_roles_id() {
 		global $wpdb, $wp_roles;
 		/** Get all available role */
@@ -585,8 +834,13 @@ if ( ! function_exists( 'prflxtrflds_update_roles_id' ) ) {
 	}
 }
 
-/** Create conformity between user_id and role_id */
 if ( ! function_exists( 'prflxtrflds_update_user_roles' ) ) {
+	/**
+	 * Create conformity between user_id and role_id
+	 *
+	 * @param number $user_id User ID for update.
+	 * @param string $role    User role for update.
+	 */
 	function prflxtrflds_update_user_roles( $user_id = null, $role = null ) {
 		global $wpdb;
 		/** First, update roles id */
@@ -642,23 +896,36 @@ if ( ! function_exists( 'prflxtrflds_update_user_roles' ) ) {
 	}
 }
 
-/** Edit or create new field */
 if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
+	/**
+	 * Edit or create new field
+	 */
 	function prflxtrflds_edit_field() {
 		global $wpdb, $prflxtrflds_options, $wp_version, $prflxtrflds_plugin_info;
+
 		$prflxtrflds_field_type_id = prflxtrflds_get_field_type_id();
-		$field_name = $description = $field_maxlength = $field_rows = $field_cols = $field_required = '';
-		$error                     = '';
-		$field_order               = $field_show_default = $field_show_always = 0;
-		$field_pattern             = '***-**-**';
-		$available_values          = $show_in = array();
-		$field_type_id             = '1';
-		$field_date_format         = get_option( 'date_format' );
-		$field_time_format         = get_option( 'time_format' );
+
+		$field_name      = '';
+		$description     = '';
+		$field_maxlength = '';
+		$field_rows      = '';
+		$field_cols      = '';
+		$field_required  = '';
+		$error           = '';
+		$field_order     = 0;
+		$field_show_default = 0;
+		$field_show_always = 0;
+		$field_pattern   = '***-**-**';
+
+		$available_values  = array();
+		$show_in = array();
+		$field_type_id     = '1';
+		$field_date_format = get_option( 'date_format' );
+		$field_time_format = get_option( 'time_format' );
 
 		/** Get field id with post or get */
 		$field_id = isset( $_REQUEST['prflxtrflds_field_id'] ) && '' !== $_REQUEST['prflxtrflds_field_id'] ? absint( $_REQUEST['prflxtrflds_field_id'] ) : null;
-		
+
 		/** If field id is NULL - create new entry */
 		if ( is_null( $field_id ) ) {
 			$field_id = $wpdb->get_var( 'SELECT MAX(`field_id`) FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id`' );
@@ -702,7 +969,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 				$field_time_format = ( 'custom' === sanitize_text_field( wp_unslash( $_POST['prflxtrflds_time_format'] ) ) && isset( $_POST['prflxtrflds_time_format_custom'] ) ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_time_format_custom'] ) ) : sanitize_text_field( wp_unslash( $_POST['prflxtrflds_time_format'] ) );
 			}
 			if ( isset( $_POST['prflxtrflds_date_format'] ) ) {
-				$field_date_format = ( 'custom' === sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format'] ) ) && isset( $_POST['prflxtrflds_time_format_custom'] ) ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format_custom'] ) ) : sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format'] ) );
+				$field_date_format = ( 'custom' === sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format'] ) ) && isset( $_POST['prflxtrflds_date_format_custom'] ) ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format_custom'] ) ) : sanitize_text_field( wp_unslash( $_POST['prflxtrflds_date_format'] ) );
 			}
 
 			$field_order = isset( $_POST['prflxtrflds_order'] ) && is_numeric( $_POST['prflxtrflds_order'] ) ? absint( $_POST['prflxtrflds_order'] ) : 0;
@@ -710,7 +977,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			$field_required     = isset( $_POST['prflxtrflds_required'], $_POST['prflxtrflds_required_symbol'] ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_required_symbol'] ) ) : '';
 			$field_show_default = isset( $_POST['prflxtrflds_show_default'] ) ? 1 : 0;
 			$field_show_always  = isset( $_POST['prflxtrflds_show_always'] ) ? 1 : 0;
-			$show_in            = isset( $_POST['prflxtrflds_show_in'] ) ? array_map( 'wp_unslash', $_POST['prflxtrflds_show_in'] ) : array();
+			$show_in            = isset( $_POST['prflxtrflds_show_in'] ) ? $_POST['prflxtrflds_show_in'] : array();
 
 			if ( isset( $_POST['prflxtrflds-value-delete'] ) ) {
 				$field_value_to_delete = array_map( 'intval', $_POST['prflxtrflds-value-delete'] );
@@ -826,7 +1093,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 							$wpdb->base_prefix . 'prflxtrflds_fields_meta',
 							array(
 								'field_id' => $field_id,
-								'show_in'  => $show,
+								'show_in'  => sanitize_text_field( wp_unslash( $show ) ),
 								'value'    => maybe_serialize( $value ),
 							)
 						);
@@ -835,7 +1102,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 							$wpdb->base_prefix . 'prflxtrflds_fields_meta',
 							array(
 								'field_id' => $field_id,
-								'show_in'  => $show,
+								'show_in'  => sanitize_text_field( wp_unslash( $show ) ),
 							)
 						);
 					}
@@ -921,7 +1188,8 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 					8 === $field_type_id ||
 					9 === $field_type_id ||
 					10 === $field_type_id ||
-					11 === $field_type_id
+					11 === $field_type_id ||
+					13 === $field_type_id
 				) {
 					switch ( $field_type_id ) {
 						case '1':
@@ -944,6 +1212,9 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 							break;
 						case '11':
 							$value_name = $field_maxlength;
+							break;
+						case '13':
+							$value_name = $field_pattern;
 							break;
 						case '6':
 							$value_name = $field_date_format;
@@ -1016,7 +1287,7 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 			}
 		}
 
-				if ( ! is_null( $field_id ) ) {
+		if ( ! is_null( $field_id ) ) {
 			/** Name of page if field exist */
 			$name_of_page = __( 'Edit Field', 'profile-extra-fields' );
 			/** If get $field_id - edit field */
@@ -1228,7 +1499,10 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 										</div>
 									</div><!--.prflxtrflds-values-info-->
 									<div class="prflxtrflds-drag-values-container">
-										<?php for ( $i = 0; $i < count( $available_values ); $i++ ) { ?>
+										<?php
+										$count_available_values = count( $available_values );
+										for ( $i = 0; $i < $count_available_values; $i++ ) {
+											?>
 											<div class="prflxtrflds-drag-values">
 												<input type="hidden" name="prflxtrflds_value_id[]" value="
 												<?php
@@ -1648,8 +1922,10 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 	}
 }
 
-/** Screen option. Settings for display where items per page show in wp list table */
 if ( ! function_exists( 'prflxtrflds_screen_options' ) ) {
+	/**
+	 * Screen option. Settings for display where items per page show in wp list table
+	 */
 	function prflxtrflds_screen_options() {
 		$screen = get_current_screen();
 		$args   = array(
@@ -1669,23 +1945,31 @@ if ( ! function_exists( 'prflxtrflds_screen_options' ) ) {
 		if ( isset( $_GET['tab-action'] ) && 'userdata' === sanitize_text_field( wp_unslash( $_GET['tab-action'] ) ) ) {
 			global $prflxtrflds_userdatalist_table;
 			if ( ! isset( $prflxtrflds_userdatalist_table ) ) {
-				$prflxtrflds_userdatalist_table = new Srrlxtrflds_Userdata_List();
+				$prflxtrflds_userdatalist_table = new Prflxtrflds_Userdata_List();
 			}
 		} elseif ( isset( $_GET['tab-action'] ) && 'shortcode' === sanitize_text_field( wp_unslash( $_GET['tab-action'] ) ) ) {
 			global $prflxtrflds_shortcodelist_table;
 			if ( ! isset( $prflxtrflds_shortcodelist_table ) ) {
-				$prflxtrflds_shortcodelist_table = new Srrlxtrflds_Shortcode_List();
+				$prflxtrflds_shortcodelist_table = new Prflxtrflds_Shortcode_List();
 			}
 		} else {
 			global $prflxtrflds_fields_list_table;
 			if ( ! isset( $prflxtrflds_fields_list_table ) ) {
-				$prflxtrflds_fields_list_table = new Srrlxtrflds_Fields_List();
+				$prflxtrflds_fields_list_table = new Prflxtrflds_Fields_List();
 			}
 		}
 	}
 }
 
 if ( ! function_exists( 'prflxtrflds_set_screen_options' ) ) {
+	/**
+	 * Set Screen option.
+	 *
+	 * @param mixed  $status The value to save instead of the option value.
+	 * @param string $option The option name.
+	 * @param int    $value  The option value.
+	 * @return int $value
+	 */
 	function prflxtrflds_set_screen_options( $status, $option, $value ) {
 		if ( ! empty( $option ) && 'fields_per_page' === $option ) {
 			return $value;
@@ -1694,906 +1978,12 @@ if ( ! function_exists( 'prflxtrflds_set_screen_options' ) ) {
 	}
 }
 
-if ( file_exists( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' ) ) {
-	/** Create new class to displaying fields */
-	if ( ! class_exists( 'WP_List_Table' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-	}
-
-	if ( ! class_exists( 'Srrlxtrflds_Fields_List' ) ) {
-		class Srrlxtrflds_Fields_List extends WP_List_Table {
-
-			public function display( $display_nav = true ) {
-				$singular = $this->_args['singular'];
-
-				if ( $display_nav ) {
-					$this->display_tablenav( 'top' );
-				}
-
-				$this->screen->render_screen_reader_content( 'heading_list' );
-				?>
-				<table class="wp-list-table <?php echo esc_html( implode( ' ', $this->get_table_classes() ) ); ?>">
-					<thead>
-					<tr>
-						<?php $this->print_column_headers(); ?>
-					</tr>
-					</thead>
-
-					<tbody id="the-list"
-						<?php
-						if ( $singular ) {
-							echo " data-wp-lists='list:" . esc_attr( $singular ) . "'";
-						}
-						?>
-						>
-						<?php $this->display_rows_or_placeholder(); ?>
-					</tbody>
-
-					<tfoot>
-					<tr>
-						<?php $this->print_column_headers( false ); ?>
-					</tr>
-					</tfoot>
-
-				</table>
-				<?php
-				if ( $display_nav ) {
-					$this->display_tablenav( 'bottom' );
-				}
-			}
-
-			public function get_columns() {
-				$columns = array(
-					'cb'           => '<input type="checkbox" />',
-					'field_name'   => __( 'Name', 'profile-extra-fields' ),
-					'description'  => __( 'Description', 'profile-extra-fields' ),
-					'field_type'   => __( 'Type', 'profile-extra-fields' ),
-					'required'     => __( 'Required', 'profile-extra-fields' ),
-					'show_default' => __( 'Show by Default', 'profile-extra-fields' ),
-					'show_always'  => __( 'Show Always', 'profile-extra-fields' ),
-					'roles'        => __( 'Roles', 'profile-extra-fields' ),
-					'field_order'  => __( 'Field Order', 'profile-extra-fields' ),
-				);
-				return $columns;
-			}
-
-			public function get_sortable_columns() {
-				/** Seting sortable collumns */
-				$sortable_columns = array(
-					'field_name'  => array( 'field_name', true ),
-					'field_order' => array( 'field_order', true ),
-					'field_type'  => array( 'field_type_id', true ),
-					'required'    => array( 'required', true ),
-				);
-				return $sortable_columns;
-			}
-
-			public function get_bulk_actions() {
-				/** Adding bulk action */
-				$actions = array(
-					'delete_fields' => __( 'Delete Permanently', 'profile-extra-fields' ),
-				);
-				return $actions;
-			}
-
-			/** Override this function to delete nonce from options */
-			public function display_tablenav( $which ) {
-				?>
-				<div class="tablenav <?php echo esc_attr( $which ); ?>">
-					<div class="alignleft actions bulkactions">
-						<?php $this->bulk_actions( $which ); ?>
-					</div>
-					<?php
-					$this->extra_tablenav( $which );
-					$this->pagination( $which );
-					?>
-					<br class="clear" />
-				</div>
-				<?php
-			}
-
-			/** Bulk actions handler */
-			public function process_bulk_action() {
-				/** Get action */
-				$action = $this->current_action();
-				/** Action = delete fields */
-				switch ( $action ) {
-					case 'delete_fields':
-						/** Security check */
-						if ( isset( $_GET['prflxtrflds_field_id'] ) &&
-							isset( $_GET['prflxtrflds_nonce_name'] ) &&
-							! empty( $_GET['prflxtrflds_nonce_name'] )
-						) {
-							$nonce = filter_input( INPUT_GET, 'prflxtrflds_nonce_name', FILTER_SANITIZE_STRING );
-							if ( wp_verify_nonce( $nonce, 'prflxtrflds_nonce_name' ) ) {
-								if ( isset( $_GET['prflxtrflds_field_id'] ) ) {
-									foreach ( $_GET['prflxtrflds_field_id'] as $id ) {
-										/** Delete all checked fields */
-										prflxtrflds_remove_field( intval( $id ) );
-									}
-								}
-							}
-						}
-						break;
-					default:
-						/** Do nothing */
-						break;
-				}
-			}
-
-			public function get_views() {
-				/** Show links at the columns of table */
-				global $wpdb;
-				$views   = array();
-				$current = ( ! empty( $_GET['role_id'] ) ) ? intval( $_GET['role_id'] ) : 'all';
-
-				/** All link */
-				$all_url      = esc_html( add_query_arg( 'role_id', 'all' ) );
-				$class        = ( 'all' === $current ) ? 'class="current"' : '';
-				$views['all'] = "<a href='" . $all_url . "' " . $class . ' >' . __( 'All', 'profile-extra-fields' ) . '</a>';
-
-				/** Get actual users data */
-				$roles = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->base_prefix . 'prflxtrflds_roles_id' );
-				if ( $roles ) {
-					foreach ( $roles as $role ) {
-						/** Create link */
-						$role_url                = esc_html( add_query_arg( 'role_id', $role->role_id ) );
-						$class                   = ( $role->role_id === $current ) ? ' class="current"' : '';
-						$views[ $role->role_id ] = "<a href='" . esc_url( $role_url ) . "'" . $class . '>' . esc_attr( translate_user_role( $role->role_name ) ) . '</a>';
-					}
-				}
-				return $views;
-			}
-
-			public function extra_tablenav( $which ) {
-				if ( 'columns' === $which ) {
-					global $wpdb;
-					$current = ( ! empty( $_GET['prflxtrflds_role_id'] ) ) ? intval( $_GET['prflxtrflds_role_id'] ) : 'all';
-					/** Get actual users data */
-					$roles = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->base_prefix . 'prflxtrflds_roles_id' );
-					?>
-					<div class="alignleft prflxtrflds-filter actions bulkactions">
-						<label for="prflxtrflds-role-id">
-							<select name="prflxtrflds_role_id" id="prflxtrflds-role-id">
-								<option value="all" <?php selected( $current, 'all' ); ?>><?php esc_html_e( 'All roles', 'profile-extra-fields' ); ?></option>
-								<?php
-								if ( ! empty( $roles ) ) {
-									/** Create select with field types */
-									foreach ( $roles as $role ) {
-										?>
-										<option value="<?php echo intval( $role->role_id ); ?>"<?php selected( $current, $role->role_id ); ?>><?php echo esc_attr( translate_user_role( $role->role_name ) ); ?></option>
-										<?php
-									}
-								}
-								?>
-							</select>
-						</label>
-						<input type="submit" class="button" name="prflxtrflds_apply_filter" value="<?php esc_html_e( 'Filter', 'profile-extra-fields' ); ?>" />
-					</div><!--.alignleft prflxtrflds-filter-->
-					<?php
-				}
-			}
-
-			public function column_cb( $item ) {
-				/** Customize displaying cb collumn */
-				return sprintf(
-					'<input type="checkbox" name="prflxtrflds_field_id[]" value="%1$s" />',
-					$item['field_id']
-				);
-			}
-
-			public function column_field_name( $item ) {
-				/** Adding action to 'name' collumn */
-				$actions = array(
-					'edit_fields'   => '<span><a href="' . wp_nonce_url( sprintf( '?page=profile-extra-field-add-new.php&amp;edit=1&amp;prflxtrflds_field_id=%1$s', $item['field_id'] ), 'prflxtrflds_nonce_name' ) . '">' . __( 'Edit Field', 'profile-extra-fields' ) . '</a></span>',
-					'delete_fields' => '<span class="trash"><a href="' . wp_nonce_url( sprintf( '?page=profile-extra-fields.php&amp;remove=1&amp;prflxtrflds_field_id=%1$s', $item['field_id'] ), 'prflxtrflds_nonce_name' ) . '">' . __( 'Delete Permanently', 'profile-extra-fields' ) . '</a></span>',
-				);
-				if ( isset( $_GET['tab-action'] ) ) {
-					$actions = array(
-						'edit_fields'   => '<span><a href="' . wp_nonce_url( sprintf( '?page=profile-extra-field-add-new.php&tab-action=' . sanitize_text_field( wp_unslash( $_GET['tab-action'] ) ) . '&amp;edit=1&amp;prflxtrflds_field_id=%1$s', $item['field_id'] ), 'prflxtrflds_nonce_name' ) . '">' . __( 'Edit Field', 'profile-extra-fields' ) . '</a></span>',
-						'delete_fields' => '<span class="trash"><a href="' . wp_nonce_url( sprintf( '?page=profile-extra-fields.php&amp;remove=1&amp;prflxtrflds_field_id=%1$s', $item['field_id'] ), 'prflxtrflds_nonce_name' ) . '">' . __( 'Delete Permanently', 'profile-extra-fields' ) . '</a></span>',
-					);
-				}
-				return sprintf( '%1$s %2$s', $item['field_name'], $this->row_actions( $actions ) );
-			}
-
-			public function column_field_type( $item ) {
-				$prflxtrflds_field_type_id = prflxtrflds_get_field_type_id();
-				return sprintf(
-					'%1$s',
-					$prflxtrflds_field_type_id[ $item['field_type_id'] ]
-				);
-			}
-
-			public function column_required( $item ) {
-				return empty( $item['required'] ) ? __( 'No', 'profile-extra-fields' ) : __( 'Yes', 'profile-extra-fields' );
-			}
-			public function column_show_default( $item ) {
-				$is_default = array(
-					1 => __( 'Yes', 'profile-extra-fields' ),
-					0 => __( 'No', 'profile-extra-fields' ),
-				);
-				return sprintf(
-					'%1$s',
-					$is_default[ $item['show_default'] ]
-				);
-			}
-			public function column_show_always( $item ) {
-				$is_always = array(
-					1 => __( 'Yes', 'profile-extra-fields' ),
-					0 => __( 'No', 'profile-extra-fields' ),
-				);
-				return sprintf(
-					'%1$s',
-					$is_always[ $item['show_always'] ]
-				);
-			}
-
-			public function column_roles( $item ) {
-				/** Delete last comma */
-				return sprintf( '%1$s', chop( $item['roles'], ', ' ) );
-			}
-
-			public function prepare_items( $where = '' ) {
-				/** Bulk action handler. Before query */
-				global $wpdb;
-				$this->process_bulk_action();
-				$table_roles_meta       = $wpdb->base_prefix . 'prflxtrflds_fields_meta';
-				$table_fields_id        = $wpdb->base_prefix . 'prflxtrflds_fields_id';
-				$table_roles_id         = $wpdb->base_prefix . 'prflxtrflds_roles_id';
-				$table_roles_and_fields = $wpdb->base_prefix . 'prflxtrflds_roles_and_fields';
-				/** Order by field id by default. It need for generate fields to display without sorting */
-				$rolerequest = 'ORDER BY ' . $table_fields_id . '.`field_id` ASC';
-				/** Query if role selected */
-				if ( isset( $_GET['prflxtrflds_role_id'] ) &&
-					'all' !== $_GET['prflxtrflds_role_id']
-				) {
-					$selected_role = filter_input( INPUT_GET, 'prflxtrflds_role_id', FILTER_SANITIZE_NUMBER_INT );
-					$rolerequest   = 'AND ' . $table_roles_and_fields . ".`role_id`='" . $selected_role . "' ORDER BY " . $table_roles_and_fields . '.`field_order` ASC';
-				}
-				/** Default WHERE query */
-				$searchrequest = '1=1';
-				/** Search handler */
-				if ( isset( $_GET['s'] ) && '' !== trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) ) {
-					/** Sanitize search query */
-					$searchrequest = filter_input( INPUT_GET, 's', FILTER_SANITIZE_ENCODED );
-					$searchrequest = $table_fields_id . ".`field_name` LIKE '%" . $searchrequest . "%'";
-				}
-				/** Fields for plugins where clause */
-
-				$not = '';
-				if ( '' === $where ) {
-					$plugins_data = apply_filters( 'bws_bkng_prflxtrflds_get_data', $plugins_data = array() );
-					$slugs        = array_column( $plugins_data, 'slug' );
-					$where        = implode( "', '", $slugs );
-					$not          = 'NOT';
-				}
-
-				$where = 'AND ' . $table_fields_id . '.`field_id` ' . $not . ' IN (
-					SELECT ' . $table_roles_meta . '.`field_id`
-					FROM ' . $table_roles_meta . '
-					WHERE ' . $table_roles_meta . '.`show_in` IN ( "' . $where . '" ) AND ' . $table_roles_meta . '.`value` != ""
-				)';
-
-				$query = 'SELECT ' . $table_roles_and_fields . '.`field_order`, ' .
-						$table_fields_id . '.`field_id`, ' .
-						$table_fields_id . '.`field_name`, ' .
-						$table_fields_id . '.`description`, ' .
-						$table_fields_id . '.`required`, ' .
-						$table_fields_id . '.`show_default`, ' .
-						$table_fields_id . '.`show_always`, ' .
-						$table_roles_id . '.`role_name`, ' .
-						$table_roles_and_fields . '.`role_id`, ' .
-						$table_fields_id . '.`field_type_id` ' .
-						' FROM ' . $table_fields_id .
-						' LEFT JOIN ' . $table_roles_and_fields .
-						' ON ' . $table_roles_and_fields . '.`field_id`=' . $table_fields_id . '.`field_id`' .
-						' LEFT JOIN ' . $table_roles_id .
-						' ON ' . $table_roles_id . '.`role_id`=' . $table_roles_and_fields . '.`role_id`' .
-						' WHERE ' . $searchrequest . ' ' . $where . ' ' .
-						$rolerequest;
-
-				/** Get result from database with repeat id with other role */
-				$fields_query_result = $wpdb->get_results( $query, ARRAY_A );
-				$i                   = 0;
-				$fields_to_display   = array();
-				$prev_id             = -1;
-				foreach ( $fields_query_result as $one_field ) {
-					$id = $one_field['field_id'];
-					if ( $prev_id !== $id ) {
-						$i++;
-						/** If is new id, copy all fields */
-						$fields_to_display[ $i ]['field_id']      = $one_field['field_id'];
-						$fields_to_display[ $i ]['field_name']    = $one_field['field_name'];
-						$fields_to_display[ $i ]['required']      = $one_field['required'];
-						$fields_to_display[ $i ]['show_default']  = $one_field['show_default'];
-						$fields_to_display[ $i ]['show_always']   = $one_field['show_always'];
-						$fields_to_display[ $i ]['description']   = $one_field['description'];
-						$fields_to_display[ $i ]['field_type_id'] = $one_field['field_type_id'];
-						$fields_to_display[ $i ]['roles']         = esc_attr( translate_user_role( $one_field['role_name'] ) );
-						$fields_to_display[ $i ]['field_order']   = $one_field['field_order'];
-						$prev_id                                  = $id;
-					} else {
-						/** If is old id ( new role ), add new role */
-						if ( isset( $fields_to_display[ $i ]['roles'] ) ) {
-							$fields_to_display[ $i ]['roles'] .= ', ' . esc_attr( translate_user_role( $one_field['role_name'] ) );
-						} else {
-							$fields_to_display[ $i ]['roles'] = esc_attr( translate_user_role( $one_field['role_name'] ) );
-						}
-						$prev_id = $id;
-					}
-				}
-				/** Sort function */
-				if ( isset( $_GET['orderby'] ) && isset( $_GET['order'] ) ) {
-					/** Check permitted names of field */
-					switch ( sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ) {
-						case 'field_name':
-						case 'field_type_id':
-						case 'required':
-						case 'field_order':
-							if ( 'desc' === $_GET['order'] ) {
-								usort(
-									$fields_to_display,
-									function ( $first, $second ) {
-										return strcmp( $first[ sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ], $second[ sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ] ) * -1;    /** ASC */
-									}
-								);
-							} else {
-								/** Sort result array. This use in usort. ASC by default */
-								usort(
-									$fields_to_display,
-									function ( $first, $second ) {
-										return strcmp( $first[ sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ], $second[ sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ] ); /** ASC */
-									}
-								);
-							}
-							break;
-						default:
-							break;
-					}
-				} else {
-					/** Default sort by field order */
-					usort(
-						$fields_to_display,
-						function( $first, $second ) {
-							/** Permitted names of sort check in switch */
-							return strcmp( $first['field_order'], $second['field_order'] ); /** ASC */
-						}
-					);
-				}
-				/** Pagination settings */
-				/** Get the total fields */
-				$totalitems = count( $fields_to_display );
-				/** Get the value of number of field on one page */
-				$perpage = $this->get_items_per_page( 'fields_per_page', 20 );
-				/** The total number of pages */
-				$totalpages = ceil( $totalitems / $perpage );
-				/** Get current page */
-				$current_page = $this->get_pagenum();
-				/** Set pagination arguments */
-				$this->set_pagination_args(
-					array(
-						'total_items' => $totalitems,
-						'per_page'    => $perpage,
-					)
-				);
-				/** Settings data to output */
-				$this->_column_headers = $this->get_column_info();
-				/** Slice array */
-				$this->items = array_slice( $fields_to_display, ( ( $current_page - 1 ) * $perpage ), $perpage );
-			}
-
-			public function column_default( $item, $column_name ) {
-				/** Setting default view for column items */
-				switch ( $column_name ) {
-					case 'field_id':
-					case 'field_name':
-					case 'description':
-					case 'show_default':
-					case 'show_always':
-					case 'roles':
-					case 'field_order':
-						return $item[ $column_name ];
-					default:
-						/** Show array */
-						return print_r( $item, true );
-				}
-			}
-		}
-	}
-
-	if ( ! class_exists( 'Srrlxtrflds_Userdata_List' ) ) {
-		class Srrlxtrflds_Userdata_List extends WP_List_Table {
-
-			public function __construct( $args = array() ) {
-				$args = wp_parse_args(
-					$args,
-					array(
-						'plural'   => '',
-						'singular' => '',
-						'ajax'     => false,
-						'screen'   => null,
-					)
-				);
-
-				$this->screen = convert_to_screen( $args['screen'] );
-				/** Change screen id */
-				$this->screen->id = $this->screen->id . 'userdata';
-				add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
-
-				if ( ! $args['plural'] ) {
-					$args['plural'] = $this->screen->base;
-				}
-
-				$args['plural']   = sanitize_key( $args['plural'] );
-				$args['singular'] = sanitize_key( $args['singular'] );
-
-				$this->_args = $args;
-				if ( $args['ajax'] ) {
-					add_action( 'admin_footer', array( $this, '_js_vars' ) );
-				}
-			}
-
-			public function get_columns() {
-				global $wpdb;
-				/** Setup column */
-				$columns = array(
-					'user_id'   => __( 'User ID', 'profile-extra-fields' ),
-					'name'      => __( 'Username', 'profile-extra-fields' ),
-					'role'      => __( 'User role', 'profile-extra-fields' ),
-					'disp_name' => __( 'Name', 'profile-extra-fields' ),
-					'email'     => __( 'Email', 'profile-extra-fields' ),
-					'posts'     => __( 'Posts', 'profile-extra-fields' ),
-				);
-
-				/** Get all fields from database and set as column */
-				$all_fields_array = $wpdb->get_results( 'SELECT `field_id`, `field_name` FROM ' . $wpdb->base_prefix . 'prflxtrflds_fields_id', ARRAY_A );
-				$db_columns       = array();
-				foreach ( $all_fields_array as $one_field ) {
-					/** Convert to 2D array for merge with $columns */
-					$db_columns[ (string) $one_field['field_id'] ] = $one_field['field_name'];
-				}
-				/** Add columns from database to default columns */
-				$columns = $columns + $db_columns;
-
-				return $columns;
-			}
-
-			/** Override this function to delete nonce from options */
-			public function display_tablenav( $which ) {
-				?>
-				<div class="tablenav <?php echo esc_attr( $which ); ?>">
-					<?php
-					$this->extra_tablenav( $which );
-					$this->pagination( $which );
-					?>
-					<br class="clear" />
-				</div>
-				<?php
-			}
-
-			public function column_role( $item ) {
-				/** Translate user role */
-				return sprintf( '%1$s', esc_attr( translate_user_role( ucfirst( $item['role'] ) ) ) );
-			}
-
-			public function column_name( $item ) {
-				$actions = array(
-					'edit_user' => '<span><a href="' . sprintf( 'user-edit.php?user_id=%1$s&amp;wp_http_referer=%2$s', $item['user_id'], rawurlencode( admin_url( 'admin.php?page=profile-extra-fields.php&tab-action=userdata' ) ) ) . '">' . __( 'Edit user', 'profile-extra-fields' ) . '</a></span>',
-				);
-				return sprintf( '%1$s %2$s', $item['name'] . '<div class="user_id">' . __( 'User ID', 'profile-extra-fields' ) . ': ' . $item['user_id'] . '</div>', $this->row_actions( $actions ) );
-			}
-
-			public function get_sortable_columns() {
-				/** Seting sortable collumns */
-				$sortable_columns = array(
-					'name'      => array( 'username', true ),
-					'role'      => array( 'role', true ),
-					'user_id'   => array( 'ID', true ),
-					'disp_name' => array( 'name', true ),
-					'email'     => array( 'email', true ),
-				);
-				return $sortable_columns;
-			}
-
-			public function extra_tablenav( $which ) {
-				global $wp_version;
-				/** Extra tablenav. Create filter. */
-				if ( 'top' === $which ) {
-					$roles = get_editable_roles();
-					?>
-					<div class="alignleft prflxtrflds-filter actions bulkactions">
-						<label for="prflxtrflds-role">
-							<?php if ( $wp_version >= '4.4' ) { ?>
-								<select id="prflxtrflds-role" name="prflxtrflds_role[]" multiple="multiple">
-									<?php
-									if ( isset( $roles ) ) {
-										foreach ( $roles as $key => $role ) {
-											?>
-											<option value="<?php echo esc_attr( $key ); ?>" 
-											<?php
-											if ( empty( $_GET['prflxtrflds_role'] ) || in_array( $key, $_GET['prflxtrflds_role'] ) ) {
-												echo 'selected';
-											}
-											?>
-											><?php echo esc_attr( translate_user_role( $role['name'] ) ); ?></option>
-											<?php
-										}
-									}
-									?>
-								</select>
-								<?php
-							} else {
-								$current_role = ( ! empty( $_GET['prflxtrflds_role'] ) ) ? sanitize_text_field( wp_unslash( $_GET['prflxtrflds_role'] ) ) : 'all';
-								?>
-								<select id="prflxtrflds-role" name="prflxtrflds_role">
-									<option value="all" <?php selected( $current_role, 'all' ); ?>><?php esc_html_e( 'All roles', 'profile-extra-fields' ); ?></option>
-									<?php
-									if ( isset( $roles ) ) {
-										foreach ( $roles as $key => $role ) {
-											?>
-											<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $current_role, $key ); ?>><?php echo esc_attr( translate_user_role( $role['name'] ) ); ?></option>
-											<?php
-										}
-									}
-									?>
-								</select>
-							<?php } ?>
-						</label>
-						<?php wp_nonce_field( 'prflxtrflds_apply_filter_action', 'prflxtrflds_apply_filters' ); ?>
-						<input type="submit" class="button" name="prflxtrflds_apply_filter" value="<?php esc_html_e( 'Filter', 'profile-extra-fields' ); ?>" />
-					</div><!--.alignleft prflxtrflds-filter-->
-					<?php
-				}
-			}
-
-			public function prepare_items() {
-				global $wpdb, $wp_version;
-				$userdata = array();
-				$i        = 0;
-				$search   = isset( $_REQUEST['s'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ) ) : '';
-
-				$users_per_page = $this->get_items_per_page( 'fields_per_page', 20 );
-				$paged          = $this->get_pagenum();
-				$totalitems     = count( get_users() );
-
-				$args = array(
-					'number' => $totalitems,
-					'fields' => 'all_with_meta',
-				);
-				if ( isset( $_REQUEST['prflxtrflds_apply_filters'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['prflxtrflds_apply_filters'] ) ), 'prflxtrflds_apply_filter_action' ) ) {
-					if ( $wp_version >= '4.4' ) {
-						if ( isset( $_REQUEST['prflxtrflds_role'] ) ) {
-							$args['role__in'] = array_map( 'sanitize_text_field', array_map( 'wp_unslash', $_REQUEST['prflxtrflds_role'] ) );
-						}
-					} elseif ( isset( $_REQUEST['prflxtrflds_role'] ) && ! empty( $_REQUEST['prflxtrflds_role'] ) && 'all' !== $_REQUEST['prflxtrflds_role'] ) {
-						$args['role'] = sanitize_text_field( wp_unslash( $_REQUEST['prflxtrflds_role'] ) );
-					}
-
-					if ( isset( $_REQUEST['orderby'] ) ) {
-						$args['orderby'] = sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) );
-					}
-
-					if ( isset( $_REQUEST['order'] ) ) {
-						$args['order'] = sanitize_text_field( wp_unslash( $_REQUEST['order'] ) );
-					}
-				}
-
-				/** Query the user IDs for this page */
-				$wp_user_search = new WP_User_Query( $args );
-				$all_users      = $wp_user_search->get_results();
-				/** Users post by id */
-				$post_counts = count_many_users_posts( array_keys( $all_users ) );
-
-				$table_field_values    = $wpdb->base_prefix . 'prflxtrflds_field_values';
-				$table_user_field_data = $wpdb->base_prefix . 'prflxtrflds_user_field_data';
-				$table_fields_id       = $wpdb->base_prefix . 'prflxtrflds_fields_id';
-
-				foreach ( $all_users as $user ) {
-					$userdata[ $i ]['name']      = $user->user_nicename;
-					$userdata[ $i ]['role']      = implode( ', ', $user->roles );
-					$userdata[ $i ]['user_id']   = $user->ID;
-					$userdata[ $i ]['disp_name'] = $user->first_name . ' ' . $user->last_name;
-					$userdata[ $i ]['email']     = $user->user_email;
-					$userdata[ $i ]['posts']     = $post_counts[ $user->ID ];
-
-					/** Get fields for current user */
-					$filled_fields = $wpdb->get_results(
-						'SELECT `' . $table_field_values . '`.`field_id`, `value_name` AS `user_value`
-						FROM ' . $table_user_field_data . ', ' . $table_fields_id . ', `' . $table_field_values . '`
-							WHERE `' . $table_user_field_data . '`.`user_value` = `' . $table_field_values . "`.`value_id`
-								AND `user_id` = '" . $user->ID . "'
-								AND `" . $table_field_values . '`.`field_id`= `' . $table_fields_id . '`.`field_id`
-								AND `' . $table_user_field_data . '`.`field_id`= `' . $table_fields_id . '`.`field_id`
-								AND `' . $table_fields_id . "`.`field_type_id` IN ( '3', '4', '5' )
-						UNION
-						SELECT `" . $table_user_field_data . '`.`field_id`, `user_value`
-							FROM ' . $table_user_field_data . ', ' . $table_fields_id .
-							" WHERE `user_id` = '" . $user->ID . "'
-								AND `" . $table_user_field_data . '`.`field_id`= `' . $table_fields_id . '`.`field_id`
-								AND `' . $table_fields_id . "`.`field_type_id` NOT IN ( '3', '4', '5' )
-						",
-						ARRAY_A
-					);
-
-					if ( ! empty( $filled_fields ) ) {
-						foreach ( $filled_fields as $field ) {
-							if ( isset( $userdata[ $i ][ $field['field_id'] ] ) ) {
-								/** Add value name */
-								$userdata[ $i ][ $field['field_id'] ] .= ', ' . wp_unslash( $field['user_value'] );
-							} else {
-								/** First write value name */
-								$userdata[ $i ][ $field['field_id'] ] = wp_unslash( $field['user_value'] );
-							}
-						}
-					}
-					$i++;
-				}
-				/** Array search. If search by user not work */
-				if ( ! empty( $search ) && isset( $userdata ) ) {
-					$not_empty_keys = array();
-					/** Get all columns */
-					$hidden_columns = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsuserdata' . 'columnshidden' );
-					if ( empty( $hidden_columns ) ) {
-						$hidden_columns = array();
-					}
-					foreach ( $userdata as $key => $oneuserdata ) {
-						/** Data for one user */
-						foreach ( $oneuserdata as $key_col_id => $one_value ) {
-							/** Skip if current column is hidden */
-							if ( in_array( $key_col_id, $hidden_columns ) ) {
-								continue;
-							}
-							/** If value in array, save key */
-							if ( false !== stristr( $one_value, $search ) ) {
-								$not_empty_keys[] = $key;
-								break;
-							}
-						}
-					}
-					if ( isset( $not_empty_keys ) ) {
-						$all_keys = array_keys( $userdata );
-						/** Get empty entrys */
-						$to_delete = array_diff( $all_keys, $not_empty_keys );
-						if ( ! empty( $to_delete ) ) {
-							foreach ( $to_delete as $key ) {
-								/** Unset empty entrys */
-								unset( $userdata[ $key ] );
-							}
-						}
-					}
-				}
-				/** Order by firstname - lastname */
-				if ( isset( $_GET['orderby'] ) && 'name' === $_GET['orderby'] ) {
-					if ( isset( $_GET['order'] ) && 'desc' === $_GET['order'] ) {
-						usort(
-							$userdata,
-							function ( $first, $second ) {
-								return strcmp( $first['disp_name'], $second['disp_name'] ) * -1;    /** ASC */
-							}
-						);
-					} else {
-						/** Sort result array. This use in usort. ASC by default */
-						usort(
-							$userdata,
-							function ( $first, $second ) {
-								return strcmp( $first['disp_name'], $second['disp_name'] ); /** ASC */
-							}
-						);
-					}
-				}
-
-				/**
-					* Pagination settings
-					* Get the total fields
-					* The total number of pages
-					*/
-				$totalpages = ceil( $totalitems / $users_per_page );
-				/** Get current page */
-				$current_page = $this->get_pagenum();
-				/** Set pagination arguments */
-
-				$this->set_pagination_args(
-					array(
-						'total_items' => $totalitems,
-						'total_pages' => $totalpages,
-						'per_page'    => $users_per_page,
-					)
-				);
-
-				/** Get info from screen options */
-				$columns               = $this->get_columns();
-				$hidden                = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsuserdata' . 'columnshidden' );
-				$sortable              = $this->get_sortable_columns();
-				$primary               = 'name';
-				$this->_column_headers = $this->get_column_info();
-
-				$this->items = array_slice( $userdata, ( ( $current_page - 1 ) * $users_per_page ), $users_per_page );
-			}
-
-			public function column_default( $item, $column_name ) {
-				/** Setting default view for column items */
-				switch ( $column_name ) {
-					case 'name':
-					case 'role':
-					case 'user_id':
-					case 'disp_name':
-					case 'email':
-					case 'posts':
-						return $item[ $column_name ];
-					default:
-						/** Show array */
-						if ( isset( $item[ $column_name ] ) ) {
-							return $item[ $column_name ];
-						} else {
-							/** Default message */
-							return '';
-						}
-				}
-			}
-		}
-	}
-
-	if ( ! class_exists( 'Srrlxtrflds_Shortcode_List' ) ) {
-		class Srrlxtrflds_Shortcode_List extends WP_List_Table {
-
-			public function __construct( $args = array() ) {
-				$args = wp_parse_args(
-					$args,
-					array(
-						'plural'   => '',
-						'singular' => '',
-						'ajax'     => false,
-						'screen'   => null,
-					)
-				);
-
-				$this->screen = convert_to_screen( $args['screen'] );
-				/** Change screen id */
-				$this->screen->id = $this->screen->id . 'shortcode';
-				add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
-
-				if ( ! $args['plural'] ) {
-					$args['plural'] = $this->screen->base;
-				}
-
-				$args['plural']   = sanitize_key( $args['plural'] );
-				$args['singular'] = sanitize_key( $args['singular'] );
-
-				$this->_args = $args;
-				if ( $args['ajax'] ) {
-					add_action( 'admin_footer', array( $this, '_js_vars' ) );
-				}
-			}
-
-			public function get_columns() {
-				/** Setup column */
-				return array(
-					'field_name'  => __( 'Field Name', 'profile-extra-fields' ),
-					'description' => __( 'Description', 'profile-extra-fields' ),
-					'show'        => __( 'Show This Field', 'profile-extra-fields' ),
-					'selected'    => __( 'Show Only If the Next Value is Selected', 'profile-extra-fields' ),
-				);
-			}
-
-			public function column_show( $item ) {
-				global $prflxtrflds_options;
-
-				if ( is_array( $prflxtrflds_options['available_fields'] ) ) {
-					$prflxtrflds_checked = checked( in_array( $item['field_id'], $prflxtrflds_options['available_fields'] ), 1, false );
-				} else {
-					$prflxtrflds_checked = '';
-				}
-				return sprintf( '<input type="checkbox" class="prflxtrflds-available-fields" name="prflxtrflds_options_available_fields[%1$d]" value="%1$d" %2$s /><input class="hidden" name="prflxtrflds_options_available_fields_hidden[%1$d]">', $item['field_id'], $prflxtrflds_checked );
-			}
-
-			public function column_selected( $item ) {
-				global $prflxtrflds_options;
-				/** If field have more 1 values, print select */
-				if ( ! empty( $item['available_values'] ) ) {
-					$prflxtrflds_option_list = '';
-					foreach ( $item['available_values'] as $value ) {
-						if ( is_array( $prflxtrflds_options['available_values'] ) ) {
-							$value_selected = selected( in_array( $value['value_id'], $prflxtrflds_options['available_values'] ), 1, false );
-						} else {
-							$value_selected = '';
-						}
-						$prflxtrflds_option_list .= "<option value='" . $value['value_id'] . "' " . $value_selected . '>' . $value['value_name'] . '</option>';
-
-					}
-					return sprintf(
-						'<select class="prflxtrflds-wplist-select" name="prflxtrflds_options_available_values[%1$s]">
-					<option value="">%2$s</option>
-					%3$s
-					</select>',
-						$item['field_id'],
-						__( 'Show despite the value', 'profile-extra-fields' ),
-						$prflxtrflds_option_list
-					);
-				} else {
-					return '';
-				}
-			}
-
-			/** Override this function to set nonce from options */
-			public function display_tablenav( $which ) {
-				if ( 'top' === $which ) {
-					wp_nonce_field( 'update-options' );
-				}
-				?>
-				<div class="tablenav <?php echo esc_attr( $which ); ?>">
-					<div class="alignleft actions bulkactions"><?php $this->bulk_actions( $which ); ?></div>
-					<?php
-					$this->extra_tablenav( $which );
-					$this->pagination( $which );
-					?>
-					<br class="clear" />
-				</div>
-				<?php
-			}
-
-			public function prepare_items() {
-				global $wpdb;
-
-				$get_fields_list_sql = 'SELECT `field_name`, `field_id`, `description`, `field_type_id` FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id`';
-				/** Get the total number of items */
-				$totalitems = $wpdb->query( $get_fields_list_sql );
-				/** Get the value of number of items on one page */
-				$perpage = $this->get_items_per_page( 'fields_per_page', 20 );
-				/** The total number of pages */
-				$totalpages   = ceil( $totalitems / $perpage );
-				$current_page = $this->get_pagenum();
-				/** Set pagination arguments */
-				$this->set_pagination_args(
-					array(
-						'total_items'     => $totalitems,
-						'total_pages'     => $totalpages,
-						'fields_per_page' => $perpage,
-					)
-				);
-
-				$available_fields = $wpdb->get_results( $get_fields_list_sql, ARRAY_A );
-				if ( 0 < sizeof( $available_fields ) ) {
-					/** Add available values to array with available fields */
-					foreach ( $available_fields as &$field ) {
-						if ( '3' === $field['field_type_id'] ||
-							'4' === $field['field_type_id'] ||
-							'5' === $field['field_type_id']
-						) {
-							$field['available_values'] = $wpdb->get_results( $wpdb->prepare( 'SELECT `value_id`, `value_name` FROM ' . $wpdb->base_prefix . 'prflxtrflds_field_values WHERE `field_id`=%d', $field['field_id'] ), ARRAY_A );
-						}
-					}
-					unset( $field );
-				}
-
-				$columns                 = $this->get_columns();
-				$prflxtrflds_user_option = get_user_option( 'manage' . 'bws-panel_page_profile-extra-fieldsshortcode' . 'columnshidden' );
-				$hidden                  = ! empty( $prflxtrflds_user_option ) ? $prflxtrflds_user_option : array();
-				$sortable                = array();
-				$primary                 = $this->get_primary_column_name();
-				$this->_column_headers   = array( $columns, $hidden, $sortable, $primary );
-				$this->items             = array_slice( $available_fields, ( ( $current_page - 1 ) * $perpage ), $perpage );
-			}
-
-			public function column_default( $item, $column_name ) {
-				/** Setting default view for column items */
-				switch ( $column_name ) {
-					case 'field_name':
-					case 'description':
-					case 'show':
-					case 'selected':
-						return $item[ $column_name ];
-					default:
-						/** Show array */
-						return print_r( $item, true );
-				}
-			}
-		}
-	}
-}
-
-/** Remove info about field from database */
 if ( ! function_exists( 'prflxtrflds_remove_field' ) ) {
+	/**
+	 * Remove info about field from database
+	 *
+	 * @param int $field_id Field ID for delete.
+	 */
 	function prflxtrflds_remove_field( $field_id ) {
 		global $wpdb;
 		$wpdb->delete(
@@ -2629,8 +2019,10 @@ if ( ! function_exists( 'prflxtrflds_remove_field' ) ) {
 	}
 }
 
-/** Settings page */
 if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
+	/**
+	 * Settings page
+	 */
 	function prflxtrflds_settings_page() {
 		if ( ! class_exists( 'Bws_Settings_Tabs' ) ) {
 			require_once dirname( __FILE__ ) . '/bws_menu/class-bws-settings.php';
@@ -2650,12 +2042,18 @@ if ( ! function_exists( 'prflxtrflds_settings_page' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_fields' ) ) {
+	/**
+	 * Display fields
+	 */
 	function prflxtrflds_fields() {
 		global $wpdb, $prflxtrflds_options, $prflxtrflds_plugin_info, $wp_version;
-		$message         = $error = $notice = '';
+		$message = '';
+		$error   = '';
+		$notice  = '';
+
 		$plugin_basename = plugin_basename( __FILE__ );
 		/** Remove slug */
-		if ( isset( $_GET['remove'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'prflxtrflds_nonce_name' ) ) {
+		if ( isset( $_GET['remove'] ) && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'prflxtrflds_nonce_name' ) ) {
 			if ( isset( $_GET['prflxtrflds_field_id'] ) ) {
 				$field_id = filter_input( INPUT_GET, 'prflxtrflds_field_id', FILTER_SANITIZE_STRING );
 				prflxtrflds_remove_field( $field_id );
@@ -2663,7 +2061,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 		}
 
 		/** Get all available fields and print it */
-		$available_fields = $wpdb->get_results( 'SELECT `field_id` FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id` LIMIT 1;', ARRAY_A );
+		$available_fields = $wpdb->get_col( 'SELECT `field_id` FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id`;' );
 
 		if ( isset( $_GET['tab-action'] ) && 'shortcode' === $_GET['tab-action'] ) {
 			if ( 0 < count( $available_fields ) ) {
@@ -2680,7 +2078,12 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 					$prflxtrflds_options['shortcode_debug']       = isset( $_POST['prflxtrflds_shortcode_debug'] ) ? 1 : 0;
 					$prflxtrflds_options['display_user_name']     = isset( $_POST['prflxtrflds_display_user_name'] ) && in_array( $_POST['prflxtrflds_display_user_name'], array( 'username', 'publicly_name' ) ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_display_user_name'] ) ) : 'username';
 
-					$prflxtrflds_options['available_fields'] = ! empty( $_POST['prflxtrflds_options_available_fields'] ) ? array_map( 'sanitize_text_field', array_map( 'wp_unslash', $_POST['prflxtrflds_options_available_fields'] ) ) : array();
+					$available_fields     = ! empty( $_POST['prflxtrflds_options_available_fields'] ) ? array_map( 'absint', $_POST['prflxtrflds_options_available_fields'] ) : $available_fields;
+					$all_available_fields = ! empty( $_POST['prflxtrflds_options_available_fields_hidden'] ) ? array_map( 'absint', $_POST['prflxtrflds_options_available_fields_hidden'] ) : array();
+
+					$old_available_fields = array_diff( (array) $prflxtrflds_options['available_fields'], $all_available_fields );
+
+					$prflxtrflds_options['available_fields'] = array_unique( array_merge( $old_available_fields, $available_fields ) );
 
 					update_option( 'prflxtrflds_options', $prflxtrflds_options );
 					$message = __( 'Settings saved', 'profile-extra-fields' );
@@ -2762,7 +2165,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 			<?php if ( ! isset( $_GET['tab-action'] ) ) { ?>
 				<div class="prflxtrflds-wplisttable-fullwidth-sort-container">
 					<?php
-					$prflxtrflds_fields_list_table = new Srrlxtrflds_Fields_List(); /** Wp list table to show all fields */
+					$prflxtrflds_fields_list_table = new Prflxtrflds_Fields_List(); /** Wp list table to show all fields */
 					$prflxtrflds_fields_list_table->prepare_items();
 					if ( isset( $prflxtrflds_fields_list_table->items ) && ( 1 < count( $prflxtrflds_fields_list_table->items ) ) ) { /** Show drag-n-drop message if items > 2 */
 						?>
@@ -2789,7 +2192,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 							<table class="form-table bws_pro_version">
 								<div class="prflxtrflds-wplisttable-fullwidth-sort-container">
 									<?php
-									$prflxtrflds_fields_list_table = new Srrlxtrflds_Fields_List(); /** Wp list table to show all fields */
+									$prflxtrflds_fields_list_table = new Prflxtrflds_Fields_List(); /** Wp list table to show all fields */
 									?>
 									<form class="prflxtrflds-wplisttable-searchform" method="get" action="<?php get_admin_url(); ?>?page=profile-extra-fields.php&tab-action=woocommerce">
 										<?php
@@ -2814,7 +2217,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 					?>
 					<div class="prflxtrflds-wplisttable-fullwidth-sort-container">
 						<?php
-						$prflxtrflds_fields_list_table = new Srrlxtrflds_Fields_List(); /** Wp list table to show all fields */
+						$prflxtrflds_fields_list_table = new Prflxtrflds_Fields_List(); /** Wp list table to show all fields */
 
 						/** Show drag-n-drop message if items > 2 */
 						if ( isset( $prflxtrflds_fields_list_table->items ) && ( 1 < count( $prflxtrflds_fields_list_table->items ) ) ) {
@@ -2898,7 +2301,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 			} elseif ( isset( $_GET['tab-action'] ) && 'userdata' === $_GET['tab-action'] ) {
 				global $prflxtrflds_userdatalist_table, $prflxtrflds_plugin_info, $wp_version;
 				if ( ! isset( $prflxtrflds_userdatalist_table ) ) {
-					$prflxtrflds_userdatalist_table = new Srrlxtrflds_Userdata_List();
+					$prflxtrflds_userdatalist_table = new Prflxtrflds_Userdata_List();
 				}
 				$bws_hide_premium_options_check = bws_hide_premium_options_check( $prflxtrflds_options );
 				$prflxtrflds_userdatalist_table->prepare_items();
@@ -2944,6 +2347,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 								</td>
 							</tr>
 						</table>
+						<?php wp_nonce_field( 'prflxtrflds_export_action', 'prflxtrflds_export_field' ); ?>
 					</form>
 					<form method="get" class="prflxtrflds-wplisttable-form">
 						<input type="hidden" name="page" value="profile-extra-fields.php" />
@@ -3039,7 +2443,7 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 					</table><!--.form-table-->
 					<div class="prflxtrflds-wplisttable-container">
 						<?php
-						$prflxtrflds_shortcodelist_table = new Srrlxtrflds_Shortcode_List();
+						$prflxtrflds_shortcodelist_table = new Prflxtrflds_Shortcode_List();
 						/** Wp lis table for shortcode settings */
 						$prflxtrflds_shortcodelist_table->prepare_items();
 						$prflxtrflds_shortcodelist_table->views();
@@ -3058,12 +2462,17 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 	}
 }
 
-/** Print shortcode */
 if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
+	/**
+	 * Print shortcode
+	 *
+	 * @param array $param Args for shortcode.
+	 */
 	function prflxtrflds_show_data( $param ) {
 		global $wpdb, $prflxtrflds_options;
 		$error_message = '';
-		$user_ids      = $field_id = array();
+		$user_ids      = array();
+		$field_id      = array();
 		$export_action = ( isset( $param['export'] ) && true === $param['export'] ) ? true : false;
 
 		if ( ! isset( $prflxtrflds_options ) ) {
@@ -3158,8 +2567,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 			/** Get options - Which fields must be displayed */
 			$get_for_available_fields = '';
 			if ( $export_action ) {
-				$fields_sql               = 'SELECT `field_id` FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id`';
-				$totalitems               = $wpdb->get_col( $fields_sql );
+				$totalitems               = $wpdb->get_col( 'SELECT `field_id` FROM `' . $wpdb->base_prefix . 'prflxtrflds_fields_id`' );
 				$field_ids                = implode( "', '", $totalitems );
 				$get_for_available_fields = ' AND `' . $table_fields_id . "`.`field_id` IN ('" . $field_ids . "')";
 			} else {
@@ -3207,7 +2615,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 						' ON ' . $table_fields_id . '.`field_id`=' . $table_roles_and_fields . '.`field_id` ' . $get_for_available_fields;
 
 			if ( is_multisite() ) {
-				$get_users_data_sql .= ' WHERE ' . $wp_users . '.`ID` IN ( ' . implode( ',', get_users( 'blog_id=' . get_current_blog_id() . '&fields=ID') ) . ')';
+				$get_users_data_sql .= ' WHERE ' . $wp_users . '.`ID` IN ( ' . implode( ',', get_users( 'blog_id=' . get_current_blog_id() . '&fields=ID' ) ) . ')';
 			}
 
 			/** Group all and Add sorting order */
@@ -3232,6 +2640,19 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 							);
 
 							$printed_table[ $key ]['value'] = implode( ', ', $user_value );
+						} elseif ( '13' === $column['field_type_id'] ) {
+							$user_value = $wpdb->get_var(
+								$wpdb->prepare(
+									'SELECT `user_value`
+								FROM `' . $table_user_field_data . '` WHERE `user_id`= %d
+									AND `field_id`=%d LIMIT 1;',
+									$column['user_id'],
+									$column['field_id']
+								)
+							);
+							$countries = prflxtrflds_get_country();
+
+							$printed_table[ $key ]['value'] = isset( $countries[ $user_value ] ) ? $countries[ $user_value ] : '';
 						} else {
 							$printed_table[ $key ]['value'] = $wpdb->get_var(
 								$wpdb->prepare(
@@ -3378,7 +2799,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 										if ( ! empty( $user_fields_temp ) ) {
 											foreach ( $user_fields_temp as $key => $value ) {
 												if ( isset( $value['user_value'] ) ) {
-													echo '<td>' . wp_unslash( wp_kses_post( $value['user_value'] ) ) . '</td>';
+													echo '<td>' . wp_kses_post( wp_unslash( $value['user_value'] ) ) . '</td>';
 												} else {
 													echo '<td>' . wp_kses_post( $prflxtrflds_options['not_available_message'] ) . '</td>';
 												}
@@ -3396,7 +2817,9 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 					<?php
 				} else {
 					if ( $export_action ) {
-						$distinct_users = $return_output_export = $output_export = array();
+						$distinct_users       = array();
+						$return_output_export = array();
+						$output_export        = array();
 						foreach ( $printed_table as $one_row ) {
 							/** Create array of distinct users */
 							if ( 0 < $one_row['user_id'] && ! isset( $distinct_users[ $one_row['user_id'] ] ) ) {
@@ -3545,7 +2968,7 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 												unset( $user_field_data );
 											} else {
 												/** Print user data. Unset for next user */
-												echo wp_unslash( wp_kses_post( $user_field_data ) );
+												echo wp_kses_post( wp_unslash( $user_field_data ) );
 												unset( $user_field_data );
 											}
 											?>
@@ -3574,6 +2997,11 @@ if ( ! function_exists( 'prflxtrflds_show_data' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_show_field' ) ) {
+	/**
+	 * Display fields
+	 *
+	 * @param array $param Args for shortcode.
+	 */
 	function prflxtrflds_show_field( $param ) {
 		global $wpdb, $prflxtrflds_options;
 		$error_message = '';
@@ -3652,10 +3080,14 @@ if ( ! function_exists( 'prflxtrflds_show_field' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
+	/**
+	 * Display edit form on front
+	 */
 	function prflxtrflds_show_edit_form() {
 		global $wpdb, $prflxtrflds_options, $hook_suffix, $prflxtrflds_front_shortcode;
-		$message = $error = '';
-		$errors = new WP_Error();
+		$message = '';
+		$error   = '';
+		$errors  = new WP_Error();
 
 		if ( wp_is_json_request() ) {
 			return;
@@ -3664,7 +3096,7 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 		if ( ! isset( $prflxtrflds_options ) ) {
 			prflxtrflds_settings();
 		}
-		
+
 		$user_id = get_current_user_id();
 		if ( ! empty( $user_id ) ) {
 			$user      = wp_get_current_user();
@@ -3697,34 +3129,36 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 								array( 'user_id' => $user_id )
 							);
 						}
-						foreach ( $_POST['prflxtrflds_user_field_value'] as $id => $val ) {
-							if ( ! empty( $val ) ) {
-								if ( is_array( $val ) ) {
-									/** For checkboxes */
-									foreach ( $val as $user_value ) {
+						if ( isset( $_POST['prflxtrflds_user_field_value'] ) ) {
+							foreach ( $_POST['prflxtrflds_user_field_value'] as $id => $val ) {
+								if ( ! empty( $val ) ) {
+									if ( is_array( $val ) ) {
+										/** For checkboxes */
+										foreach ( $val as $user_value ) {
+											/** Insert or update value */
+											$wpdb->replace(
+												$wpdb->base_prefix . 'prflxtrflds_user_field_data',
+												array(
+													'user_id'    => $user_id,
+													'field_id'   => intval( $id ),
+													'user_value' => wp_filter_post_kses( wp_unslash( $user_value ) ),
+												)
+											);
+										}
+										$message = __( 'Profile updated', 'profile-extra-fields' );
+									} else {
+										$user_value = wp_filter_post_kses( wp_unslash( $val ) );
 										/** Insert or update value */
 										$wpdb->replace(
 											$wpdb->base_prefix . 'prflxtrflds_user_field_data',
 											array(
 												'user_id'    => $user_id,
 												'field_id'   => intval( $id ),
-												'user_value' => wp_filter_post_kses( wp_unslash( $user_value ) ),
+												'user_value' => $user_value,
 											)
 										);
+										$message = __( 'Profile updated', 'profile-extra-fields' );
 									}
-									$message = __( 'Profile updated', 'profile-extra-fields' );
-								} else {
-									$user_value = wp_filter_post_kses( wp_unslash( $val ) );
-									/** Insert or update value */
-									$wpdb->replace(
-										$wpdb->base_prefix . 'prflxtrflds_user_field_data',
-										array(
-											'user_id'    => $user_id,
-											'field_id'   => intval( $id ),
-											'user_value' => $user_value,
-										)
-									);
-									$message = __( 'Profile updated', 'profile-extra-fields' );
 								}
 							}
 						}
@@ -3739,23 +3173,26 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 				array(
 					'name'    => 'Profile',
 					'slug'    => $enabled_plugins,
-					'exclude' => true
+					'exclude' => true,
 				)
 			);
 
 			$hidden_nonvisible_field = '';
 
-			ob_start(); ?>
+			ob_start();
+			?>
 			<div class="">
 				<?php
 				if ( ! empty( $message ) ) {
-					echo '<div class="updated notice prflxtrflds-success"><p>' . $message . '</p></div>';
-				} 
+					echo '<div class="updated notice prflxtrflds-success"><p>' . esc_html( $message ) . '</p></div>';
+				}
 				if ( ! empty( $error ) ) {
-					echo '<div class="error prflxtrflds-error"><p>' . $error . '</p></div>';
-				} ?>
+					echo '<div class="error prflxtrflds-error"><p>' . esc_html( $error ) . '</p></div>';
+				}
+				?>
 				<form action="<?php the_permalink(); ?>" method="post">
-					<?php foreach ( $plugins_data as $plugin ) {
+					<?php
+					foreach ( $plugins_data as $plugin ) {
 						$args         = array(
 							'roles'   => array( $user_role ),
 							'show'    => $plugin['slug'],
@@ -3766,7 +3203,7 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 						if ( empty( $all_entry ) ) {
 							continue;
 						}
-						echo '<h3>' . $plugin['name'] . ' ' . __( 'Extra Fields', 'profile-extra-fields' ) . '</h3>';
+						echo '<h3>' . esc_html( $plugin['name'] ) . ' ' . esc_html__( 'Extra Fields', 'profile-extra-fields' ) . '</h3>';
 						echo '<table>';
 						foreach ( $all_entry as $one_entry ) {
 							/** Add field values */
@@ -3780,7 +3217,7 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 								),
 								ARRAY_A
 							);
-									
+
 							if ( ! empty( $_POST['prflxtrflds_user_field_value'] ) && isset( $_POST['prflxtrflds_user_fields'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_fields'] ) ), 'prflxtrflds_user_field_action' ) ) {
 								if ( isset( $_POST['prflxtrflds_user_field_value'][ $one_entry['field_id'] ] ) &&
 									is_array( $_POST['prflxtrflds_user_field_value'][ $one_entry['field_id'] ] )
@@ -3823,7 +3260,7 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 									);
 								}
 							}
-							
+
 							/** Change `editable` and `visible` data for non-current user editing */
 							$editable_visible = $wpdb->get_row(
 								$wpdb->prepare(
@@ -3850,7 +3287,8 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 								$editable_attr            = ' readonly="readonly" disabled="disabled"';
 								$hidden_noneditable_field = '<input type="hidden" name="prflxtrflds_not_editable[]" value="' . $one_entry['field_id'] . '" />';
 							} else {
-								$editable_attr = $hidden_noneditable_field = '';
+								$editable_attr            = '';
+								$hidden_noneditable_field = '';
 							}
 
 							$required_attr = ( ! empty( $one_entry['required'] ) && ! empty( $one_entry['editable'] ) ) ? ' required="required"' : '';
@@ -3863,7 +3301,9 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 											if ( ! empty( $one_entry['required'] ) ) {
 												?>
 												<span class="description"><?php echo esc_attr( $one_entry['required'] ); ?></span>
-												<?php if ( '1' === $one_entry['editable'] ) { ?>
+												<?php
+												if ( '1' === $one_entry['editable'] ) {
+													?>
 													<input type="hidden"
 														name="prflxtrflds_required[<?php echo esc_attr( $one_entry['field_id'] ); ?>]"
 														value="true"/>
@@ -3960,7 +3400,9 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 														id="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]"
 														name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]" <?php echo wp_kses_data( $editable_attr ) . wp_kses_data( $required_attr ); ?>>
 														<option></option>
-														<?php foreach ( $one_entry['available_fields'] as $one_sub_entry ) { ?>
+														<?php
+														foreach ( $one_entry['available_fields'] as $one_sub_entry ) {
+															?>
 															<option
 																value="<?php echo esc_attr( $one_sub_entry['value_id'] ); ?>"
 																<?php
@@ -3968,7 +3410,9 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 																	echo ' selected';}
 																?>
 																><?php echo esc_attr( $one_sub_entry['value_name'] ); ?></option>
-														<?php } ?>
+															<?php
+														}
+														?>
 													</select>
 													<?php
 													break;
@@ -4100,6 +3544,20 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 													 />
 													<?php
 													break;
+												case '13':
+													$countries = prflxtrflds_get_country();
+													?>
+													<select id="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]" name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]" <?php echo wp_kses_data( $editable_attr ) . wp_kses_data( $required_attr ); ?>>
+														<?php
+														foreach ( $countries as $country_id => $country_name ) {
+															?>
+															<option value="<?php echo esc_attr( $country_id ); ?>" <?php selected( $one_entry['user_value'], $country_id ); ?>><?php echo esc_html( $country_name ); ?></option>
+															<?php
+														}
+														?>
+													</select>
+													<?php
+													break;
 											}
 											echo wp_kses_data( $hidden_noneditable_field );
 											if ( isset( $one_entry['description'] ) ) {
@@ -4113,11 +3571,12 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 								$hidden_nonvisible_field .= $hidden_noneditable_field;
 							}
 						}
-						echo '</table>';	
+						echo '</table>';
 						echo wp_kses_data( $hidden_nonvisible_field );
 						$prflxtrflds_front_shortcode = true;
 
-					} ?>
+					}
+					?>
 					<p>
 						<input type="submit" value="<?php esc_html_e( 'Save Info', 'profile-extra-fields' ); ?>" />
 						<?php wp_nonce_field( 'prflxtrflds_save_front_info', 'prflxtrflds_front_info' ); ?>
@@ -4134,8 +3593,12 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 	}
 }
 
-/** Show info in user profile page */
 if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
+	/**
+	 * Show info in user profile page
+	 *
+	 * @param mixed $profileuser User object.
+	 */
 	function prflxtrflds_fields_table( $profileuser = false ) {
 		global $wpdb, $hook_suffix, $pagenow;
 		if ( 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow ) {
@@ -4305,7 +3768,8 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 						$editable_attr            = ' readonly="readonly" disabled="disabled"';
 						$hidden_noneditable_field = '<input type="hidden" name="prflxtrflds_not_editable[]" value="' . $one_entry['field_id'] . '" />';
 					} else {
-						$editable_attr = $hidden_noneditable_field = '';
+						$editable_attr            = '';
+						$hidden_noneditable_field = '';
 					}
 
 					$required_attr = ( ! empty( $one_entry['required'] ) && ! empty( $one_entry['editable'] ) ) ? ' required="required"' : '';
@@ -4319,7 +3783,9 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 								if ( ! empty( $one_entry['required'] ) ) {
 									?>
 									<span class="description"><?php echo esc_attr( $one_entry['required'] ); ?></span>
-									<?php if ( '1' === $one_entry['editable'] ) { ?>
+									<?php
+									if ( '1' === $one_entry['editable'] ) {
+										?>
 										<input type="hidden"
 											name="prflxtrflds_required[<?php echo esc_attr( $one_entry['field_id'] ); ?>]"
 											value="true"/>
@@ -4536,7 +4002,6 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 											value="<?php echo esc_attr( $one_entry['available_fields'][0]['value_name'] ); ?>">
 										<?php
 										break;
-
 									case '11':
 										?>
 										<input type="url" class="prflxtrflds_url"
@@ -4555,8 +4020,22 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 										 />
 										<?php
 										break;
+									case '13':
+										$countries = prflxtrflds_get_country();
+										?>
+										<select id="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]" name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]" <?php echo wp_kses_data( $editable_attr ) . wp_kses_data( $required_attr ); ?>>
+											<?php
+											foreach ( $countries as $country_id => $country_name ) {
+												?>
+												<option value="<?php echo esc_attr( $country_id ); ?>" <?php selected( $one_entry['user_value'], $country_id ); ?>><?php echo esc_html( $country_name ); ?></option>
+												<?php
+											}
+											?>
+										</select>
+										<?php
+										break;
 								}
-								echo wp_kses_data( $hidden_noneditable_field );
+								echo $hidden_noneditable_field;
 								if ( isset( $one_entry['description'] ) ) {
 									?>
 									<p class="description"><?php echo esc_html( $one_entry['description'] ); ?></p>
@@ -4572,19 +4051,26 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 			</table><!--.form-table-->
 			<?php
 		}
-		echo wp_kses_data( $hidden_nonvisible_field );
+		echo $hidden_nonvisible_field;
 	}
 }
 
 /** Send errors to edit user page */
 if ( ! function_exists( 'prflxtrflds_create_user_error' ) ) {
+	/**
+	 * Send errors to edit user page
+	 *
+	 * @param array $errors Wp errors.
+	 * @param mixed $update Flag for update.
+	 * @param mixed $user   User.
+	 */
 	function prflxtrflds_create_user_error( $errors, $update = null, $user = null ) {
 		$required_array = array();
 
-		if ( ( isset( $_POST['prflxtrflds_user_register_field'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_register_field'] ) ), 'prflxtrflds_user_register_action' )  ) 
-			|| ( isset( $_POST['prflxtrflds_user_fields'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_fields'] ) ), 'prflxtrflds_user_field_action' ) ) 
-			|| ( isset( $_POST['prflxtrflds_front_info'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_front_info'] ) ), 'prflxtrflds_save_front_info' ) ) 
-		){
+		if ( ( isset( $_POST['prflxtrflds_user_register_field'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_register_field'] ) ), 'prflxtrflds_user_register_action' ) )
+			|| ( isset( $_POST['prflxtrflds_user_fields'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_fields'] ) ), 'prflxtrflds_user_field_action' ) )
+			|| ( isset( $_POST['prflxtrflds_front_info'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['prflxtrflds_front_info'] ) ), 'prflxtrflds_save_front_info' ) )
+		) {
 			if ( ! empty( $_POST['prflxtrflds_required'] ) ) {
 				/** Get all reqired ids */
 				foreach ( $_POST['prflxtrflds_required'] as $required_id => $required_value ) {
@@ -4647,8 +4133,10 @@ if ( ! function_exists( 'prflxtrflds_create_user_error' ) ) {
 	}
 }
 
-/** Save user data from Edit user page */
 if ( ! function_exists( 'prflxtrflds_save_user_data' ) ) {
+	/**
+	 * Save user data from Edit user page
+	 */
 	function prflxtrflds_save_user_data() {
 		$user_id = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : get_current_user_id();
 		/** Get errors */
@@ -4711,6 +4199,11 @@ if ( ! function_exists( 'prflxtrflds_save_user_data' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_save_booking_fields' ) ) {
+	/**
+	 * Save user data from WC
+	 *
+	 * @param array $data Data from WC.
+	 */
 	function prflxtrflds_save_booking_fields( $data ) {
 		global $wpdb;
 
@@ -4783,22 +4276,33 @@ if ( ! function_exists( 'prflxtrflds_save_booking_fields' ) ) {
 	}
 }
 
-/** Add field order */
 if ( ! function_exists( 'prflxtrflds_add_required_fields' ) ) {
+	/**
+	 * Add field order
+	 *
+	 * @param array $fields Required fields array.
+	 */
 	function prflxtrflds_add_required_fields( $fields ) {
 		return array_merge( $fields, array( 'prflxtrflds_user_field_value' ) );
 	}
 }
 
-/** Add error message */
 if ( ! function_exists( 'prflxtrflds_add_error_message' ) ) {
+	/**
+	 * Add error message
+	 *
+	 * @param string $message Error message.
+	 * @param string $code    Error code.
+	 */
 	function prflxtrflds_add_error_message( $message, $code ) {
 		return $message . ( 'prflxtrflds_user_field_value' === $code ) ? esc_html__( 'Please fill all required fields.', 'profile-extra-fields' ) : '';
 	}
 }
 
-/** Save field order from wp list table */
 if ( ! function_exists( 'prflxtrflds_table_order' ) ) {
+	/**
+	 * Save field order from wp list table
+	 */
 	function prflxtrflds_table_order() {
 		/** Check ajax. Function fie if error */
 		check_ajax_referer( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' );
@@ -4856,6 +4360,9 @@ if ( ! function_exists( 'prflxtrflds_table_order' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_users' ) ) {
+	/**
+	 * Dispaly all users
+	 */
 	function prflxtrflds_get_users() {
 		/** Check ajax. Function fie if error */
 		check_ajax_referer( plugin_basename( __FILE__ ), 'prflxtrflds_ajax_nonce_field' );
@@ -4872,6 +4379,9 @@ if ( ! function_exists( 'prflxtrflds_get_users' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_roles' ) ) {
+	/**
+	 * Dispaly all roles
+	 */
 	function prflxtrflds_get_roles() {
 		global $wpdb;
 		/** Check ajax. Function fie if error */
@@ -4889,6 +4399,9 @@ if ( ! function_exists( 'prflxtrflds_get_roles' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_fields_name' ) ) {
+	/**
+	 * Dispaly field name
+	 */
 	function prflxtrflds_get_fields_name() {
 		global $wpdb;
 		/** Check ajax. Function fie if error */
@@ -4905,8 +4418,12 @@ if ( ! function_exists( 'prflxtrflds_get_fields_name' ) ) {
 	}
 }
 
-/** Add shortcode content */
 if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
+	/**
+	 * Add shortcode content
+	 *
+	 * @param string $content Content for shortcode.
+	 */
 	function prflxtrflds_shortcode_button_content( $content ) {
 		global $prflxtrflds_options;
 
@@ -5104,8 +4621,13 @@ if ( ! function_exists( 'prflxtrflds_shortcode_button_content' ) ) {
 	}
 }
 
-/** This links under plugin name */
 if ( ! function_exists( 'prflxtrflds_plugin_action_links' ) ) {
+	/**
+	 * This links under plugin name
+	 *
+	 * @param array  $links All plugins links array.
+	 * @param string $file  File name.
+	 */
 	function prflxtrflds_plugin_action_links( $links, $file ) {
 		if ( ! is_network_admin() ) {
 			/** Static so we don't call plugin_basename on every plugin row. */
@@ -5122,8 +4644,13 @@ if ( ! function_exists( 'prflxtrflds_plugin_action_links' ) ) {
 	}
 }
 
-/** This links in plugin description */
 if ( ! function_exists( 'prflxtrflds_register_plugin_links' ) ) {
+	/**
+	 * Added Settings, FAQ and Support links
+	 *
+	 * @param array  $links All plugins links array.
+	 * @param string $file  File name.
+	 */
 	function prflxtrflds_register_plugin_links( $links, $file ) {
 		$base = plugin_basename( __FILE__ );
 		if ( $file === $base ) {
@@ -5137,8 +4664,10 @@ if ( ! function_exists( 'prflxtrflds_register_plugin_links' ) ) {
 	}
 }
 
-/** Add admin notices */
 if ( ! function_exists( 'prflxtrflds_admin_notices' ) ) {
+	/**
+	 * Add admin notices
+	 */
 	function prflxtrflds_admin_notices() {
 		global $hook_suffix, $prflxtrflds_plugin_info;
 		if ( 'plugins.php' === $hook_suffix && ! is_network_admin() ) {
@@ -5150,8 +4679,10 @@ if ( ! function_exists( 'prflxtrflds_admin_notices' ) ) {
 	}
 }
 
-/** Register scripts */
 if ( ! function_exists( 'prflxtrflds_load_script' ) ) {
+	/**
+	 * Register scripts
+	 */
 	function prflxtrflds_load_script() {
 		global $hook_suffix;
 
@@ -5178,8 +4709,10 @@ if ( ! function_exists( 'prflxtrflds_load_script' ) ) {
 	}
 }
 
-/** Uninstall plugin */
 if ( ! function_exists( 'prflxtrflds_uninstall' ) ) {
+	/**
+	 * Uninstall plugin
+	 */
 	function prflxtrflds_uninstall() {
 		global $wpdb;
 		$all_plugins = get_plugins();
@@ -5217,6 +4750,11 @@ if ( ! function_exists( 'prflxtrflds_uninstall' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_get_fields' ) ) {
+	/**
+	 * Get fileds by args
+	 *
+	 * @param array $args Args for query.
+	 */
 	function prflxtrflds_get_fields( $args = array() ) {
 		global $wpdb;
 
@@ -5302,8 +4840,15 @@ if ( ! function_exists( 'prflxtrflds_get_fields' ) ) {
 	}
 }
 
-/*this function show fields in registration form*/
 if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
+	/**
+	 * This function show fields in registration form
+	 *
+	 * @param array  $field_data Fields data.
+	 * @param string $name Field name.
+	 * @param array  $atts Atts array.
+	 * @param bool   $echo Flag for echo.
+	 */
 	function prflxtrflds_get_field_html( $field_data = array(), $name = 'prflxtrflds_user_field_value', $atts = array(), $echo = false ) {
 		$field_types = array(
 			'1'  => 'text',
@@ -5317,8 +4862,13 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			'9'  => 'number',
 			'10' => 'phone',
 			'11' => 'url',
+			'13' => 'country',
 		);
-		$html        = $rows = $cols = $max_length_textarea = '';
+		$html = '';
+		$rows = '';
+		$cols = '';
+
+		$max_length_textarea = '';
 
 		$value = ( isset( $field_data['user_value'] ) ) ? $field_data['user_value'] : '';
 		if ( '' === $value && isset( $_POST[ $name ][ $field_data['field_id'] ] ) ) {
@@ -5518,6 +5068,28 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			);
 		}
 
+		if ( 'country' === $field_types[$field_data['field_type_id']] ) {
+			if ( is_array( $field_data['available_fields'] ) ) {
+				$html = sprintf(
+					'<select name="%1$s[%2$s]" %3$s>',
+					$name,
+					$field_data['field_id'],
+					$editable_attr
+				);
+				$countries = prflxtrflds_get_country();
+				foreach ( $countries as $country_id => $country_name ) {
+						$html .= sprintf(
+							'<option value="%1$s" %2$s>%3$s</option>',
+							$country_id,
+							selected( ! empty( $value ) && $value === $country_id, true, false ),
+							$country_name
+						);
+				}
+				$html .= '</select>';
+			}
+		}
+
+
 		if ( $echo ) {
 			echo $html;
 		}
@@ -5526,8 +5098,10 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 	}
 }
 
-/*this function show fields in registration form*/
 if ( ! function_exists( 'prflxtrflds_user_profile_fields_in_register_form' ) ) {
+	/**
+	 * This function show fields in registration form
+	 */
 	function prflxtrflds_user_profile_fields_in_register_form() {
 
 		if ( ! is_multisite() ) {
@@ -5599,8 +5173,10 @@ if ( ! function_exists( 'prflxtrflds_user_profile_fields_in_register_form' ) ) {
 	}
 }
 
-/** Connecting CSS styles to the registration form. */
 if ( ! function_exists( 'prflxtrflds_login_enqueue_scripts' ) ) {
+	/**
+	 * Connecting CSS styles to the registration form
+	 */
 	function prflxtrflds_login_enqueue_scripts() {
 		if ( isset( $_GET['action'] ) && 'register' === $_GET['action'] ) {
 			wp_enqueue_style( 'prflxtrflds_stylesheet', plugins_url( 'css/style.css', __FILE__ ), array(), '1.2.4' );
@@ -5610,11 +5186,17 @@ if ( ! function_exists( 'prflxtrflds_login_enqueue_scripts' ) ) {
 	}
 }
 if ( ! function_exists( 'prflxtrflds_enqueue_scripts' ) ) {
+	/**
+	 * Connecting CSS styles to front
+	 */
 	function prflxtrflds_enqueue_scripts() {
 		wp_enqueue_style( 'prflxtrflds_front_stylesheet', plugins_url( 'css/front_style.css', __FILE__ ), array(), '1.2.4' );
 	}
 }
 if ( ! function_exists( 'prflxtrflds_enqueue_fields_styles' ) ) {
+	/**
+	 * Connecting JS and CSS styles
+	 */
 	function prflxtrflds_enqueue_fields_styles() {
 		wp_enqueue_style( 'jquery.datetimepicker.css', plugins_url( 'css/jquery.datetimepicker.css', __FILE__ ), array(), '1.2.4' );
 
@@ -5631,8 +5213,12 @@ if ( ! function_exists( 'prflxtrflds_enqueue_fields_styles' ) ) {
 	}
 }
 
-/** Save user data from register form */
 if ( ! function_exists( 'prflxtrflds_save_data_from_registration_form' ) ) {
+	/**
+	 * Save user data from register form
+	 *
+	 * @param number $user_id User ID.
+	 */
 	function prflxtrflds_save_data_from_registration_form( $user_id ) {
 		if ( 0 !== $user_id ) {
 
@@ -5698,8 +5284,12 @@ if ( ! function_exists( 'prflxtrflds_save_data_from_registration_form' ) ) {
 	}
 }
 
-/** Form validation */
 if ( ! function_exists( 'prflxtrflds_register_check' ) ) {
+	/**
+	 * Form validation
+	 *
+	 * @param bool $allow Flag for allow.
+	 */
 	function prflxtrflds_register_check( $allow ) {
 		global $wpdb;
 
@@ -5737,13 +5327,19 @@ if ( ! function_exists( 'prflxtrflds_register_check' ) ) {
 	}
 }
 
-/** Add css styles to the admin panel */
-function prflxtrflds_admin_style() {
-	wp_enqueue_style( 'prflxtrflds_style_admin', plugins_url( 'css/style.css', __FILE__ ), array(), '1.2.4' );
+if ( ! function_exists( 'prflxtrflds_admin_style' ) ) {
+	/**
+	 * Add css styles to the admin panel
+	 */
+	function prflxtrflds_admin_style() {
+		wp_enqueue_style( 'prflxtrflds_style_admin', plugins_url( 'css/style.css', __FILE__ ), array(), '1.2.4' );
+	}
 }
 
-/** Send errors to registration user form */
 if ( ! function_exists( 'prflxtrflds_register_error' ) ) {
+	/**
+	 * Send errors to registration user form
+	 */
 	function prflxtrflds_register_error( $errors, $update = null, $user = null ) {
 		$required_array = array();
 
@@ -5812,7 +5408,10 @@ if ( ! function_exists( 'prflxtrflds_register_error' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_display_front_script' ) ) {
-	function prflxtrflds_display_front_script(){
+	/**
+	 * Front JS and CSS
+	 */
+	function prflxtrflds_display_front_script() {
 		global $prflxtrflds_front_shortcode;
 		if ( true === $prflxtrflds_front_shortcode ) {
 			wp_enqueue_style( 'jquery.datetimepicker.css', plugins_url( 'css/jquery.datetimepicker.css', __FILE__ ), array(), '1.2.4' );
@@ -5828,6 +5427,11 @@ if ( ! function_exists( 'prflxtrflds_display_front_script' ) ) {
 }
 
 if ( ! function_exists( 'prflxtrflds_wp_new_user_notification_email_admin' ) ) {
+	/**
+	 * Admin email message for new user
+	 *
+	 * @param array $wp_new_user_notification_email_admin Email array for admin.
+	 */
 	function prflxtrflds_wp_new_user_notification_email_admin( $wp_new_user_notification_email_admin ) {
 		if ( isset( $_POST['prflxtrflds_field_name'], $_POST['prflxtrflds_user_field_value'] ) ) {
 			$wp_new_user_notification_email_admin['message'] .= "\r\n";

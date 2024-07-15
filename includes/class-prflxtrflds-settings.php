@@ -3,6 +3,10 @@
  * Displays the content on the plugin settings page
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 	class Prflxtrflds_Settings_Tabs extends Bws_Settings_Tabs {
 		/**
@@ -12,7 +16,7 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 		 *
 		 * @see Bws_Settings_Tabs::__construct() for more information on default arguments.
 		 *
-		 * @param string $plugin_basename
+		 * @param string $plugin_basename Plugin basename.
 		 */
 		public function __construct( $plugin_basename ) {
 			global $prflxtrflds_options, $prflxtrflds_plugin_info;
@@ -42,6 +46,13 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 			add_action( get_parent_class( $this ) . '_additional_misc_options_affected', array( $this, 'additional_misc_options_affected' ) );
 		}
 
+		/**
+		 * Display metabox
+		 *
+		 * @access public
+		 *
+		 * @see Bws_Settings_Tabs::display_metabox() for more information on default arguments.
+		 */
 		public function display_metabox() { ?>
 			<div class="postbox">
 				<h3 class="hndle">
@@ -70,8 +81,20 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 			</div>
 			<?php
 		}
+		/**
+		 * Save options. Empty function.
+		 *
+		 * @access public
+		 *
+		 * @see Bws_Settings_Tabs::save_options() for more information on default arguments.
+		 */
 		public function save_options() {}
 
+		/**
+		 * Additional fields.
+		 *
+		 * @access public
+		 */
 		public function additional_misc_options_affected() {
 			if ( ! $this->hide_pro_tabs ) {
 				?>
@@ -90,7 +113,7 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 										</td>
 									</tr>
 									<tr valign="top">
-										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Checkout Form', 'profile-extra-fields' ) ?></th>
+										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Checkout Form', 'profile-extra-fields' ); ?></th>
 										<td>
 											<label>
 												<input class="regular-text" type="text" disabled="disabled" value="" /><br />
@@ -99,7 +122,7 @@ if ( ! class_exists( 'Prflxtrflds_Settings_Tabs' ) ) {
 										</td>
 									</tr>
 									<tr valign="top">
-										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Registration Form', 'profile-extra-fields' ) ?></th>
+										<th scope="row"><?php esc_html_e( 'Title for WooCommerce Extra Fields Registration Form', 'profile-extra-fields' ); ?></th>
 										<td>
 											<label>
 												<input class="regular-text" type="text" disabled="disabled" value="" /><br />
