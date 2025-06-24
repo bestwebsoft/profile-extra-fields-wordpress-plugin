@@ -343,12 +343,15 @@ if ( ! class_exists( 'Prflxtrflds_Fields_List' ) ) {
 			$not = '';
 			if ( '' === $where ) {
 				$plugins_data = apply_filters( 'bws_bkng_prflxtrflds_get_data', $plugins_data = array() );
+				if ( is_plugin_active( 'bws-login-register-pro/bws-login-register-pro.php' ) || is_plugin_active( 'bws-login-register/bws-login-register.php' ) ) {
+					array_push( $plugins_data, array( 'slug' => 'bws_login_register_form' ) );
+				}
 				$slugs        = array_column( $plugins_data, 'slug' );
 				$where        = implode( "', '", $slugs );
 				$not          = 'NOT';
 			}
 
-			$where = 'AND ' . $table_fields_id . '.`field_id` ' . $not . ' IN (
+			$where_sql = 'AND ' . $table_fields_id . '.`field_id` ' . $not . ' IN (
 				SELECT ' . $table_roles_meta . '.`field_id`
 				FROM ' . $table_roles_meta . '
 				WHERE ' . $table_roles_meta . '.`show_in` IN ( "' . $where . '" ) AND ' . $table_roles_meta . '.`value` != ""
@@ -369,7 +372,7 @@ if ( ! class_exists( 'Prflxtrflds_Fields_List' ) ) {
 					' ON ' . $table_roles_and_fields . '.`field_id`=' . $table_fields_id . '.`field_id`' .
 					' LEFT JOIN ' . $table_roles_id .
 					' ON ' . $table_roles_id . '.`role_id`=' . $table_roles_and_fields . '.`role_id`' .
-					' WHERE ' . $searchrequest . ' ' . $where . ' ' .
+					' WHERE ' . $searchrequest . ' ' . $where_sql . ' ' .
 					$rolerequest;
 
 			/** Get result from database with repeat id with other role */

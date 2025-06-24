@@ -1,139 +1,120 @@
 <a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/" target=_blank>Profile Extra Fields WordPress Plugin</a>
 ========================
 
-<p>Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields.</p>
-<p>Easily add and display extra information about WordPress users!</p>
-<p><a href="https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme" rel="nofollow ugc">View Demo</a></p>
-<p><span class="embed-youtube" style="text-align:center; display: block;"></span></p>
+<p>A user-friendly plugin for adding and managing custom fields on WordPress user profiles and WooCommerce registration and checkout pages. Create custom fields such as checkboxes, radio buttons, date pickers, phone numbers, and more — with no coding required.</p>
+<p>Perfect for membership sites, user directories, WooCommerce stores, and any website that needs extra user information.</p>
+<p>Easily display additional user data with shortcodes anywhere on your site.</p>
+<p><a href="https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme" rel="nofollow ugc">View Demo</a><br />
+<a href="https://www.youtube.com/watch?v=O424Kpnffmo" rel="nofollow ugc">Watch Video</a></p>
 <h4>Free Features</h4>
 <ul>
-<li>Add unlimited number of extra fields</li>
-<li>Use shortcode to display user data on your page or post:
+<li>Add unlimited custom fields to WordPress user profiles</li>
+<li>Display extra user data with a shortcode:
 <ul>
-<li>All users data</li>
-<li>Logged in user data</li>
-<li>Certain user role data</li>
-<li>Certain user data</li>
-<li>Current user data</li>
+<li>All users</li>
+<li>Logged-in user</li>
+<li>Specific user role</li>
+<li>Specific user ID</li>
+<li>Current user</li>
 </ul>
 </li>
+<li>Display selected fields via shortcode</li>
+<li>Show fields in the registration form</li>
+<li>Export all user data to a CSV file</li>
+<li>Customize shortcode output:
+<ul>
+<li>Table layout: rows or columns</li>
+<li>Sort by username: ASC / DESC</li>
+<li>Show empty fields</li>
+<li>Show user ID</li>
+<li>Display field shortcodes with values</li>
+</ul>
+</li>
+<li>Customize validation messages:
+<ul>
+<li>For required fields</li>
+<li>For unavailable fields</li>
+</ul>
+</li>
+<li>Enable debug mode for troubleshooting</li>
+<li>Choose from various field types:
+<ul>
+<li>Text, Textarea, Checkbox, Radiobutton</li>
+<li>Dropdown, Date, Time, Date &amp; Time</li>
+<li>Number, Phone, URL</li>
+</ul>
+</li>
+<li>Field customization:
+<ul>
+<li>Field name and description</li>
+<li>Max length for text/number</li>
+<li>Required symbol and setting</li>
+<li>Set field order (drag &amp; drop)</li>
+<li>Choose date/time/phone format</li>
+<li>Limit field visibility to specific roles</li>
+</ul>
+</li>
+<li>Front-end form to edit user data</li>
+<li>Compatible with the latest WordPress version</li>
+<li>Lightweight, fast, and easy to set up</li>
+<li>Translation-ready and RTL support</li>
 <li>Compatible with <a href="https://bestwebsoft.com/products/wordpress/plugins/car-rental-v2/?k=a8f05dd9a324c003f22923d43eb75eea" rel="nofollow ugc">Car Rental V2</a></li>
-<li>Display profile extra fields in user registration form</li>
-<li>Display certain fields via the shortcode</li>
-<li>Export all user data to a CSV file </li>
-<li>User data shortcode settings:
-<ul>
-<li>Choose user data rotation on page or post
-<ul>
-<li>Rows</li>
-<li>Columns</li>
-</ul>
-</li>
-<li>Sort user data by user name in the table:
-<ul>
-<li>ASC (ascending order from lowest to highest values)</li>
-<li>DESC (descending order from highest to lowest values)</li>
-</ul>
-</li>
-<li>Show empty fields if user missed them</li>
-<li>Show user ID in the table</li>
-<li>Display the shortcode with the field value</li>
-<li>Customize validation message for:
-<ul>
-<li>Empty fields</li>
-<li>Unavailable fields</li>
-</ul>
-</li>
-<li>Enable or disable debug mode</li>
-</ul>
-</li>
-<li>Choose extra field type:
-<ul>
-<li>Text</li>
-<li>Textarea</li>
-<li>Checkbox</li>
-<li>Radiobutton</li>
-<li>Dropdown list</li>
-<li>Date</li>
-<li>Time</li>
-<li>Date and time</li>
-<li>Number</li>
-<li>Phone number</li>
-<li>URL</li>
-</ul>
-</li>
-<li>Customize extra fields:
-<ul>
-<li>Name</li>
-<li>Description</li>
-</ul>
-</li>
-<li>Set the max length for text or number in the appropriate fields</li>
-<li>Set the required symbol</li>
-<li>Make any field required</li>
-<li>Set the fields order</li>
-<li>Choose date and time formats for the corresponding field types</li>
-<li>Set the phone number format for the corresponding field type</li>
-<li>Drag and drop fields to change their order in the list</li>
-<li>Make extra fields available for certain user roles</li>
-<li>Display user data edit form on the front pages</li>
-<li>Compatible with latest WordPress version</li>
-<li>Incredibly simple settings for fast setup without modifying code</li>
-<li>Detailed step-by-step documentation and videos</li>
-<li>Multilingual and RTL ready</li>
 </ul>
 <blockquote>
 <p><strong>Pro Features</strong></p>
-<p>All features from Free version included plus:</p>
+<p>Includes all features from the free version, plus:</p>
 <ul>
-<li>Import all user data to a CSV file</li>
-<li>Choose extra field type:
-<ul>
-<li>Attachment</li>
-</ul>
-</li>
-<li>Compatible with WooCommerce:
+<li>Import user data from a CSV file</li>
+<li>New field type: Attachment</li>
+<li>WooCommerce compatibility:
 <ul>
 <li>Registration form</li>
-<li>Checkout billing form</li>
-<li>WooCommerce Order email</li>
+<li>Checkout billing fields</li>
+<li>Order confirmation emails</li>
 </ul>
 </li>
-<li>Compatible with Gravity Forms</li>
-<li>Compatible with <a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a></li>
-<li>Add custom code via plugin settings page</li>
-<li>Import available values for:
+<li>Integration with Gravity Forms</li>
+<li>Integration with <a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber plugin</a></li>
+<li>Add custom code from plugin settings</li>
+<li>Bulk import values for:
 <ul>
-<li>Checkbox list</li>
-<li>Drop down list</li>
-<li>Radio button list</li>
+<li>Checkbox</li>
+<li>Dropdown</li>
+<li>Radiobutton</li>
 </ul>
 </li>
-<li>Get answer to your question within one business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow ugc">Support Policy</a>)</li>
+<li>Priority support – get answers within 1 business day (<a href="https://bestwebsoft.com/support-policy/" rel="nofollow ugc">Support Policy</a>)</li>
 </ul>
 <p><a href="https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d" rel="nofollow ugc">Upgrade to Pro Now</a></p>
 </blockquote>
-<p>If you have a feature suggestion or idea you&#8217;d like to see in the plugin, we&#8217;d love to hear about it! <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">Suggest a Feature</a></p>
+<p>Have a feature idea? <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">Suggest a Feature</a></p>
 <h4>Documentation &amp; Videos</h4>
 <ul>
 <li><a href="https://bestwebsoft.com/documentation/profile-extra-fields/profile-extra-fields-user-guide/" rel="nofollow ugc">[Doc] User Guide</a></li>
 <li><a href="https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/" rel="nofollow ugc">[Doc] Installation</a></li>
-<li><a href="https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/" rel="nofollow ugc">[Doc] Purchase</a></li>
+<li><a href="https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/" rel="nofollow ugc">[Doc] Purchase Guide</a></li>
 </ul>
 <h4>Help &amp; Support</h4>
-<p>Visit our Help Center if you have any questions, our friendly Support Team is happy to help &#8211; <a href="https://support.bestwebsoft.com/" rel="nofollow ugc">https://support.bestwebsoft.com/</a></p>
+<p>Need help? Visit our Help Center — our Support Team is ready to assist you.<br />
+<a href="https://support.bestwebsoft.com/" rel="nofollow ugc">https://support.bestwebsoft.com/</a></p>
 <h4>Affiliate Program</h4>
-<p>Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — <a href="https://bestwebsoft.com/affiliate/?utm_source=plugin&amp;utm_medium=readme&amp;utm_campaign=affiliate_program" rel="nofollow ugc">https://bestwebsoft.com/affiliate/</a></p>
+<p>Earn 20% commission by promoting BestWebSoft premium WordPress plugins and themes.<br />
+<a href="https://bestwebsoft.com/affiliate/?utm_source=plugin&amp;utm_medium=readme&amp;utm_campaign=affiliate_program" rel="nofollow ugc">Join our affiliate program</a></p>
 <h4>Translation</h4>
-<ul>
-<li>German (de_DE) (thanks to <a href="mailto:m&#097;&#x74;&#x74;&#104;&#105;&#x61;&#x73;&#046;&#115;&#x69;&#x65;&#098;&#108;&#x65;&#x72;&#064;&#103;&#x6d;a&#105;&#108;&#x2e;c&#111;&#x6d;" rel="nofollow ugc">Matthias Siebler</a>)</li>
-<li>Russian (ru_RU)</li>
-<li>Ukrainian (uk)</li>
-</ul>
-<p>Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="https://codex.wordpress.org/Translating_WordPress" rel="nofollow ugc">the text of PO and MO files</a> to <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">BestWebSoft</a> and we&#8217;ll add it to the plugin. You can download the latest version of the program for work with PO and MO <a href="https://www.poedit.net/download.php" rel="nofollow ugc">files Poedit</a>.</p>
+<p>Available languages:<br />
+* German (de_DE) — Thanks to <a href="mailto:m&#097;&#x74;&#x74;&#104;&#105;&#x61;&#x73;&#046;&#115;&#x69;&#x65;&#098;&#108;&#x65;&#x72;&#064;&#103;&#x6d;a&#105;&#108;&#x2e;c&#111;&#x6d;" rel="nofollow ugc">Matthias Siebler</a><br />
+* Russian (ru_RU)<br />
+* Ukrainian (uk)<br />
+* French (fr_FR)<br />
+* Italian (it_IT)<br />
+* Japanese (ja)<br />
+* Portuguese (Brazil) (pt_BR)<br />
+* Spanish (es_ES)</p>
+<p>Some translations may be incomplete. Help us improve! Send your updated <code>.po</code> and <code>.mo</code> files via <a href="https://support.bestwebsoft.com/hc/en-us/requests/new" rel="nofollow ugc">support</a>.<br />
+Download <a href="https://www.poedit.net/download.php" rel="nofollow ugc">Poedit</a> to edit translation files.</p>
 <h4>Recommended Plugins</h4>
 <ul>
-<li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd" rel="nofollow ugc">Updater</a> &#8211; Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.</li>
-<li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8" rel="nofollow ugc">User Role</a> &#8211; Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.</li>
-<li><a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a> &#8211; Add email newsletter sign up form to WordPress posts, pages, and widgets. Collect data and subscribe your users.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd" rel="nofollow ugc">Updater</a> – Keep WordPress, plugins, and themes up to date.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8" rel="nofollow ugc">User Role</a> – Manage user roles with full control.</li>
+<li><a href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69" rel="nofollow ugc">Subscriber</a> – Add a newsletter sign-up form to your website.</li>
 </ul>

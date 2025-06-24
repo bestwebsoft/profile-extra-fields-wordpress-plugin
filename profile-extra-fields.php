@@ -6,7 +6,7 @@ Description: Add extra fields to default WordPress user profile. The easiest way
 Author: BestWebSoft
 Text Domain: profile-extra-fields
 Domain Path: /languages
-Version: 1.3.0
+Version: 1.3.2
 Author URI: https://bestwebsoft.com/
 License: GPLv3 or later
  */
@@ -418,19 +418,21 @@ if ( ! function_exists( 'prflxtrflds_get_options_default' ) ) {
 		global $prflxtrflds_plugin_info;
 		/** Create array with default options */
 		return array(
-			'plugin_option_version'   => $prflxtrflds_plugin_info['Version'],
-			'display_settings_notice' => 1,
-			'suggest_feature_banner'  => 1,
-			'sort_sequence'           => 'ASC',
-			'available_fields'        => array(),
-			'available_values'        => array(),
-			'show_empty_columns'      => 0,
-			'show_id'                 => 1,
-			'header_table'            => 'columns', /*rows */
-			'empty_value'             => __( 'The field is empty', 'profile-extra-fields' ),
-			'not_available_message'   => __( 'N/A', 'profile-extra-fields' ),
-			'shortcode_debug'         => 1,
-			'display_user_name'       => 'username',
+			'plugin_option_version'      => $prflxtrflds_plugin_info['Version'],
+			'display_settings_notice'    => 1,
+			'suggest_feature_banner'     => 1,
+			'sort_sequence'              => 'ASC',
+			'available_fields'           => array(),
+			'available_values'           => array(),
+			'show_empty_columns'         => 0,
+			'show_id'                    => 1,
+			'header_table'               => 'columns', /*rows */
+			'empty_value'                => __( 'The field is empty', 'profile-extra-fields' ),
+			'not_available_message'      => __( 'N/A', 'profile-extra-fields' ),
+			'shortcode_debug'            => 1,
+			'display_user_name'          => 'username',
+			'user_section_profile_title' => __( 'Profile Extra Fields', 'profile-extra-fields' ),
+			'user_section_car_title'     => __( 'Car Rental V2 Extra Fields', 'profile-extra-fields' ),
 		);
 	}
 }
@@ -1765,6 +1767,19 @@ if ( ! function_exists( 'prflxtrflds_edit_field' ) ) {
 								</label>
 							</td>
 						</tr>
+						<tr>
+							<th><?php esc_html_e( 'BWS Register Form', 'profile-extra-fields' ); ?></th>
+							<td>
+								<label>
+									<input type="checkbox" id="prflxtrflds-show-in-bws-register-form" name="prflxtrflds_show_in[bws_login_register_form]" value="1" 
+									<?php
+									if ( isset( $show_in['bws_login_register_form'] ) ) {
+										checked( $show_in['bws_login_register_form'], '1' );}
+									?>
+									/>
+								</label>
+							</td>
+						</tr>
 					<?php } ?>
 				</tbody>
 			</table>
@@ -2115,51 +2130,16 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 				<a href="admin.php?page=profile-extra-field-add-new.php" class="page-title-action add-new-h2" ><?php esc_html_e( 'Add New', 'profile-extra-fields' ); ?></a>
 			</h1>
 			<h2 class="nav-tab-wrapper">
-				<a class="nav-tab
-				<?php
-				if ( ! isset( $_GET['tab-action'] ) ) {
-					echo esc_html( ' nav-tab-active' );
-				}
-				?>
-				" href="admin.php?page=profile-extra-fields.php"><?php esc_html_e( 'Extra Fields', 'profile-extra-fields' ); ?></a>
+				<a class="nav-tab <?php echo ! isset( $_GET['tab-action'] ) ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php"><?php esc_html_e( 'Extra Fields', 'profile-extra-fields' ); ?></a>
 				<?php if ( ! $bws_hide_premium_options_check ) { ?>
-					<a id="prflxtrflds-pro-options" class="nav-tab 
-					<?php
-					if ( isset( $_GET['tab-action'] ) && 'woocommerce' === $_GET['tab-action'] ) {
-						echo esc_html( ' nav-tab-active' );
-					}
-					?>
-					" href="admin.php?page=profile-extra-fields.php&amp;tab-action=woocommerce"><?php esc_html_e( 'WooСommerce', 'profile-extra-fields' ); ?></a>
-					<a id="prflxtrflds-pro-options" class="nav-tab 
-					<?php
-					if ( isset( $_GET['tab-action'] ) && 'subscriber' === $_GET['tab-action'] ) {
-						echo esc_html( ' nav-tab-active' );
-					}
-					?>
-					" href="admin.php?page=profile-extra-fields.php&amp;tab-action=subscriber">Subscriber</a>
+					<a id="prflxtrflds-pro-options" class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'woocommerce' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=woocommerce"><?php esc_html_e( 'WooСommerce', 'profile-extra-fields' ); ?></a>
+					<a id="prflxtrflds-pro-options" class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'subscriber' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=subscriber">Subscriber</a>
 				<?php } ?>
-				<a class="nav-tab 
-				<?php
-				if ( isset( $_GET['tab-action'] ) && 'booking' === $_GET['tab-action'] ) {
-					echo esc_html( ' nav-tab-active' );
-				}
-				?>
-				" href="admin.php?page=profile-extra-fields.php&amp;tab-action=booking"><?php esc_html_e( 'Booking', 'profile-extra-fields' ); ?></a>
-				<a class="nav-tab 
-				<?php
-				if ( isset( $_GET['tab-action'] ) && 'userdata' === $_GET['tab-action'] ) {
-					echo esc_html( ' nav-tab-active' );
-				}
-				?>
-				" href="admin.php?page=profile-extra-fields.php&amp;tab-action=userdata"><?php esc_html_e( 'User Data', 'profile-extra-fields' ); ?></a>
+				<a class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'booking' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=booking"><?php esc_html_e( 'Booking', 'profile-extra-fields' ); ?></a>
+				<a class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'login_register' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=login_register"><?php esc_html_e( 'Login/Register', 'profile-extra-fields' ); ?></a>
+				<a class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'userdata' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=userdata"><?php esc_html_e( 'User Data', 'profile-extra-fields' ); ?></a>
 				<?php if ( 0 < count( $available_fields ) ) { ?>
-					<a class="nav-tab 
-					<?php
-					if ( isset( $_GET['tab-action'] ) && 'shortcode' === $_GET['tab-action'] ) {
-						echo esc_html( ' nav-tab-active' );
-					}
-					?>
-					" href="admin.php?page=profile-extra-fields.php&amp;tab-action=shortcode"><?php esc_html_e( 'Shortcode Settings', 'profile-extra-fields' ); ?></a>
+					<a class="nav-tab <?php echo isset( $_GET['tab-action'] ) && 'shortcode' === $_GET['tab-action'] ? esc_html( ' nav-tab-active' ) : ''; ?>" href="admin.php?page=profile-extra-fields.php&amp;tab-action=shortcode"><?php esc_html_e( 'Shortcode Settings', 'profile-extra-fields' ); ?></a>
 				<?php } ?>
 			</h2>
 			<?php if ( ! isset( $_GET['tab-action'] ) ) { ?>
@@ -2362,6 +2342,50 @@ if ( ! function_exists( 'prflxtrflds_fields' ) ) {
 					</form>
 				</div>
 				<?php
+			} elseif ( isset( $_GET['tab-action'] ) && 'login_register' === $_GET['tab-action'] ) {
+				if ( is_plugin_active( 'bws-login-register-pro/bws-login-register-pro.php' ) || is_plugin_active( 'bws-login-register/bws-login-register.php' ) ) { ?>
+					<div class="prflxtrflds-wplisttable-fullwidth-sort-container">
+						<?php
+						$prflxtrflds_fields_list_table = new Prflxtrflds_Fields_List(); /* Wp list table to show all fields */
+						$prflxtrflds_fields_list_table->prepare_items( 'bws_login_register_form' );
+						if ( isset( $prflxtrflds_fields_list_table->items ) && ( 1 < count( $prflxtrflds_fields_list_table->items ) ) ) { /* Show drag-n-drop message if items > 2 */
+							?>
+							<p class="hide-if-no-js prflxtrflds-hide-if-is-mobile">
+								<?php esc_html_e( 'Drag each item into the order you would like to display it on the user page', 'profile-extra-fields-pro' ); ?>
+							</p>
+						<?php } ?>
+						<form class="prflxtrflds-wplisttable-searchform" method="get" action="<?php get_admin_url(); ?>?page=profile-extra-fields-pro.php&tab-action=login_register">
+							<input type="hidden" name="page" value="profile-extra-fields-pro.php" />
+							<?php
+							wp_nonce_field( 'prflxtrflds_nonce_name', 'prflxtrflds_nonce_name', false );
+							$prflxtrflds_fields_list_table->search_box( __( 'Search', 'profile-extra-fields-pro' ), 'search_id' );
+							?>
+							<?php $prflxtrflds_fields_list_table->display(); ?>
+						</form>
+					</div><!-- .prflxtrflds-wplisttable-container -->
+					<?php
+				} else {
+					$all_plugins = get_plugins();
+					if ( ! array_key_exists( 'bws-login-register-pro/bws-login-register-pro.php', $all_plugins ) && ! array_key_exists( 'bws-login-register/bws-login-register.php', $all_plugins ) ) {
+						?>
+						<tr>
+							<td>
+								<br>
+								<span class="bws_info"><?php esc_html_e( 'Install Subscriber to display fields for Subscriber.', 'profile-extra-fields-pro' ); ?> <a target="_blank" href="https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=1ede2c97fe3ff296c2a729ff6348e105&amp;pn=809&amp;v=<?php echo esc_attr( $prflxtrflds_plugin_info['Version'] ); ?>&amp;wp_v=<?php echo esc_attr( $wp_version ); ?>"><?php esc_html_e( 'Download Subscriber', 'profile-extra-fields-pro' ); ?></a></span>
+								<br><br>
+							</td>
+						</tr>
+					<?php } else { ?>
+						<tr>
+							<td>
+								<br>
+								<span class="bws_info"><?php esc_html_e( 'Activate Subscriber to display fields for Subscriber.', 'profile-extra-fields-pro' ); ?><?php printf( ' <a href="%s" target="_blank">%s Subscriber</a>', esc_url( self_admin_url( 'plugins.php' ) ), esc_html__( 'Activate', 'profile-extra-fields-pro' ) ); ?></span>
+								<br><br>
+							</td>
+						</tr>
+						<?php
+					}
+				}
 			} elseif ( isset( $_GET['tab-action'] ) && 'shortcode' === $_GET['tab-action'] && 0 < count( $available_fields ) ) {
 				bws_show_settings_notice();
 				if ( ! empty( $message ) ) {
@@ -3351,13 +3375,13 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 													foreach ( $one_entry['available_fields'] as $one_sub_entry ) {
 														$checked = ( ! empty( $one_entry['user_value'] ) && in_array( $one_sub_entry['value_id'], $one_entry['user_value'] ) );
 														?>
-														<label 
+														<label class="prflxtrflds-field
 														<?php
 														if ( $checked ) {
-															echo wp_kses_data( 'class="checked"' );
+															echo wp_kses_data( 'checked' );
 														}
 														?>
-														>
+														">
 															<input type="checkbox" class="prflxtrflds_input_checkbox"
 																name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>][]"
 																value="<?php echo esc_attr( $one_sub_entry['value_id'] ); ?>"
@@ -3377,7 +3401,7 @@ if ( ! function_exists( 'prflxtrflds_show_edit_form' ) ) {
 												case '4':
 													foreach ( $one_entry['available_fields'] as $one_sub_entry ) {
 														?>
-														<label>
+														<label class="prflxtrflds-field">
 															<input type="radio" class="prflxtrflds_input_radio"
 																name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]"
 																value="<?php echo esc_attr( $one_sub_entry['value_id'] ); ?>"
@@ -3600,7 +3624,10 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 	 * @param mixed $profileuser User object.
 	 */
 	function prflxtrflds_fields_table( $profileuser = false ) {
-		global $wpdb, $hook_suffix, $pagenow;
+		global $wpdb, $hook_suffix, $pagenow, $prflxtrflds_options;
+		if ( ! isset( $prflxtrflds_options ) ) {
+			prflxtrflds_settings();
+		}
 		if ( 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow ) {
 			$user_id   = get_current_user_id();
 			$user_info = get_userdata( $user_id );
@@ -3670,9 +3697,21 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 			if ( empty( $all_entry ) ) {
 				continue;
 			}
+			$title = '';
+			switch ( $plugin['name'] ) {
+				case 'Profile':
+					$title = isset( $prflxtrflds_options['user_section_profile_title'] ) ? $prflxtrflds_options['user_section_profile_title'] : sprintf( esc_html__( '%1$s Extra Fields', 'profile-extra-fields' ), esc_html( $plugin['name'] ) );
+					break;
+				case 'Car Rental V2':
+					$title = isset( $prflxtrflds_options['user_section_car_title'] ) ? $prflxtrflds_options['user_section_car_title'] : sprintf( esc_html__( '%1$s Extra Fields', 'profile-extra-fields' ), esc_html( $plugin['name'] ) );
+					break;
+				default: 
+					$title = sprintf( esc_html__( '%1$s Extra Fields', 'profile-extra-fields' ), esc_html( $plugin['name'] ) );
+					break;
+			}
 
 			?>
-			<h2 class="<?php echo esc_attr( $custom_class ); ?>"><?php printf( esc_html__( '%1$s Extra Fields', 'profile-extra-fields' ), esc_html( $plugin['name'] ) ); ?></h2>
+			<h2 class="<?php echo esc_attr( $custom_class ); ?>"><?php echo esc_html( $title ); ?></h2>
 			<table class="form-table <?php echo esc_attr( $custom_class ); ?>">
 				<?php wp_nonce_field( 'prflxtrflds_user_field_action', 'prflxtrflds_user_fields' ); ?>
 				<?php
@@ -3833,13 +3872,13 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 										foreach ( $one_entry['available_fields'] as $one_sub_entry ) {
 											$checked = ( ! empty( $one_entry['user_value'] ) && in_array( $one_sub_entry['value_id'], $one_entry['user_value'] ) );
 											?>
-											<label 
+											<label class="prflxtrflds-field
 											<?php
 											if ( $checked ) {
-												echo wp_kses_data( 'class="checked"' );
+												echo wp_kses_data( 'checked' );
 											}
 											?>
-											>
+											">
 												<input type="checkbox" class="prflxtrflds_input_checkbox"
 													name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>][]"
 													value="<?php echo esc_attr( $one_sub_entry['value_id'] ); ?>"
@@ -3859,7 +3898,7 @@ if ( ! function_exists( 'prflxtrflds_fields_table' ) ) {
 									case '4':
 										foreach ( $one_entry['available_fields'] as $one_sub_entry ) {
 											?>
-											<label>
+											<label class="prflxtrflds-field">
 												<input type="radio" class="prflxtrflds_input_radio"
 													name="prflxtrflds_user_field_value[<?php echo esc_attr( $one_entry['field_id'] ); ?>]"
 													value="<?php echo esc_attr( $one_sub_entry['value_id'] ); ?>"
@@ -4922,7 +4961,7 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			if ( is_array( $field_data['available_fields'] ) ) {
 				foreach ( $field_data['available_fields'] as $key => $checkbox_data ) {
 					$html .= sprintf(
-						'<label><input class="prflxtrflds_input_checkbox" type="checkbox" name="%1$s[%2$s][' . $key . ']" value="%3$s" %4$s %5$s %6$s />%7$s</label><br />',
+						'<label class="prflxtrflds-field"><input class="prflxtrflds_input_checkbox" type="checkbox" name="%1$s[%2$s][' . $key . ']" value="%3$s" %4$s %5$s %6$s /> %7$s</label><br />',
 						$name,
 						$field_data['field_id'],
 						$checkbox_data['value_id'],
@@ -4939,7 +4978,7 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 			if ( is_array( $field_data['available_fields'] ) ) {
 				foreach ( $field_data['available_fields'] as $key => $radio_data ) {
 					$html .= sprintf(
-						'<label><input class="prflxtrflds_input_radio" type="radio" name="%1$s[%2$s]" value="%3$s" %4$s %5$s %6$s >%7$s</label><br />',
+						'<label class="prflxtrflds-field"><input class="prflxtrflds_input_radio" type="radio" name="%1$s[%2$s]" value="%3$s" %4$s %5$s %6$s > %7$s</label><br />',
 						$name,
 						$field_data['field_id'],
 						$radio_data['value_id'],
@@ -5058,13 +5097,13 @@ if ( ! function_exists( 'prflxtrflds_get_field_html' ) ) {
 
 		if ( 'url' === $field_types[ $field_data['field_type_id'] ] ) {
 			$html = sprintf(
-				'<input type="text" class="medium" name="%1$s[%2$s]" ',
+				'<input type="text" class="medium" name="%1$s[%2$s]" %3$s %4$s %5$s value="%6$s" />',
 				$name,
 				$field_data['field_id'],
-				$value,
 				$max_length,
 				$editable_attr,
-				$required_attr
+				$required_attr,
+				$value
 			);
 		}
 
@@ -5437,11 +5476,65 @@ if ( ! function_exists( 'prflxtrflds_wp_new_user_notification_email_admin' ) ) {
 			$wp_new_user_notification_email_admin['message'] .= "\r\n";
 			$prflxtrflds_field_name                           = array_map( 'sanitize_text_field', array_map( 'wp_unslash', $_POST['prflxtrflds_field_name'] ) );
 			foreach ( $prflxtrflds_field_name as $key => $name ) {
-				$wp_new_user_notification_email_admin['message'] .= $name . ': ' . ( isset( $_POST['prflxtrflds_user_field_value'][ $key ] ) ? sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_field_value'][ $key ] ) ) : '' ) . "\r\n\r\n";
+				$value = isset( $_POST['prflxtrflds_user_field_value'][ $key ] ) ? ( is_array( $_POST['prflxtrflds_user_field_value'][ $key ] ) ? implode( ',', array_map( 'sanitize_text_field', array_map( 'wp_unslash', $_POST['prflxtrflds_user_field_value'][ $key ] ) ) ) : sanitize_text_field( wp_unslash( $_POST['prflxtrflds_user_field_value'][ $key ] ) ) ) : '';
+				$wp_new_user_notification_email_admin['message'] .= $name . ': ' . $value . "\r\n\r\n";
 			}
 		}
 
 		return $wp_new_user_notification_email_admin;
+	}
+}
+
+if ( ! function_exists( 'prflxtrflds_get_lgnrgstrfrm_fields_table' ) ) {
+	/**
+	 * Get BWS Login Register plugin table
+	 *
+	 * @param string $content Content.
+	 */
+	function prflxtrflds_get_lgnrgstrfrm_fields_table( $content, $form = '' ) {
+		global $wpdb, $prflxtrflds_options;
+
+		prflxtrflds_settings();
+
+		/* Group result array by field_id */
+
+		$args   = array( 'show' => 'bws_login_register_form' );
+		$fields = prflxtrflds_get_fields( $args );
+
+		foreach ( $fields as $key => $field ) {
+			/* add field values */
+			$fields[ $key ]['available_fields'] = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT `value_id`, `value_name`
+				FROM `' . $wpdb->base_prefix . 'prflxtrflds_field_values`
+				WHERE `field_id` = %d ORDER BY `order`',
+					$field['field_id']
+				),
+				ARRAY_A
+			);
+		}
+		$input = wp_nonce_field( 'prflxtrflds_user_register_action', 'prflxtrflds_user_register_field', true, false );;
+
+		foreach ( $fields as $data ) {
+			if (
+				empty( $data['editable'] ) ||
+				empty( $data['visible'] )
+			) {
+				$input .= '<div class="form-row"><input type="hidden" name="prflxtrflds_not_editable[]" value="' . esc_attr( $data['field_id'] ) . '" />';
+			} else {
+				$input .= '<div class="form-row"><input type="hidden" name="prflxtrflds_field_name[' . esc_attr( $data['field_id'] ) . ']" value="' . esc_attr( $data['field_name'] ) . '">
+					<label>' . $data['field_name'] . ' ';
+				if ( ! empty( $data['required'] ) ) {
+					$input .= '<span>' . $data['required'] . '</span>';
+				}
+				$input .= '</label>' . prflxtrflds_get_field_html( $data, 'prflxtrflds_user_field_value', array( 'placeholder="' . $data['description'] . '"' ) );
+				$input .= '</div>';
+			}
+		}
+
+		prflxtrflds_enqueue_fields_styles();
+
+		return $content . $input;
 	}
 }
 
@@ -5507,3 +5600,5 @@ add_filter( 'registration_errors', 'prflxtrflds_register_check', 10, 1 );
 add_filter( 'registration_errors', 'prflxtrflds_register_error' );
 /** Hook for display script in footer */
 add_action( 'wp_footer', 'prflxtrflds_display_front_script' );
+/* BWS Login Register compatibility */
+add_filter( 'lgnrgstrfrm_add_field', 'prflxtrflds_get_lgnrgstrfrm_fields_table', 10, 2 );

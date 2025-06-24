@@ -3,172 +3,164 @@ Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add fields WordPress, add extra fields, custom fields, woocommerce extra fields, woocommerce additional fields
 Requires at least: 5.6
-Tested up to: 6.5
-Stable tag: 1.3.0
+Tested up to: 6.8
+Stable tag: 1.3.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add extra fields to WooCommerce and default WordPress user profile. The easiest way to create and manage additional custom values.
+Add custom fields to WordPress user profiles and WooCommerce forms. Easily collect and display extra user information using a simple interface.
 
 == Description ==
 
-Simple plugin which helps to add additional fields to the WooCommerce and WordPress website user profile page. Checkboxes, radio buttons, text, date, time, and phone number fields. 
+A user-friendly plugin for adding and managing custom fields on WordPress user profiles and WooCommerce registration and checkout pages. Create custom fields such as checkboxes, radio buttons, date pickers, phone numbers, and more — with no coding required.
 
-Easily add and display extra information about WordPress users!
+Perfect for membership sites, user directories, WooCommerce stores, and any website that needs extra user information.
 
-[View Demo](https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme)
+Easily display additional user data with shortcodes anywhere on your site.
 
-https://www.youtube.com/watch?v=O424Kpnffmo
+[View Demo](https://bestwebsoft.com/demo-profile-extra-fields-plugin-for-wordpress/?ref=readme)  
+[Watch Video](https://www.youtube.com/watch?v=O424Kpnffmo)
 
 = Free Features =
 
-* Add unlimited number of extra fields
-* Use shortcode to display user data on your page or post:
-	* All users data
-	* Logged in user data
-	* Certain user role data
-	* Certain user data
-	* Current user data
+* Add unlimited custom fields to WordPress user profiles
+* Display extra user data with a shortcode:
+	* All users
+	* Logged-in user
+	* Specific user role
+	* Specific user ID
+	* Current user
+* Display selected fields via shortcode
+* Show fields in the registration form
+* Export all user data to a CSV file
+* Customize shortcode output:
+	* Table layout: rows or columns
+	* Sort by username: ASC / DESC
+	* Show empty fields
+	* Show user ID
+	* Display field shortcodes with values
+* Customize validation messages:
+	* For required fields
+	* For unavailable fields
+* Enable debug mode for troubleshooting
+* Choose from various field types:
+	* Text, Textarea, Checkbox, Radiobutton
+	* Dropdown, Date, Time, Date & Time
+	* Number, Phone, URL
+* Field customization:
+	* Field name and description
+	* Max length for text/number
+	* Required symbol and setting
+	* Set field order (drag & drop)
+	* Choose date/time/phone format
+	* Limit field visibility to specific roles
+* Front-end form to edit user data
+* Compatible with the latest WordPress version
+* Lightweight, fast, and easy to set up
+* Translation-ready and RTL support
 * Compatible with [Car Rental V2](https://bestwebsoft.com/products/wordpress/plugins/car-rental-v2/?k=a8f05dd9a324c003f22923d43eb75eea)
-* Display profile extra fields in user registration form
-* Display certain fields via the shortcode
-* Export all user data to a CSV file 
-* User data shortcode settings:
-	* Choose user data rotation on page or post
-		* Rows
-		* Columns
-	* Sort user data by user name in the table:
-		* ASC (ascending order from lowest to highest values)
-		* DESC (descending order from highest to lowest values)
-	* Show empty fields if user missed them
-	* Show user ID in the table
-	* Display the shortcode with the field value
-	* Customize validation message for:
-		* Empty fields
-		* Unavailable fields
-	* Enable or disable debug mode
-* Choose extra field type:
-	* Text
-	* Textarea
-	* Checkbox
-	* Radiobutton
-	* Dropdown list
-	* Date
-	* Time
-	* Date and time
-	* Number
-	* Phone number
-	* URL
-* Customize extra fields:
-	* Name
-	* Description
-* Set the max length for text or number in the appropriate fields
-* Set the required symbol
-* Make any field required
-* Set the fields order
-* Choose date and time formats for the corresponding field types
-* Set the phone number format for the corresponding field type
-* Drag and drop fields to change their order in the list
-* Make extra fields available for certain user roles
-* Display user data edit form on the front pages
-* Compatible with latest WordPress version
-* Incredibly simple settings for fast setup without modifying code
-* Detailed step-by-step documentation and videos
-* Multilingual and RTL ready
 
 > **Pro Features**
 >
-> All features from Free version included plus:
+> Includes all features from the free version, plus:
 >
-> * Import all user data to a CSV file
-> * Choose extra field type:
->	* Attachment
-> * Compatible with WooCommerce:
->	* Registration form
->	* Checkout billing form
->	* WooCommerce Order email
-> * Compatible with Gravity Forms
-> * Compatible with [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69)
-> * Add custom code via plugin settings page
-> * Import available values for:
->   * Checkbox list
->   * Drop down list
->   * Radio button list
-> * Get answer to your question within one business day ([Support Policy](https://bestwebsoft.com/support-policy/))
+> * Import user data from a CSV file
+> * New field type: Attachment
+> * WooCommerce compatibility:
+>   * Registration form
+>   * Checkout billing fields
+>   * Order confirmation emails
+> * Integration with Gravity Forms
+> * Integration with [Subscriber plugin](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69)
+> * Add custom code from plugin settings
+> * Bulk import values for:
+>   * Checkbox
+>   * Dropdown
+>   * Radiobutton
+> * Priority support – get answers within 1 business day ([Support Policy](https://bestwebsoft.com/support-policy/))
 >
 > [Upgrade to Pro Now](https://bestwebsoft.com/products/wordpress/plugins/profile-extra-fields/?k=b21e006d6bce19b9c1ac7667c721fe1d)
 
-If you have a feature suggestion or idea you'd like to see in the plugin, we'd love to hear about it! [Suggest a Feature](https://support.bestwebsoft.com/hc/en-us/requests/new)
+Have a feature idea? [Suggest a Feature](https://support.bestwebsoft.com/hc/en-us/requests/new)
 
 = Documentation & Videos =
 
 * [[Doc] User Guide](https://bestwebsoft.com/documentation/profile-extra-fields/profile-extra-fields-user-guide/)
 * [[Doc] Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
-* [[Doc] Purchase](https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/)
+* [[Doc] Purchase Guide](https://bestwebsoft.com/documentation/how-to-purchase-a-wordpress-plugin/how-to-purchase-wordpress-plugin-from-bestwebsoft/)
 
 = Help & Support =
 
-Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <https://support.bestwebsoft.com/>
+Need help? Visit our Help Center — our Support Team is ready to assist you.  
+<https://support.bestwebsoft.com/>
 
 = Affiliate Program =
 
-Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — [https://bestwebsoft.com/affiliate/](https://bestwebsoft.com/affiliate/?utm_source=plugin&utm_medium=readme&utm_campaign=affiliate_program)
+Earn 20% commission by promoting BestWebSoft premium WordPress plugins and themes.  
+[Join our affiliate program](https://bestwebsoft.com/affiliate/?utm_source=plugin&utm_medium=readme&utm_campaign=affiliate_program)
 
 = Translation =
 
-* German (de_DE) (thanks to [Matthias Siebler](mailto:matthias.siebler@gmail.com))
+Available languages:
+* German (de_DE) — Thanks to [Matthias Siebler](mailto:matthias.siebler@gmail.com)
 * Russian (ru_RU)
 * Ukrainian (uk)
+* French (fr_FR)
+* Italian (it_IT)
+* Japanese (ja)
+* Portuguese (Brazil) (pt_BR)
+* Spanish (es_ES)
 
-Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send [the text of PO and MO files](https://codex.wordpress.org/Translating_WordPress) to [BestWebSoft](https://support.bestwebsoft.com/hc/en-us/requests/new) and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO [files Poedit](https://www.poedit.net/download.php).
+Some translations may be incomplete. Help us improve! Send your updated `.po` and `.mo` files via [support](https://support.bestwebsoft.com/hc/en-us/requests/new).  
+Download [Poedit](https://www.poedit.net/download.php) to edit translation files.
 
 = Recommended Plugins =
 
-* [Updater](https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd) - Automatically check and update WordPress website core with all installed plugins and themes to the latest versions.
-* [User Role](https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8) - Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles.
-* [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69) - Add email newsletter sign up form to WordPress posts, pages, and widgets. Collect data and subscribe your users.
+* [Updater](https://bestwebsoft.com/products/wordpress/plugins/updater/?k=c70444d5332ad964766fa7f80de398dd) – Keep WordPress, plugins, and themes up to date.
+* [User Role](https://bestwebsoft.com/products/wordpress/plugins/user-role/?k=350d112a7272eeed8aac838bbe2dc8c8) – Manage user roles with full control.
+* [Subscriber](https://bestwebsoft.com/products/wordpress/plugins/subscriber/?k=fb814b406c52fdf3d8c48b9a342aaa69) – Add a newsletter sign-up form to your website.
 
 == Installation ==
 
-1. Upload the `profile-extra-fields` folder to `/wp-content/plugins/` directory.
-2. Activate the plugin using the 'Plugins' menu in your WordPress admin panel.
-3. You can adjust the necessary settings using your WordPress admin panel in "Profile Extra Fields".
-4. Create a page or a post and insert the shortcode [prflxtrflds_user_data] into the text.
+1. Upload the `profile-extra-fields` folder to the `/wp-content/plugins/` directory.
+2. Activate the plugin via the “Plugins” menu in WordPress admin.
+3. Go to **Profile Extra Fields** in your WordPress dashboard to configure the plugin.
+4. Use `[prflxtrflds_user_data]` shortcode to display user data on pages or posts.
 
-[View a Step-by-step Instruction on Profile Extra Fields Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
+[View Step-by-Step Installation Guide](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
 
 == Frequently Asked Questions ==
 
-= How to add an additional field for the user? =
+= How to add an extra field to the user profile? =
 
-Please go to the plugin settings page ( "Profile Extra Fields" ) and press the button 'Add a new field'.
+Go to “Profile Extra Fields” settings in your dashboard and click "Add a new field".
 
-= Can I change the order of displaying fields? =
+= Can I reorder the fields? =
 
-Yes. If you have javascript enabled, you can simply drag the field on the settings page ( "Profile Extra Fields" ) - Extra Fields tab, as you need.
-If you select some of the roles in the filter settings, the order will apply to a particular user role.
-You can also customize the order in the appropriate option while editing field.
+Yes. With JavaScript enabled, simply drag and drop fields in the "Extra Fields" tab.  
+You can also define different orders for different user roles.
 
-= How to view the data filled by users? =
+= How to view submitted user data? =
 
-You can view the data filled by users on the plugin settings page ( "Profile Extra Fields" ), in the 'User data' tab
+Navigate to the **User Data** tab under the plugin settings to view submitted information.
 
-= How to display the data which users submitted on my site? =
+= How to display submitted user data on the site? =
 
-To display the user data on the site, please use the shortcode [prflxtrflds_user_data].
-Also, it is possible to display data only for specific users. To do this, please enter the relevant user id to the shortcode. For example: [prflxtrflds_user_data user_id=3,1].
-You can specify a user role, separated by commas without spaces. Example: [prflxtrflds_user_data user_role=administrator,contributor]
-You can specify a header position manually (top, left or right). Example: [prflxtrflds_user_data display=top]
-Also you can select the current user. Example: [prflxtrflds_user_data user_id=get_current_user]
+Use the shortcode `[prflxtrflds_user_data]`.  
+You can also filter by:
+- `user_id`: `[prflxtrflds_user_data user_id=3,1]`
+- `user_role`: `[prflxtrflds_user_data user_role=administrator,subscriber]`
+- `display`: `[prflxtrflds_user_data display=top]`  
+To show the current user's data: `[prflxtrflds_user_data user_id=get_current_user]`
 
-= I have some problems with the plugin's work. What Information should I provide to receive proper support? =
+= I'm having issues with the plugin. What should I include in a support request? =
 
-Please make sure that the problem hasn't been discussed yet on our forum (<https://support.bestwebsoft.com>). If no, please provide the following data along with your problem's description:
+Please provide:
+1. The URL of the page with the issue
+2. Plugin name and version (and order number if Pro)
+3. Your WordPress version
+4. System status info (see [how to get it here](https://bestwebsoft.com/documentation/admin-panel-issues/system-status/))
 
-1. The link to the page where the problem occurs.
-2. The name of the plugin and its version. If you are using a pro version - your order number.
-3. The version of your WordPress installation.
-4. Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://bestwebsoft.com/documentation/admin-panel-issues/system-status/).
 
 == Screenshots ==
 
@@ -189,6 +181,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 15. Additional Car Rental fields on the user profile page.
 
 == Changelog ==
+
+= V1.3.2 - 24.06.2025 =
+* Update : Compatibility with BWS Login Form has been added.
 
 = V1.3.0 - 15.07.2024 =
 * Bugfix : Non-editable fields saving issue has been fixed.
@@ -345,6 +340,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 * NEW : Screenshots are added.
 
 == Upgrade Notice ==
+
+= V1.3.2 =
+* New features added.
 
 = V1.3.0 =
 * Bugs fixed.
